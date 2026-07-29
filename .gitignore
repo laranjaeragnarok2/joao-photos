@@ -17,3 +17,7 @@ Thumbs.db
 # Python Cache
 __pycache__/
 *.pyc
+
+# Custom Design Identity Source Files (Ignored from Git & GitHub sync)
+01 - Nova Identidade/
+*Nova Identidade*/
