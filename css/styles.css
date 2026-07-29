@@ -451,7 +451,7 @@ img {
     font-weight: 600;
 }
 
-/* Ensaios Grid (Cards de Ensaios) */
+/* Ensaios Grid (Cards de Ensaios com preenchimento 100% de linha) */
 .ensaios-section {
     padding: 4rem 2rem;
     max-width: var(--max-width);
@@ -459,18 +459,16 @@ img {
 }
 
 .ensaios-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: 2rem;
-}
-
-@media (max-width: 540px) {
-    .ensaios-grid {
-        grid-template-columns: 1fr;
-    }
+    width: 100%;
 }
 
 .ensaio-card {
+    flex: 1 1 360px;
+    min-width: 300px;
+    max-width: 100%;
     position: relative;
     border-radius: 8px;
     overflow: hidden;
@@ -496,8 +494,7 @@ img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform var(--transition-smooth);
 }
 
 .ensaio-card:hover .ensaio-cover-img {
@@ -507,26 +504,32 @@ img {
 .ensaio-card-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0) 100%);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.2) 65%, rgba(0, 0, 0, 0) 100%);
+    padding: 1.75rem;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding: 2rem;
     color: #ffffff;
 }
 
 .ensaio-cat-badge {
-    font-size: 0.75rem;
+    align-self: flex-start;
+    font-size: 0.7rem;
+    font-weight: 700;
     letter-spacing: 0.15em;
     text-transform: uppercase;
-    opacity: 0.8;
+    padding: 0.25rem 0.7rem;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
+    border-radius: 4px;
+    margin-bottom: 0.6rem;
 }
 
 .ensaio-title {
-    font-size: 1.35rem;
+    font-size: 1.4rem;
     font-weight: 700;
-    margin: 0.2rem 0;
-    line-height: 1.25;
+    line-height: 1.2;
+    margin-bottom: 0.4rem;
 }
 
 .ensaio-meta-row {
@@ -588,36 +591,39 @@ img {
     letter-spacing: 0.1em;
 }
 
-/* Seamless 2-Column Responsive Grid for Album Photos */
+/* Seamless Full-Bleed Grid (Zero Espaço Neutro no Web e Mobile) */
 .seamless-2col-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 1.75rem;
+    gap: 2px;
     width: 100%;
-    margin-top: 1.5rem;
+    margin-top: 0;
+    padding: 0;
 }
 
 @media (max-width: 768px) {
     .seamless-2col-grid {
         grid-template-columns: 1fr;
-        gap: 1.25rem;
+        gap: 2px;
+        padding: 0;
     }
 }
 
 .grid-item {
     position: relative;
-    border-radius: 8px;
+    border-radius: 0;
     overflow: hidden;
     cursor: pointer;
     background: var(--bg-secondary);
-    border: 1px solid var(--border-color);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    border: none;
+    box-shadow: none;
+    transition: opacity var(--transition-fast);
 }
 
 .grid-item:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+    transform: none;
+    box-shadow: none;
+    opacity: 0.92;
 }
 
 .grid-item img {
@@ -629,7 +635,7 @@ img {
 }
 
 .grid-item:hover img {
-    transform: scale(1.03);
+    transform: scale(1.015);
 }
 
 .grid-item .item-overlay {

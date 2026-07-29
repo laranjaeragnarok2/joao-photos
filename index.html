@@ -46,7 +46,9 @@
     <!-- 1. Navbar -->
     <header class="navbar">
         <div class="nav-container">
-            <a href="#" class="brand-name">João Felipe</a>
+            <a href="#" class="brand-name" aria-label="João Felipe Photos Home">
+                <img src="assets/logo.svg" alt="João Felipe Photos" class="brand-logo-img" />
+            </a>
 
             <nav>
                 <ul class="nav-menu" id="navMenu">
@@ -187,9 +189,9 @@
             <button id="closeAlbumModalBtn" style="font-size: 1.8rem; color: var(--text-primary); cursor: pointer;" aria-label="Fechar">&times;</button>
         </div>
 
-        <div style="padding: 2rem; max-width: var(--max-width); margin: 0 auto; width: 100%;">
-            <!-- Ficha Técnica Editorial Renderizada Dinamicamente -->
-            <div class="editorial-credits-box" id="albumModalCredits"></div>
+        <div style="padding: 1.5rem 0 4rem 0; width: 100%; margin: 0;">
+            <!-- Ficha Técnica Editorial Renderizada Dinamicamente (Com margem própria) -->
+            <div class="editorial-credits-box" id="albumModalCredits" style="margin: 0 1.5rem 2rem 1.5rem;"></div>
 
             <div class="seamless-2col-grid" id="albumPhotosGrid">
                 <!-- Photos of this specific Ensaio rendered dynamically -->
