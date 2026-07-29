@@ -242,8 +242,9 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.albumPhotosGrid.innerHTML = '';
 
         ensaio.photos.forEach((photo, index) => {
+            const isWide = (index % 5 === 0);
             const gridItem = document.createElement('div');
-            gridItem.className = 'grid-item';
+            gridItem.className = `grid-item ${isWide ? 'mosaic-wide' : 'mosaic-half'}`;
             gridItem.innerHTML = `
                 <img src="${photo.src}" alt="${photo.title}" loading="lazy" />
                 <div class="item-overlay">

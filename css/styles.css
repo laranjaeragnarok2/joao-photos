@@ -591,22 +591,15 @@ img {
     letter-spacing: 0.1em;
 }
 
-/* Seamless Full-Bleed Grid (Zero Espaço Neutro no Web e Mobile) */
+/* Asymmetric Editorial Mosaic Layout (Inspirado em JoaoFranco03/photography-portfolio) */
+.editorial-mosaic-grid,
 .seamless-2col-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
     width: 100%;
     margin-top: 0;
     padding: 0;
-}
-
-@media (max-width: 768px) {
-    .seamless-2col-grid {
-        grid-template-columns: 1fr;
-        gap: 2px;
-        padding: 0;
-    }
 }
 
 .grid-item {
@@ -618,6 +611,27 @@ img {
     border: none;
     box-shadow: none;
     transition: opacity var(--transition-fast);
+    flex: 1 1 calc(50% - 2px);
+    min-width: 300px;
+}
+
+.grid-item.mosaic-wide {
+    flex: 1 1 100%;
+    max-height: 85vh;
+}
+
+.grid-item.mosaic-wide img {
+    height: 85vh;
+    object-fit: cover;
+}
+
+@media (max-width: 768px) {
+    .grid-item {
+        flex: 1 1 100%;
+    }
+    .grid-item.mosaic-wide img {
+        height: 55vh;
+    }
 }
 
 .grid-item:hover {
