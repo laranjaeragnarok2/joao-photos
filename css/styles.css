@@ -703,45 +703,81 @@ img {
 
 .testimonial-slide {
     display: none;
-    background: var(--bg-secondary);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 2.5rem 3rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-hairline);
+    border-radius: 12px;
+    padding: 3rem 4rem;
     text-align: center;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(92, 81, 69, 0.03);
     transition: opacity 0.5s ease;
 }
 
 .testimonial-slide.active {
     display: block;
-    animation: fadeInSlide 0.5s ease-out forwards;
+    animation: fadeInSlide 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes fadeInSlide {
-    from { opacity: 0; transform: translateY(10px); }
+    from { opacity: 0; transform: translateY(15px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
+.testimonial-stars {
+    color: var(--brand-sand);
+    font-size: 1.1rem;
+    margin-bottom: 1.2rem;
+    letter-spacing: 0.15em;
+}
+
+.testimonial-quote-wrapper {
+    position: relative;
+    margin-bottom: 2rem;
+    padding: 0 1rem;
+}
+
+.testimonial-quote-mark {
+    position: absolute;
+    top: -2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Aileron', serif;
+    font-size: 5.5rem;
+    color: var(--brand-champagne);
+    opacity: 0.25;
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+}
+
 .testimonial-quote {
-    font-size: 1.15rem;
+    font-size: 1.18rem;
+    font-weight: 400;
     font-style: italic;
     color: var(--text-primary);
-    line-height: 1.7;
-    margin-bottom: 1.5rem;
+    line-height: 1.75;
+    position: relative;
+    z-index: 2;
 }
 
 .testimonial-author-box {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
+    gap: 1.2rem;
+    border-top: 1px solid var(--border-hairline);
+    padding-top: 1.5rem;
+    max-width: 320px;
+    margin: 0 auto;
 }
 
 .testimonial-avatar {
-    width: 52px;
-    height: 52px;
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid var(--border-color);
+    border: 2px solid var(--brand-champagne);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .testimonial-author-info h4 {
