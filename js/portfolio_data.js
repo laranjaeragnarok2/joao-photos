@@ -8,6 +8,38 @@ const PORTFOLIO_DATA = {
         "email": "contato@joaofelipephotos.com",
         "portrait": "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=800,fit=crop/Yle4978nxZCPJrgX/img-YNqqeVWexnFk3P73.jpg"
     },
+    "testimonials": [
+        {
+            "id": "test-1",
+            "name": "Camila Siqueira",
+            "ensaio": "In and Out — Reposicionamento",
+            "photo": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
+            "rating": 5,
+            "comment": "O João conseguiu capturar exatamente a essência que eu queria transmitir para a minha marca. O projeto In and Out me deu um posicionamento incomparável!",
+            "status": "approved",
+            "date": "2026-06-15"
+        },
+        {
+            "id": "test-2",
+            "name": "Mariana & Eduardo",
+            "ensaio": "Ensaio Gestacional de Alto Padrão",
+            "photo": "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
+            "rating": 5,
+            "comment": "Sensibilidade única! As fotos do nosso ensaio gestacional ficaram dignas de revista de moda. Experiência inesquecível e direção maravilhosa.",
+            "status": "approved",
+            "date": "2026-07-02"
+        },
+        {
+            "id": "test-3",
+            "name": "Lucas Brandão",
+            "ensaio": "Campanha Publicitária de Moda",
+            "photo": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
+            "rating": 5,
+            "comment": "Direção de luz de nível internacional. O João entregou o acervo fotográfico da nossa coleção antes do prazo e com qualidade impecável.",
+            "status": "approved",
+            "date": "2026-07-20"
+        }
+    ],
     "categories": [
         {
             "id": "all",

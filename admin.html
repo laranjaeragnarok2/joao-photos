@@ -38,7 +38,10 @@
                 ➕ Criar Novo Ensaio
             </button>
             <button class="admin-tab" data-tab="tabCopy">
-                ✍️ Textos & Informações
+                ✍️ Textos & Foto Perfil
+            </button>
+            <button class="admin-tab" data-tab="tabTestimonials">
+                ⭐ Depoimentos (<span id="pendingTestimonialsBadge" style="background:#ef4444; color:#fff; padding:2px 6px; border-radius:10px; font-size:0.7rem;">0</span>)
             </button>
         </aside>
 
@@ -121,24 +124,32 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Conceito & Descrição Editorial</label>
-                        <textarea id="newEnsaioConcept" class="admin-textarea" rows="3" placeholder="Descrição do conceito e iluminação do ensaio..."></textarea>
+                        <label class="form-label">Conceito Editorial / Descrição Breve</label>
+                        <textarea id="newEnsaioConcept" class="admin-textarea" rows="3" placeholder="Descreva a atmosfera ou direção de arte do ensaio..."></textarea>
                     </div>
 
-                    <button type="submit" class="btn-primary" style="margin-top: 1rem;">Criar Ensaio</button>
+                    <button type="submit" class="btn-primary" style="margin-top: 1rem;">Salvar e Criar Ensaio</button>
                 </form>
             </div>
 
             <!-- Tab 3: Copy & Info -->
             <div class="tab-panel" id="tabCopy">
                 <div class="panel-header">
-                    <h2>Editar Informações & Textos do Site</h2>
+                    <h2>Editar Informações, Biografia & Foto do Fotógrafo</h2>
                 </div>
 
                 <form id="copyForm" class="admin-form">
                     <div class="form-group">
                         <label class="form-label">Nome do Fotógrafo</label>
                         <input type="text" id="infoName" class="admin-input" />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">URL da Foto de Perfil do Fotógrafo (Seção Sobre Mim)</label>
+                        <div style="display: flex; gap: 1rem; align-items: center;">
+                            <input type="url" id="infoPortrait" class="admin-input" style="flex: 1;" placeholder="https://..." />
+                            <img id="infoPortraitPreview" src="" alt="Preview" style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px; border: 1px solid var(--border-color);" />
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -161,8 +172,20 @@
                         <textarea id="infoBio" class="admin-textarea" rows="5"></textarea>
                     </div>
 
-                    <button type="submit" class="btn-primary" style="margin-top: 1rem;">Atualizar Informações</button>
+                    <button type="submit" class="btn-primary" style="margin-top: 1rem;">Atualizar Informações & Foto</button>
                 </form>
+            </div>
+
+            <!-- Tab 4: Moderação de Depoimentos -->
+            <div class="tab-panel" id="tabTestimonials">
+                <div class="panel-header">
+                    <h2>Moderação de Depoimentos & Avaliações dos Clientes</h2>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">Aprove ou recuse as avaliações enviadas pelos clientes antes de serem exibidas no carrossel do site.</p>
+                </div>
+
+                <div id="adminTestimonialsList" style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem;">
+                    <!-- Rendered dynamically by admin.js -->
+                </div>
             </div>
 
         </section>

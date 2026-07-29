@@ -301,7 +301,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 5. Copy & Info Form Handler (Tab 3)
+    // 5. Copy & Info Form Handler (Tab 3) - Inclui Foto do Fotógrafo
+    const infoPortraitInput = document.getElementById('infoPortrait');
+    const infoPortraitPreview = document.getElementById('infoPortraitPreview');
+
     if (elements.copyForm) {
         if (localData.photographer) {
             document.getElementById('infoName').value = localData.photographer.name || '';
@@ -309,6 +312,17 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('infoWhatsapp').value = localData.photographer.whatsapp || '';
             document.getElementById('infoEmail').value = localData.photographer.email || '';
             document.getElementById('infoBio').value = localData.photographer.bio || '';
+            if (infoPortraitInput) {
+                const photoUrl = localStorage.getItem('photographer_portrait') || localData.photographer.portrait || '';
+                infoPortraitInput.value = photoUrl;
+                if (infoPortraitPreview) infoPortraitPreview.src = photoUrl;
+            }
+        }
+
+        if (infoPortraitInput && infoPortraitPreview) {
+            infoPortraitInput.addEventListener('input', () => {
+                infoPortraitPreview.src = infoPortraitInput.value;
+            });
         }
 
         elements.copyForm.addEventListener('submit', (e) => {
@@ -320,14 +334,124 @@ document.addEventListener('DOMContentLoaded', () => {
             localData.photographer.whatsapp = document.getElementById('infoWhatsapp').value;
             localData.photographer.email = document.getElementById('infoEmail').value;
             localData.photographer.bio = document.getElementById('infoBio').value;
+            
+            if (infoPortraitInput) {
+                localData.photographer.portrait = infoPortraitInput.value;
+                localStorage.setItem('photographer_portrait', infoPortraitInput.value);
+            }
 
-            alert('Informações do fotógrafo atualizadas com sucesso!');
+            alert('Informações e foto do fotógrafo atualizadas com sucesso! A imagem já foi aplicada no site.');
         });
     }
 
-    // 6. Export portfolio_data.js
+    // 6. Testimonials Moderation Panel (Tab 4)
+    function renderAdminTestimonials() {
+        const listContainer = document.getElementById('adminTestimonialsList');
+        const badge = document.getElementById('pendingTestimonialsBadge');
+        if (!listContainer) return;
+
+        listContainer.innerHTML = '';
+        const customTestimonials = JSON.parse(localStorage.getItem('custom_testimonials') || '[]');
+        const defaultTestimonials = localData.testimonials || [];
+        const allList = [...customTestimonials, ...defaultTestimonials];
+
+        const pendingList = allList.filter(t => t.status === 'pending');
+        if (badge) badge.textContent = pendingList.length;
+
+        if (allList.length === 0) {
+            listContainer.innerHTML = `<div style="padding:2rem; color:var(--text-muted); text-align:center;">Nenhum depoimento enviado até o momento.</div>`;
+            return;
+        }
+
+        allList.forEach(item => {
+            const card = document.createElement('div');
+            const isPending = item.status === 'pending';
+            card.style.cssText = `
+                background: var(--bg-secondary);
+                border: 1px solid ${isPending ? '#f59e0b' : 'var(--border-color)'};
+                border-radius: 8px;
+                padding: 1.2rem 1.5rem;
+                display: flex;
+                flex-direction: column;
+                gap: 0.8rem;
+            `;
+
+            const stars = '★'.repeat(item.rating || 5) + '☆'.repeat(5 - (item.rating || 5));
+
+            card.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <div style="display:flex; align-items:center; gap:0.8rem;">
+                        <img src="${item.photo || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80'}" style="width:40px; height:40px; border-radius:50%; object-fit:cover;" />
+                        <div>
+                            <h4 style="font-size:0.95rem; font-weight:700; margin:0;">${item.name}</h4>
+                            <span style="font-size:0.75rem; color:var(--text-muted);">${item.ensaio}</span>
+                        </div>
+                    </div>
+                    <span style="font-size:0.75rem; padding:0.2rem 0.6rem; border-radius:4px; font-weight:600; ${isPending ? 'background:#fef3c7; color:#b45309;' : 'background:#dcfce7; color:#15803d;'}">
+                        ${isPending ? '⏳ Pendente de Aprovação' : '✅ Aprovado'}
+                    </span>
+                </div>
+                <p style="font-size:0.9rem; color:var(--text-secondary); margin:0; font-style:italic;">"${item.comment}"</p>
+                <div style="display:flex; justify-content:space-between; align-items:center; pt-2; border-top:1px solid var(--border-color);">
+                    <span style="color:#ffd700; font-size:0.9rem;">${stars}</span>
+                    <div style="display:flex; gap:0.5rem;">
+                        ${isPending ? `<button class="btn-approve-test btn-secondary" style="background:#16a34a; color:#fff; font-size:0.8rem; padding:0.3rem 0.8rem;">Aprovar ✅</button>` : ''}
+                        <button class="btn-delete-test btn-secondary" style="color:#ef4444; font-size:0.8rem; padding:0.3rem 0.8rem;">Excluir 🗑️</button>
+                    </div>
+                </div>
+            `;
+
+            const approveBtn = card.querySelector('.btn-approve-test');
+            if (approveBtn) {
+                approveBtn.addEventListener('click', () => {
+                    item.status = 'approved';
+                    // Update in customTestimonials if present
+                    const idx = customTestimonials.findIndex(t => t.id === item.id);
+                    if (idx !== -1) {
+                        customTestimonials[idx].status = 'approved';
+                        localStorage.setItem('custom_testimonials', JSON.stringify(customTestimonials));
+                    }
+                    // Update in localData
+                    if (!localData.testimonials) localData.testimonials = [];
+                    if (!localData.testimonials.find(t => t.id === item.id)) {
+                        localData.testimonials.push(item);
+                    }
+                    renderAdminTestimonials();
+                    alert(`Depoimento de "${item.name}" foi aprovado com sucesso! Já está visível na página inicial.`);
+                });
+            }
+
+            const deleteBtn = card.querySelector('.btn-delete-test');
+            if (deleteBtn) {
+                deleteBtn.addEventListener('click', () => {
+                    if (confirm(`Excluir o depoimento de "${item.name}"?`)) {
+                        const updatedCustom = customTestimonials.filter(t => t.id !== item.id);
+                        localStorage.setItem('custom_testimonials', JSON.stringify(updatedCustom));
+                        if (localData.testimonials) {
+                            localData.testimonials = localData.testimonials.filter(t => t.id !== item.id);
+                        }
+                        renderAdminTestimonials();
+                    }
+                });
+            }
+
+            listContainer.appendChild(card);
+        });
+    }
+
+    // 7. Export portfolio_data.js
     if (elements.exportBtn) {
         elements.exportBtn.addEventListener('click', () => {
+            // Include approved custom testimonials in export
+            const customTestimonials = JSON.parse(localStorage.getItem('custom_testimonials') || '[]');
+            const approvedCustom = customTestimonials.filter(t => t.status === 'approved');
+            const defaultTestimonials = localData.testimonials || [];
+            
+            // Merge unique testimonials
+            const mergedMap = new Map();
+            [...defaultTestimonials, ...approvedCustom].forEach(t => mergedMap.set(t.id, t));
+            localData.testimonials = Array.from(mergedMap.values());
+
             const fileContent = `const PORTFOLIO_DATA = ${JSON.stringify(localData, null, 4)};\n`;
             const blob = new Blob([fileContent], { type: 'text/javascript' });
             const a = document.createElement('a');
@@ -338,4 +462,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     renderAdminEnsaiosGrid();
+    renderAdminTestimonials();
 });

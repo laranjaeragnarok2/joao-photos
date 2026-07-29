@@ -146,22 +146,34 @@
             </div>
         </section>
 
-        <!-- 7. Depoimentos de Clientes -->
-        <section id="depoimentos" style="padding: 5rem 2rem; max-width: 1200px; margin: 0 auto; border-top: 1px solid var(--border-color);">
-            <div style="text-align: center; margin-bottom: 3rem;">
-                <span style="font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted);">Depoimentos</span>
-                <h2 style="font-size: 2rem; font-weight: 700; letter-spacing: -0.01em; margin-top: 0.3rem;">O Que Dizem os Clientes</h2>
+        <!-- 7. Depoimentos de Clientes (Carrossel Interativo) -->
+        <section id="depoimentos" class="testimonials-section">
+            <div class="testimonials-header">
+                <span style="font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted);">Depoimentos & Experiências</span>
+                <h2 style="font-size: 2.2rem; font-weight: 800; letter-spacing: -0.01em; margin-top: 0.3rem;">O Que Dizem Nossos Clientes</h2>
             </div>
 
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;" id="testimonialsGrid">
-                <!-- Rendered dynamically by app.js -->
+            <div class="testimonials-carousel-wrapper">
+                <button class="carousel-nav-btn" id="testimonialPrevBtn" aria-label="Anterior">‹</button>
+                <div class="testimonials-carousel" id="testimonialsCarousel">
+                    <!-- Dynamic Testimonial Slides Rendered by app.js -->
+                </div>
+                <button class="carousel-nav-btn" id="testimonialNextBtn" aria-label="Próximo">›</button>
+            </div>
+
+            <div class="testimonials-indicators" id="testimonialIndicators"></div>
+
+            <div class="testimonials-cta">
+                <button class="btn-contact" id="openSendTestimonialBtn" style="background: var(--text-primary); color: var(--bg-primary); font-weight: 700;">
+                    ✦ Enviar Meu Depoimento / Avaliação
+                </button>
             </div>
         </section>
 
         <!-- 8. Sobre o Fotógrafo Section (Posicionada antes do rodapé) -->
         <section class="about-section" id="sobre">
             <div style="border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0,0,0,0.08);">
-                <img src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=800,fit=crop/Yle4978nxZCPJrgX/img-YNqqeVWexnFk3P73.jpg" alt="João Felipe Fotógrafo em Rio Verde" />
+                <img src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=800,fit=crop/Yle4978nxZCPJrgX/img-YNqqeVWexnFk3P73.jpg" id="aboutPhoto" alt="João Felipe Fotógrafo em Rio Verde" />
             </div>
 
             <div>
@@ -361,6 +373,60 @@
             <a href="admin.html" class="admin-footer-link" style="text-decoration: underline; color: var(--text-muted); font-size: 0.8rem;">Painel Administrativo</a>
         </p>
     </footer>
+
+    <!-- 14. Send Testimonial Modal (#sendTestimonialModal) -->
+    <div class="modal" id="sendTestimonialModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 class="modal-title">Enviar Depoimento / Avaliação</h3>
+                <button id="closeSendTestimonialBtn" style="font-size: 1.5rem; color: var(--text-primary); cursor: pointer;">&times;</button>
+            </div>
+
+            <form id="sendTestimonialForm" style="display: flex; flex-direction: column; gap: 1rem;">
+                <div class="form-group">
+                    <label class="form-label" for="testName">Seu Nome Completo *</label>
+                    <input type="text" id="testName" class="form-input" placeholder="Ex: Camila Siqueira" required />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="testEnsaio">Ensaio ou Projeto Realizado *</label>
+                    <input type="text" id="testEnsaio" class="form-input" placeholder="Ex: In and Out / Ensaio Gestacional" required />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="testRating">Avaliação *</label>
+                    <select id="testRating" class="form-select" required>
+                        <option value="5">★★★★★ (5 Estrelas - Excelente)</option>
+                        <option value="4">★★★★☆ (4 Estrelas - Muito Bom)</option>
+                        <option value="3">★★★☆☆ (3 Estrelas - Bom)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="testPhoto">Sua Foto de Perfil (Opcional - URL da imagem)</label>
+                    <input type="url" id="testPhoto" class="form-input" placeholder="https://..." />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="testComment">Seu Depoimento / Experiência *</label>
+                    <textarea id="testComment" class="form-textarea" rows="4" placeholder="Conte como foi sua experiência com o João Felipe..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn-contact" style="width: 100%; margin-top: 0.5rem; background: var(--text-primary); color: var(--bg-primary); font-weight: 700;">
+                    Enviar para Aprovação do Administrador
+                </button>
+                
+                <p style="font-size: 0.75rem; color: var(--text-muted); text-align: center; margin-top: 0.2rem;">
+                    ✦ O depoimento passará pela análise do administrador antes de ser exibido no site.
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- 15. Floating Back To Top Button -->
+    <button id="backToTopBtn" class="back-to-top-btn" aria-label="Voltar ao topo">
+        <span>↑ VOLTAR AO TOPO</span>
+    </button>
 
     <!-- Scripts -->
     <script src="js/portfolio_data.js"></script>

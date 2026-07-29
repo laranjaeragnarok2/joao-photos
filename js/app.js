@@ -564,6 +564,189 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Scroll Detection for Hiding Navbar & Sticky Filter Bar & Floating Back to Top Button
+    const navbar = document.querySelector('.navbar');
+    const filterWrapper = document.getElementById('filterWrapper') || document.getElementById('ensaios');
+    const backToTopBtn = document.getElementById('backToTopBtn');
+
+    window.addEventListener('scroll', () => {
+        const scrollY = window.scrollY;
+
+        // Auto Hide Navbar when scrolling past hero
+        if (scrollY > 200) {
+            if (navbar) navbar.classList.add('navbar-hidden');
+            if (filterWrapper) filterWrapper.classList.add('is-stuck');
+            if (backToTopBtn) backToTopBtn.classList.add('visible');
+        } else {
+            if (navbar) navbar.classList.remove('navbar-hidden');
+            if (filterWrapper) filterWrapper.classList.remove('is-stuck');
+            if (backToTopBtn) backToTopBtn.classList.remove('visible');
+        }
+    });
+
+    if (backToTopBtn) {
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+
+    // Dynamic Photographer Photo (#aboutPhoto)
+    const aboutPhotoImg = document.getElementById('aboutPhoto');
+    const savedPhoto = localStorage.getItem('photographer_portrait') || (PORTFOLIO_DATA.photographer && PORTFOLIO_DATA.photographer.portrait);
+    if (aboutPhotoImg && savedPhoto) {
+        aboutPhotoImg.src = savedPhoto;
+    }
+
+    // Render Testimonials Carousel
+    let testimonialCurrentIndex = 0;
+    let testimonialTimer = null;
+
+    function getApprovedTestimonials() {
+        const defaultTestimonials = PORTFOLIO_DATA.testimonials || [];
+        const customTestimonials = JSON.parse(localStorage.getItem('custom_testimonials') || '[]');
+        const approvedCustom = customTestimonials.filter(t => t.status === 'approved');
+        return [...defaultTestimonials, ...approvedCustom];
+    }
+
+    function renderTestimonials() {
+        const carousel = document.getElementById('testimonialsCarousel');
+        const indicators = document.getElementById('testimonialIndicators');
+        if (!carousel) return;
+
+        const list = getApprovedTestimonials();
+        if (list.length === 0) {
+            carousel.innerHTML = `<div style="text-align:center; padding:2rem; color:var(--text-muted);">Nenhum depoimento cadastrado no momento.</div>`;
+            return;
+        }
+
+        carousel.innerHTML = '';
+        if (indicators) indicators.innerHTML = '';
+
+        list.forEach((item, idx) => {
+            const slide = document.createElement('div');
+            slide.className = `testimonial-slide ${idx === 0 ? 'active' : ''}`;
+            const stars = '★'.repeat(item.rating) + '☆'.repeat(5 - item.rating);
+
+            slide.innerHTML = `
+                <div style="color: #ffd700; font-size: 1.2rem; margin-bottom: 0.8rem;">${stars}</div>
+                <p class="testimonial-quote">"${item.comment}"</p>
+                <div class="testimonial-author-box">
+                    <img src="${item.photo || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80'}" alt="${item.name}" class="testimonial-avatar" />
+                    <div class="testimonial-author-info" style="text-align: left;">
+                        <h4>${item.name}</h4>
+                        <span>${item.ensaio}</span>
+                    </div>
+                </div>
+            `;
+            carousel.appendChild(slide);
+
+            if (indicators) {
+                const dot = document.createElement('span');
+                dot.className = `indicator-dot ${idx === 0 ? 'active' : ''}`;
+                dot.addEventListener('click', () => goToTestimonialSlide(idx));
+                indicators.appendChild(dot);
+            }
+        });
+
+        // Initialize Carousel controls
+        const prevBtn = document.getElementById('testimonialPrevBtn');
+        const nextBtn = document.getElementById('testimonialNextBtn');
+
+        if (prevBtn) {
+            prevBtn.onclick = () => {
+                const total = getApprovedTestimonials().length;
+                testimonialCurrentIndex = (testimonialCurrentIndex - 1 + total) % total;
+                updateTestimonialSlideUI();
+            };
+        }
+
+        if (nextBtn) {
+            nextBtn.onclick = () => {
+                const total = getApprovedTestimonials().length;
+                testimonialCurrentIndex = (testimonialCurrentIndex + 1) % total;
+                updateTestimonialSlideUI();
+            };
+        }
+
+        startTestimonialTimer();
+    }
+
+    function updateTestimonialSlideUI() {
+        const slides = document.querySelectorAll('.testimonial-slide');
+        const dots = document.querySelectorAll('.indicator-dot');
+
+        slides.forEach((slide, idx) => {
+            slide.classList.toggle('active', idx === testimonialCurrentIndex);
+        });
+
+        dots.forEach((dot, idx) => {
+            dot.classList.toggle('active', idx === testimonialCurrentIndex);
+        });
+    }
+
+    function goToTestimonialSlide(idx) {
+        testimonialCurrentIndex = idx;
+        updateTestimonialSlideUI();
+        startTestimonialTimer();
+    }
+
+    function startTestimonialTimer() {
+        if (testimonialTimer) clearInterval(testimonialTimer);
+        testimonialTimer = setInterval(() => {
+            const list = getApprovedTestimonials();
+            if (list.length > 0) {
+                testimonialCurrentIndex = (testimonialCurrentIndex + 1) % list.length;
+                updateTestimonialSlideUI();
+            }
+        }, 5500);
+    }
+
+    // Send Testimonial Modal Handlers
+    const openSendTestimonialBtn = document.getElementById('openSendTestimonialBtn');
+    const sendTestimonialModal = document.getElementById('sendTestimonialModal');
+    const closeSendTestimonialBtn = document.getElementById('closeSendTestimonialBtn');
+    const sendTestimonialForm = document.getElementById('sendTestimonialForm');
+
+    if (openSendTestimonialBtn && sendTestimonialModal) {
+        openSendTestimonialBtn.addEventListener('click', () => {
+            sendTestimonialModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+    }
+
+    if (closeSendTestimonialBtn && sendTestimonialModal) {
+        closeSendTestimonialBtn.addEventListener('click', () => {
+            sendTestimonialModal.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    }
+
+    if (sendTestimonialForm) {
+        sendTestimonialForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const newTestimonial = {
+                id: 'test-' + Date.now(),
+                name: document.getElementById('testName').value,
+                ensaio: document.getElementById('testEnsaio').value,
+                rating: parseInt(document.getElementById('testRating').value) || 5,
+                photo: document.getElementById('testPhoto').value || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80',
+                comment: document.getElementById('testComment').value,
+                status: 'pending',
+                date: new Date().toISOString().split('T')[0]
+            };
+
+            const customTestimonials = JSON.parse(localStorage.getItem('custom_testimonials') || '[]');
+            customTestimonials.push(newTestimonial);
+            localStorage.setItem('custom_testimonials', JSON.stringify(customTestimonials));
+
+            alert('✦ Seu depoimento foi enviado com sucesso!\n\nEle foi registrado com status de aprovação pendente e estará visível na página assim que for aprovado pelo administrador no painel.');
+
+            sendTestimonialForm.reset();
+            sendTestimonialModal.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    }
+
     // Initial Exec
     renderFilters();
     renderTestimonials();
