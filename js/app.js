@@ -1,24 +1,24 @@
 /* ==========================================================================
-   JOÃO FELIPE PHOTOS - APPLICATION LOGIC
+   JOÃO FELIPE PHOTOS - EDITORIAL OFF-WHITE APPLICATION LOGIC
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. App State
+    // 1. Application State
     const state = {
         currentCategory: 'all',
-        itemsPerPage: 24,
+        itemsPerPage: 20,
         currentPage: 1,
         filteredItems: [],
         lightboxIndex: 0,
-        theme: localStorage.getItem('theme') || 'dark'
+        theme: localStorage.getItem('theme') || 'light' // Default to light
     };
 
     // 2. DOM Elements
     const elements = {
         filterBar: document.getElementById('filterBar'),
-        masonryGrid: document.getElementById('masonryGrid'),
+        portfolioGrid: document.getElementById('portfolioGrid'),
         loadMoreBtn: document.getElementById('loadMoreBtn'),
-        loadMoreContainer: document.getElementById('loadMoreContainer'),
+        loadMoreWrap: document.getElementById('loadMoreWrap'),
         themeToggleBtn: document.getElementById('themeToggleBtn'),
         lightbox: document.getElementById('lightboxModal'),
         lightboxImg: document.getElementById('lightboxImg'),
@@ -30,8 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
         lightboxNext: document.getElementById('lightboxNext'),
         lightboxShareWa: document.getElementById('lightboxShareWa'),
         contactModal: document.getElementById('contactModal'),
-        openContactBtns: document.querySelectorAll('.open-contact-btn'),
-        closeContactBtn: document.getElementById('closeContactBtn'),
+        openModalBtns: document.querySelectorAll('.open-modal-btn'),
+        closeModalBtn: document.getElementById('closeModalBtn'),
         budgetForm: document.getElementById('budgetForm')
     };
 
@@ -53,9 +53,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const btn = document.createElement('button');
-            btn.className = `filter-btn ${cat.id === state.currentCategory ? 'active' : ''}`;
+            btn.className = `filter-pill ${cat.id === state.currentCategory ? 'active' : ''}`;
             btn.dataset.category = cat.id;
-            btn.innerHTML = `${cat.name} <span class="filter-count">(${count})</span>`;
+            btn.textContent = `${cat.name} (${count})`;
 
             btn.addEventListener('click', () => {
                 state.currentCategory = cat.id;
@@ -69,12 +69,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateFilterUI() {
-        document.querySelectorAll('.filter-btn').forEach(btn => {
+        document.querySelectorAll('.filter-pill').forEach(btn => {
             btn.classList.toggle('active', btn.dataset.category === state.currentCategory);
         });
     }
 
-    // 5. Filter & Render Masonry Items
+    // 5. Filter & Render 2-Column Grid Items
     function applyFilterAndRender() {
         if (state.currentCategory === 'all') {
             state.filteredItems = [...PORTFOLIO_DATA.items];
@@ -88,54 +88,45 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderGrid(reset = false) {
-        if (!elements.masonryGrid) return;
+        if (!elements.portfolioGrid) return;
         
         if (reset) {
-            elements.masonryGrid.innerHTML = '';
+            elements.portfolioGrid.innerHTML = '';
         }
 
         const startIndex = 0;
         const endIndex = state.currentPage * state.itemsPerPage;
         const visibleItems = state.filteredItems.slice(startIndex, endIndex);
 
-        elements.masonryGrid.innerHTML = '';
+        elements.portfolioGrid.innerHTML = '';
 
         visibleItems.forEach((item, index) => {
-            const card = document.createElement('div');
-            card.className = 'gallery-card';
-            card.innerHTML = `
-                <div class="gallery-img-wrapper">
-                    <img src="${item.src}" alt="${item.title}" loading="lazy" />
-                    <div class="card-overlay">
-                        <span class="card-tag">${item.categoryName}</span>
-                        <h4 class="card-title">${item.title}</h4>
-                        <div class="card-zoom-icon">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="11" cy="11" r="8"></circle>
-                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                                <line x1="11" y1="8" x2="11" y2="14"></line>
-                                <line x1="8" y1="11" x2="14" y2="11"></line>
-                            </svg>
-                        </div>
+            const gridItem = document.createElement('div');
+            gridItem.className = 'grid-item';
+            gridItem.innerHTML = `
+                <img src="${item.src}" alt="${item.title}" loading="lazy" />
+                <div class="item-overlay">
+                    <div class="item-info">
+                        <span class="item-category-tag">${item.categoryName}</span>
+                        <h4 class="item-title-text">${item.title}</h4>
                     </div>
                 </div>
             `;
 
-            card.addEventListener('click', () => openLightbox(index));
-            elements.masonryGrid.appendChild(card);
+            gridItem.addEventListener('click', () => openLightbox(index));
+            elements.portfolioGrid.appendChild(gridItem);
         });
 
-        // Toggle "Carregar Mais" Button
-        if (elements.loadMoreContainer) {
+        // Load More Button Visibility
+        if (elements.loadMoreWrap) {
             if (endIndex < state.filteredItems.length) {
-                elements.loadMoreContainer.style.display = 'flex';
+                elements.loadMoreWrap.style.display = 'flex';
             } else {
-                elements.loadMoreContainer.style.display = 'none';
+                elements.loadMoreWrap.style.display = 'none';
             }
         }
     }
 
-    // Load More Handler
     if (elements.loadMoreBtn) {
         elements.loadMoreBtn.addEventListener('click', () => {
             state.currentPage++;
@@ -143,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 6. Lightbox Handler
+    // 6. Lightbox Modal Logic
     function openLightbox(index) {
         state.lightboxIndex = index;
         updateLightboxContent();
@@ -165,8 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.lightboxCategory.textContent = item.categoryName;
         elements.lightboxCounter.textContent = `${state.lightboxIndex + 1} / ${state.filteredItems.length}`;
 
-        // Share Link
-        const msg = encodeURIComponent(`Olá João! Vi a foto "${item.title}" no seu portfólio e gostaria de saber mais.`);
+        const msg = encodeURIComponent(`Olá João! Tenho interesse no trabalho "${item.title}" (${item.categoryName}).`);
         elements.lightboxShareWa.href = `https://wa.me/${PORTFOLIO_DATA.photographer.whatsapp}?text=${msg}`;
     }
 
@@ -184,7 +174,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (elements.lightboxNext) elements.lightboxNext.addEventListener('click', nextLightbox);
     if (elements.lightboxPrev) elements.lightboxPrev.addEventListener('click', prevLightbox);
 
-    // Keyboard Navigation for Lightbox
     window.addEventListener('keydown', (e) => {
         if (!elements.lightbox.classList.contains('active')) return;
         if (e.key === 'Escape') closeLightbox();
@@ -192,27 +181,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'ArrowLeft') prevLightbox();
     });
 
-    // 7. Theme Switcher Handler
+    // 7. Theme Switcher Logic
     function updateThemeIcon() {
         if (!elements.themeToggleBtn) return;
-        const isDark = state.theme === 'dark';
-        elements.themeToggleBtn.innerHTML = isDark ? `
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="5"></circle>
-                <line x1="12" y1="1" x2="12" y2="3"></line>
-                <line x1="12" y1="21" x2="12" y2="23"></line>
-                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                <line x1="1" y1="12" x2="3" y2="12"></line>
-                <line x1="21" y1="12" x2="23" y2="12"></line>
-                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-            </svg>
-        ` : `
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-            </svg>
-        `;
+        elements.themeToggleBtn.textContent = state.theme === 'dark' ? '☀️' : '🌙';
     }
 
     if (elements.themeToggleBtn) {
@@ -224,16 +196,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 8. Contact & Budget Modal Logic
-    elements.openContactBtns.forEach(btn => {
+    // 8. Contact Modal Logic
+    elements.openModalBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             elements.contactModal.classList.add('active');
             document.body.style.overflow = 'hidden';
         });
     });
 
-    if (elements.closeContactBtn) {
-        elements.closeContactBtn.addEventListener('click', () => {
+    if (elements.closeModalBtn) {
+        elements.closeModalBtn.addEventListener('click', () => {
             elements.contactModal.classList.remove('active');
             document.body.style.overflow = '';
         });
@@ -244,10 +216,9 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const name = document.getElementById('inputName').value;
             const category = document.getElementById('selectCategory').value;
-            const date = document.getElementById('inputDate').value;
             const msgText = document.getElementById('inputMessage').value;
 
-            const text = `Olá João Felipe! Meu nome é ${name}. Gostaria de orçamento para ensaio de *${category}*${date ? ' previsto para ' + date : ''}.\n\nMensagem: ${msgText}`;
+            const text = `Olá João Felipe! Meu nome é ${name}. Gostaria de solicitar um orçamento para ensaio de *${category}*.\n\nMensagem: ${msgText}`;
             const waUrl = `https://wa.me/${PORTFOLIO_DATA.photographer.whatsapp}?text=${encodeURIComponent(text)}`;
             
             window.open(waUrl, '_blank');
@@ -256,7 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 9. Initial Load
+    // Initial Execution
     renderFilters();
     applyFilterAndRender();
 });
