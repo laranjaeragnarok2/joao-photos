@@ -1,5 +1,4 @@
 import json
-import re
 
 with open("data/site_structure.json", "r", encoding="utf-8") as f:
     site_data = json.load(f)
@@ -15,7 +14,6 @@ categories = [
     { "id": "autorais", "name": "Autorais & Fine Art" }
 ]
 
-# We will group photos into distinct Ensaios (Albums)
 ensaios_dict = {
     "fashion": [
         {"id": "fashion_1", "title": "Editorial Moda Urbana", "category": "fashion", "categoryName": "Fashion & Editorial", "photos": []},
@@ -39,7 +37,6 @@ ensaios_dict = {
     ]
 }
 
-# Categorize clean photos into these Ensaios
 all_items = []
 id_counter = 1
 
@@ -82,7 +79,6 @@ for page in site_data["pages"]:
         all_items.append(photo_item)
         id_counter += 1
 
-# Flatten albums list and select default cover for each album
 ensaios_list = []
 for cat, albums in ensaios_dict.items():
     for album in albums:
@@ -91,41 +87,67 @@ for cat, albums in ensaios_dict.items():
             album["photoCount"] = len(album["photos"])
             ensaios_list.append(album)
 
-js_output = f"""// Structured Ensaios (Albums) dataset with selected Covers
-const PORTFOLIO_DATA = {{
-    photographer: {{
-        name: "João Felipe",
-        role: "Fotógrafo de Moda, Editorial & Retratos Autorais",
-        location: "Rio Verde, GO • Atendimento Brasil & Global",
-        bio: "Com olhar apurado para a estética editorial, atuo na criação de imagens marcantes para marcas de moda, campanhas publicitárias, gestantes e retratos autorais. Cada projeto une rigor técnico na iluminação e sensibilidade artística.",
-        whatsapp: "5511999999999",
-        email: "contato@joaofelipephotos.com",
-        portrait: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=800,fit=crop/Yle4978nxZCPJrgX/img-YNqqeVWexnFk3P73.jpg"
-    }},
-    categories: {json.dumps(categories, indent=2, ensure_ascii=False)},
-    ensaios: {json.dumps(ensaios_list, indent=2, ensure_ascii=False)},
-    testimonials: [
-        {{
-            name: "Camila Guimarães",
-            role: "Diretora de Moda & Estilo",
-            text: "O João tem uma direção de luz e olhar editorial impecáveis. As fotos da nossa nova coleção superaram todas as expectativas da marca."
-        }},
-        {{
-            name: "Juliana & Renato",
-            role: "Ensaio Gestacional",
-            text: "Sensibilidade única! Conseguimos guardar a fase da nossa gestação em retratos elegantes, delicados e cheios de significado."
-        }},
-        {{
-            name: "Marcos Vinícius",
-            role: "Produtor Executivo",
-            text: "Profissionalismo raro, entrega rápida das imagens tratadas e rigor técnico em todo o ensaio publicitário."
-        }}
+full_data = {
+    "photographer": {
+        "name": "João Felipe",
+        "role": "Fotógrafo de Moda, Editorial & Retratos Autorais",
+        "location": "Rio Verde, GO • Atendimento Brasil & Global",
+        "bio": "Com olhar apurado para a estética editorial, atuo na criação de imagens marcantes para marcas de moda, campanhas publicitárias, gestantes e retratos autorais. Cada projeto une rigor técnico na iluminação e sensibilidade artística.",
+        "whatsapp": "5511999999999",
+        "email": "contato@joaofelipephotos.com",
+        "portrait": "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=800,fit=crop/Yle4978nxZCPJrgX/img-YNqqeVWexnFk3P73.jpg"
+    },
+    "categories": categories,
+    "ensaios": ensaios_list,
+    "clientGalleries": [
+        {
+            "code": "JOAO2026",
+            "clientName": "Camila & Eduardo",
+            "title": "Ensaio Casal & Maternidade 2026",
+            "date": "15/05/2026",
+            "downloadUrl": "https://drive.google.com",
+            "photos": all_items[:12]
+        },
+        {
+            "code": "GESTAO2026",
+            "clientName": "Juliana & Renato",
+            "title": "Ensaio Gestacional Exclusivo",
+            "date": "10/06/2026",
+            "downloadUrl": "https://drive.google.com",
+            "photos": all_items[12:24]
+        },
+        {
+            "code": "FASHION2026",
+            "clientName": "Agência VOGUE Moda",
+            "title": "Coleção Inverno Editorial",
+            "date": "20/06/2026",
+            "downloadUrl": "https://drive.google.com",
+            "photos": all_items[24:36]
+        }
     ],
-    items: {json.dumps(all_items, indent=2, ensure_ascii=False)}
-}};
-"""
+    "testimonials": [
+        {
+            "name": "Camila Guimarães",
+            "role": "Diretora de Moda & Estilo",
+            "text": "O João tem uma direção de luz e olhar editorial impecáveis. As fotos da nossa nova coleção superaram todas as expectativas da marca."
+        },
+        {
+            "name": "Juliana & Renato",
+            "role": "Ensaio Gestacional",
+            "text": "Sensibilidade única! Conseguimos guardar a fase da nossa gestação em retratos elegantes, delicados e cheios de significado."
+        },
+        {
+            "name": "Marcos Vinícius",
+            "role": "Produtor Executivo",
+            "text": "Profissionalismo raro, entrega rápida das imagens tratadas e rigor técnico em todo o ensaio publicitário."
+        }
+    ],
+    "items": all_items
+}
+
+js_output = f"const PORTFOLIO_DATA = {json.dumps(full_data, indent=4, ensure_ascii=False)};\n"
 
 with open("js/portfolio_data.js", "w", encoding="utf-8") as f:
     f.write(js_output)
 
-print(f"Generated {len(ensaios_list)} Ensaios with Covers and {len(all_items)} total photos!")
+print(f"Generated clean dataset with {len(ensaios_list)} Ensaios and {len(full_data['clientGalleries'])} Client Galleries!")

@@ -334,7 +334,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Client Portal Handlers
+    // Client Portal Handlers (Private Galleries)
     elements.openClientPortalBtns.forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -350,13 +350,59 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    const closePrivateBtn = document.getElementById('closePrivateGalleryBtn');
+    const privateModal = document.getElementById('privateGalleryModal');
+
+    if (closePrivateBtn && privateModal) {
+        closePrivateBtn.addEventListener('click', () => {
+            privateModal.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    }
+
     if (elements.clientPortalForm) {
         elements.clientPortalForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const code = document.getElementById('clientCode').value;
-            alert(`Acessando a galeria privada com o código ${code}... Por favor, consulte o fotógrafo para o link direto de download das suas imagens.`);
-            elements.clientPortalModal.classList.remove('active');
-            document.body.style.overflow = '';
+            const code = document.getElementById('clientCode').value.trim().toUpperCase();
+            
+            const clientGallery = PORTFOLIO_DATA.clientGalleries.find(g => g.code.toUpperCase() === code);
+
+            if (clientGallery) {
+                elements.clientPortalModal.classList.remove('active');
+                
+                document.getElementById('privateClientName').textContent = clientGallery.clientName.toUpperCase();
+                document.getElementById('privateGalleryTitle').textContent = clientGallery.title;
+                document.getElementById('privateDownloadBtn').href = clientGallery.downloadUrl || '#';
+
+                const grid = document.getElementById('privatePhotosGrid');
+                grid.innerHTML = '';
+
+                clientGallery.photos.forEach((photo, index) => {
+                    const gridItem = document.createElement('div');
+                    gridItem.className = 'grid-item';
+                    gridItem.innerHTML = `
+                        <img src="${photo.src}" alt="${photo.title}" loading="lazy" />
+                        <div class="item-overlay">
+                            <div class="item-info">
+                                <span class="item-category-tag">Ensaio Privado</span>
+                                <h4 class="item-title-text">${photo.title}</h4>
+                            </div>
+                        </div>
+                    `;
+
+                    gridItem.addEventListener('click', () => {
+                        state.currentAlbumPhotos = clientGallery.photos;
+                        openLightbox(index);
+                    });
+
+                    grid.appendChild(gridItem);
+                });
+
+                privateModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            } else {
+                alert(`Senha incorreta ("${code}"). Dica de demonstração: tente usar a senha JOAO2026, GESTAO2026 ou FASHION2026.`);
+            }
         });
     }
 

@@ -219,7 +219,7 @@
         </div>
     </div>
 
-    <!-- 10. Client Portal Modal -->
+    <!-- 10. Client Portal Password Entry Modal -->
     <div class="modal" id="clientPortalModal">
         <div class="modal-box">
             <div class="modal-header">
@@ -230,13 +230,36 @@
             <form id="clientPortalForm">
                 <div class="form-group">
                     <label class="form-label" for="clientCode">Código / Senha do Ensaio</label>
-                    <input type="password" id="clientCode" class="form-input" placeholder="Digite seu código privado (Ex: JOAO2026)" required />
+                    <input type="password" id="clientCode" class="form-input" placeholder="Digite sua senha (Ex: JOAO2026, GESTAO2026)" required />
                 </div>
 
                 <button type="submit" class="btn-contact" style="width: 100%; margin-top: 1rem; background: var(--text-primary); color: var(--bg-primary);">
                     Acessar Galeria Privada
                 </button>
             </form>
+        </div>
+    </div>
+
+    <!-- 10b. Private Client Gallery View Modal (#privateGalleryModal) -->
+    <div class="album-modal" id="privateGalleryModal" role="dialog">
+        <div class="album-modal-header">
+            <div class="album-modal-title-wrap">
+                <span id="privateClientName">CLIENTE</span>
+                <h3 id="privateGalleryTitle">Ensaio Privado</h3>
+            </div>
+
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <a href="#" target="_blank" rel="noopener" id="privateDownloadBtn" class="btn-contact" style="background: #25d366; color: #fff; border: none; font-size: 0.75rem;">
+                    ⬇ Baixar Fotos em Alta Resolução (Drive/ZIP)
+                </a>
+                <button id="closePrivateGalleryBtn" style="font-size: 1.8rem; color: var(--text-primary); cursor: pointer;">&times;</button>
+            </div>
+        </div>
+
+        <div style="padding: 2rem; max-width: var(--max-width); margin: 0 auto; width: 100%;">
+            <div class="seamless-2col-grid" id="privatePhotosGrid">
+                <!-- Client private photos rendered dynamically -->
+            </div>
         </div>
     </div>
 
