@@ -11,12 +11,37 @@
     <!-- Font Inter (Exclusiva) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- JSON-LD SEO Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Photographer",
+      "name": "João Felipe Photos",
+      "url": "https://joaofelipephotos.com/",
+      "image": "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=800,fit=crop/Yle4978nxZCPJrgX/img-YNqqeVWexnFk3P73.jpg",
+      "description": "Fotografia de Moda, Editorial, Retratos Autorais, Gestacionais e Projetos Publicitários por João Felipe.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Rio Verde",
+        "addressRegion": "GO",
+        "addressCountry": "BR"
+      },
+      "sameAs": [
+        "https://www.instagram.com/joaofelipe.photos/",
+        "https://www.behance.net/joaofelipephotos"
+      ]
+    }
+    </script>
 
     <!-- Custom Stylesheet -->
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+
+    <!-- Custom Editorial Floating Cursor -->
+    <div class="custom-cursor" id="customCursor">
+        <span class="cursor-label" id="cursorLabel"></span>
+    </div>
 
     <!-- 1. Navbar -->
     <header class="navbar">
@@ -50,8 +75,10 @@
     <main>
         <!-- 2. Fullscreen 100vh Hero Section -->
         <section class="hero-fullscreen" id="hero">
-            <div class="hero-bg-wrapper">
-                <img src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1600,fit=crop,q=95/Yle4978nxZCPJrgX/img_3553-Yan0v2KMoxflbgwg.jpg" alt="João Felipe Editorial Photography" class="hero-bg-img" id="heroBgImg" />
+            <div class="hero-bg-wrapper" id="heroBgWrapper">
+                <img src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1600,fit=crop,q=95/Yle4978nxZCPJrgX/img_3553-Yan0v2KMoxflbgwg.jpg" alt="João Felipe Editorial Photography" class="hero-bg-img active" />
+                <img src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1600,fit=crop/Yle4978nxZCPJrgX/previa-2-YNqMlDMePBHBOnw2.jpg" alt="Projeto In and Out Retratos" class="hero-bg-img" />
+                <img src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1600,fit=crop/Yle4978nxZCPJrgX/j-m-1lt-fh3pbfe-unsplash-AE07NxR342tPo6a1.jpg" alt="Fashion Editorial Photography" class="hero-bg-img" />
             </div>
             <div class="hero-overlay"></div>
 
@@ -256,11 +283,17 @@
                 <h3 id="privateGalleryTitle">Ensaio Privado</h3>
             </div>
 
-            <div style="display: flex; gap: 1rem; align-items: center;">
-                <a href="#" target="_blank" rel="noopener" id="privateDownloadBtn" class="btn-contact" style="background: #25d366; color: #fff; border: none; font-size: 0.75rem;">
-                    ⬇ Baixar Fotos em Alta Resolução (Drive/ZIP)
+            <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+                <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);">
+                    ❤️ Selecionadas: <strong id="selectedPhotoCount" style="color: var(--text-primary);">0</strong>
+                </span>
+                <button id="sendSelectionWaBtn" class="btn-contact" style="background: #25d366; color: #fff; border: none; font-size: 0.75rem;">
+                    💬 Enviar Seleção para WhatsApp
+                </button>
+                <a href="#" target="_blank" rel="noopener" id="privateDownloadBtn" class="btn-contact" style="border-color: var(--border-color); font-size: 0.75rem;">
+                    ⬇ Baixar Alta Resolução
                 </a>
-                <button id="closePrivateGalleryBtn" style="font-size: 1.8rem; color: var(--text-primary); cursor: pointer;">&times;</button>
+                <button id="closePrivateGalleryBtn" style="font-size: 1.8rem; color: var(--text-primary); cursor: pointer;" aria-label="Fechar">&times;</button>
             </div>
         </div>
 

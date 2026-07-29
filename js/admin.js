@@ -135,6 +135,20 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             elements.modalEnsaioPhotosGrid.appendChild(itemCard);
         });
+
+        // Initialize SortableJS for Drag and Drop Reordering
+        if (typeof Sortable !== 'undefined' && elements.modalEnsaioPhotosGrid) {
+            if (elements.sortableInstance) elements.sortableInstance.destroy();
+            elements.sortableInstance = new Sortable(elements.modalEnsaioPhotosGrid, {
+                animation: 150,
+                onEnd: function (evt) {
+                    if (evt.oldIndex !== undefined && evt.newIndex !== undefined) {
+                        const movedItem = ensaio.photos.splice(evt.oldIndex, 1)[0];
+                        ensaio.photos.splice(evt.newIndex, 0, movedItem);
+                    }
+                }
+            });
+        }
     }
 
     window.setAsCover = function(srcUrl) {

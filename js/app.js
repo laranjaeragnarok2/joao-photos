@@ -43,6 +43,43 @@ document.addEventListener('DOMContentLoaded', () => {
         albumModalCredits: document.getElementById('albumModalCredits')
     };
 
+    // Custom Floating Cursor Logic
+    const cursor = document.getElementById('customCursor');
+    const cursorLabel = document.getElementById('cursorLabel');
+
+    if (cursor) {
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = `${e.clientX}px`;
+            cursor.style.top = `${e.clientY}px`;
+            cursor.classList.add('visible');
+        });
+
+        document.addEventListener('mouseleave', () => {
+            cursor.classList.remove('visible');
+        });
+    }
+
+    window.setCursorHover = function(label) {
+        if (!cursor) return;
+        if (label) {
+            cursor.classList.add('active');
+            if (cursorLabel) cursorLabel.textContent = label;
+        } else {
+            cursor.classList.remove('active');
+        }
+    };
+
+    // Hero Crossfade Slider Logic
+    const heroImgs = document.querySelectorAll('#heroBgWrapper .hero-bg-img');
+    if (heroImgs.length > 1) {
+        let currentSlide = 0;
+        setInterval(() => {
+            heroImgs[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % heroImgs.length;
+            heroImgs[currentSlide].classList.add('active');
+        }, 4500);
+    }
+
     // Mobile Menu Toggle Event
     if (elements.mobileMenuToggleBtn && elements.navMenu) {
         elements.mobileMenuToggleBtn.addEventListener('click', () => {
@@ -140,7 +177,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
 
-            card.addEventListener('click', () => openAlbumModal(ensaio));
+            card.addEventListener('mouseenter', () => window.setCursorHover && window.setCursorHover('VER ENSAIO'));
+            card.addEventListener('mouseleave', () => window.setCursorHover && window.setCursorHover(null));
+            card.addEventListener('click', () => {
+                if (window.setCursorHover) window.setCursorHover(null);
+                openAlbumModal(ensaio);
+            });
             elements.ensaiosGrid.appendChild(card);
         });
     }
@@ -212,7 +254,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
 
-            gridItem.addEventListener('click', () => openLightbox(index));
+            gridItem.addEventListener('mouseenter', () => window.setCursorHover && window.setCursorHover('ZOOM'));
+            gridItem.addEventListener('mouseleave', () => window.setCursorHover && window.setCursorHover(null));
+            gridItem.addEventListener('click', () => {
+                if (window.setCursorHover) window.setCursorHover(null);
+                openLightbox(index);
+            });
             elements.albumPhotosGrid.appendChild(gridItem);
         });
 
@@ -435,6 +482,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (elements.clientPortalForm) {
+        let selectedPhotoTitles = new Set();
+
         elements.clientPortalForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const code = document.getElementById('clientCode').value.trim().toUpperCase();
@@ -443,10 +492,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (clientGallery) {
                 elements.clientPortalModal.classList.remove('active');
+                selectedPhotoTitles.clear();
                 
                 document.getElementById('privateClientName').textContent = clientGallery.clientName.toUpperCase();
                 document.getElementById('privateGalleryTitle').textContent = clientGallery.title;
                 document.getElementById('privateDownloadBtn').href = clientGallery.downloadUrl || '#';
+                
+                const selectedCountElem = document.getElementById('selectedPhotoCount');
+                if (selectedCountElem) selectedCountElem.textContent = '0';
 
                 const grid = document.getElementById('privatePhotosGrid');
                 grid.innerHTML = '';
@@ -456,6 +509,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     gridItem.className = 'grid-item';
                     gridItem.innerHTML = `
                         <img src="${photo.src}" alt="${photo.title}" loading="lazy" />
+                        <button class="fav-btn" style="position:absolute; top:10px; right:10px; z-index:10; background:rgba(0,0,0,0.6); border:none; color:#fff; border-radius:50%; width:36px; height:36px; cursor:pointer; font-size:1rem; transition:transform 0.2s;" title="Favoritar Foto">🤍</button>
                         <div class="item-overlay">
                             <div class="item-info">
                                 <span class="item-category-tag">Ensaio Privado</span>
@@ -464,6 +518,21 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                     `;
 
+                    const favBtn = gridItem.querySelector('.fav-btn');
+                    favBtn.addEventListener('click', (evt) => {
+                        evt.stopPropagation();
+                        if (selectedPhotoTitles.has(photo.title)) {
+                            selectedPhotoTitles.delete(photo.title);
+                            favBtn.textContent = '🤍';
+                            favBtn.style.transform = 'scale(1)';
+                        } else {
+                            selectedPhotoTitles.add(photo.title);
+                            favBtn.textContent = '❤️';
+                            favBtn.style.transform = 'scale(1.25)';
+                        }
+                        if (selectedCountElem) selectedCountElem.textContent = selectedPhotoTitles.size;
+                    });
+
                     gridItem.addEventListener('click', () => {
                         state.currentAlbumPhotos = clientGallery.photos;
                         openLightbox(index);
@@ -471,6 +540,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     grid.appendChild(gridItem);
                 });
+
+                // Handler para enviar seleção via WhatsApp
+                const sendWaBtn = document.getElementById('sendSelectionWaBtn');
+                if (sendWaBtn) {
+                    sendWaBtn.onclick = () => {
+                        if (selectedPhotoTitles.size === 0) {
+                            alert('Você ainda não selecionou nenhuma foto! Clique no coração 🤍 das fotos para escolher.');
+                            return;
+                        }
+                        const listStr = Array.from(selectedPhotoTitles).map(t => `• ${t}`).join('\n');
+                        const text = `Olá João Felipe! Sou ${clientGallery.clientName} e finalizei a seleção de ${selectedPhotoTitles.size} fotos do meu ensaio "${clientGallery.title}":\n\n${listStr}\n\nAguardando o próximo passo!`;
+                        const waUrl = `https://wa.me/${PORTFOLIO_DATA.photographer.whatsapp}?text=${encodeURIComponent(text)}`;
+                        window.open(waUrl, '_blank');
+                    };
+                }
 
                 privateModal.classList.add('active');
                 document.body.style.overflow = 'hidden';

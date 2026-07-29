@@ -254,7 +254,10 @@
 
             <!-- Grid de Fotos do Ensaio -->
             <div>
-                <h4 style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 1rem;">Fotografias do Acervo (<span id="modalEnsaioPhotoCount">0</span>)</h4>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h4 style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin: 0;">Fotografias do Acervo (<span id="modalEnsaioPhotoCount">0</span>)</h4>
+                    <span style="font-size: 0.75rem; color: var(--text-muted);">✨ <strong>Drag & Drop ativado:</strong> Arraste as fotos para reordenar</span>
+                </div>
                 <div class="admin-grid" id="modalEnsaioPhotosGrid" style="grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1.25rem;">
                     <!-- Rendered dynamically -->
                 </div>
@@ -263,6 +266,7 @@
     </div>
 
     <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     <script src="js/portfolio_data.js"></script>
     <script src="js/admin.js"></script>
 </body>
