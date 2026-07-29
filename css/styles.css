@@ -429,9 +429,9 @@ img {
     position: sticky;
     top: 65px;
     z-index: 95;
-    background: rgba(10, 10, 10, 0.88);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: var(--bg-glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border-color);
     padding: 0.8rem 1rem;
     transition: top 0.35s ease, background 0.35s ease, box-shadow 0.35s ease;
@@ -439,27 +439,27 @@ img {
 
 .filter-wrapper.is-stuck {
     top: 0 !important;
-    background: rgba(8, 8, 8, 0.96);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    background: var(--bg-glass);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid var(--border-color);
 }
 
-/* Floating Back To Top Button */
+/* Floating Back To Top Button (Posicionado acima do botão do WhatsApp) */
 .back-to-top-btn {
     position: fixed;
-    bottom: 2rem;
+    bottom: 6.2rem;
     right: 2rem;
     z-index: 120;
-    background: #ffffff;
-    color: #000000;
-    border: none;
+    background: var(--text-primary);
+    color: var(--bg-primary);
+    border: 1px solid var(--border-color);
     border-radius: 50px;
-    padding: 0.75rem 1.4rem;
+    padding: 0.7rem 1.3rem;
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
     opacity: 0;
     visibility: hidden;
     transform: translateY(20px);
