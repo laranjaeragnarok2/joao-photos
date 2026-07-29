@@ -1,12 +1,10 @@
-# João Felipe Photos — Portfólio Fotográfico Editorial & Off-White Gallery
+# João Felipe Photos — Portfólio Fotográfico Editorial
 
-![Vercel Status](https://img.shields.io/badge/Deploy-Vercel-black?style=for-the-badge&logo=vercel)
-![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 
-Portfólio web de alta performance e estática ultra-limpa para o fotógrafo **João Felipe**, especializado em fotografia de moda, editorial, retratos autorais, gestacionais, campanhas publicitárias e eventos corporativos em São Paulo.
+Portfólio web de alta performance e estética ultra-limpa para o fotógrafo **João Felipe**, especializado em fotografia de moda, editorial, retratos autorais, gestacionais, campanhas publicitárias e eventos corporativos em São Paulo.
 
 ---
 
@@ -42,7 +40,7 @@ joao-photos/
 ├── data/                      # Tokens de design e dados brutos raspados
 ├── tools/                     # Scripts de automação e organização em Python
 ├── UX_REFERENCE_GUIDE.md      # Guia de UX e envio de referências
-├── .gitignore                 # Arquivo de ignorados Git/Vercel
+├── .gitignore                 # Arquivo de ignorados Git
 └── README.md                  # Este arquivo
 ```
 
@@ -61,16 +59,6 @@ cd joao-photos
 python3 -m http.server 8080
 ```
 Acesse `http://localhost:8080` no navegador.
-
----
-
-## 🌐 Deploy na Vercel
-
-Este repositório foi construído para integração contínua com a **Vercel**:
-
-1. Conecte sua conta da Vercel ao GitHub.
-2. Importe o repositório `laranjaeragnarok2/joao-photos`.
-3. Mantenha as configurações padrão (*Static Site*) e clique em **Deploy**.
 
 ---
 
