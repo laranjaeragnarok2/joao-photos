@@ -1,26 +1,26 @@
 /* ==========================================================================
-   JOÃO FELIPE PHOTOS - APPLICATION LOGIC
+   JOÃO FELIPE PHOTOS - APPLICATION LOGIC (ENSAIOS CARDS & ALBUM VIEWER)
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
     const state = {
         currentCategory: 'all',
-        selectedTag: 'all',
-        itemsPerPage: 20,
-        currentPage: 1,
-        filteredItems: [],
+        filteredEnsaios: [],
+        currentAlbumPhotos: [],
         lightboxIndex: 0,
         theme: localStorage.getItem('theme') || 'light'
     };
 
     const elements = {
         filterBar: document.getElementById('filterBar'),
-        tagFilterBar: document.getElementById('tagFilterBar'),
-        portfolioGrid: document.getElementById('portfolioGrid'),
+        ensaiosGrid: document.getElementById('ensaiosGrid'),
         testimonialsGrid: document.getElementById('testimonialsGrid'),
-        loadMoreBtn: document.getElementById('loadMoreBtn'),
-        loadMoreWrap: document.getElementById('loadMoreWrap'),
         themeToggleBtn: document.getElementById('themeToggleBtn'),
+        albumModal: document.getElementById('albumModal'),
+        albumModalTitle: document.getElementById('albumModalTitle'),
+        albumModalCategory: document.getElementById('albumModalCategory'),
+        albumPhotosGrid: document.getElementById('albumPhotosGrid'),
+        closeAlbumModalBtn: document.getElementById('closeAlbumModalBtn'),
         lightbox: document.getElementById('lightboxModal'),
         lightboxImg: document.getElementById('lightboxImg'),
         lightboxTitle: document.getElementById('lightboxTitle'),
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.documentElement.setAttribute('data-theme', state.theme);
     updateThemeIcon();
 
-    // Render Filter Pills (Categories & Tags)
+    // Render Filter Pills
     function renderFilters() {
         if (!elements.filterBar) return;
         elements.filterBar.innerHTML = '';
@@ -52,9 +52,9 @@ document.addEventListener('DOMContentLoaded', () => {
         PORTFOLIO_DATA.categories.forEach(cat => {
             let count = 0;
             if (cat.id === 'all') {
-                count = PORTFOLIO_DATA.items.length;
+                count = PORTFOLIO_DATA.ensaios.length;
             } else {
-                count = PORTFOLIO_DATA.items.filter(item => item.categoryId === cat.id).length;
+                count = PORTFOLIO_DATA.ensaios.filter(item => item.category === cat.id).length;
             }
 
             const btn = document.createElement('button');
@@ -64,46 +64,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             btn.addEventListener('click', () => {
                 state.currentCategory = cat.id;
-                state.selectedTag = 'all';
-                state.currentPage = 1;
                 updateFilterUI();
                 applyFilterAndRender();
             });
 
             elements.filterBar.appendChild(btn);
         });
-
-        // Render Tag Filters
-        if (elements.tagFilterBar && PORTFOLIO_DATA.tags) {
-            elements.tagFilterBar.innerHTML = '';
-            
-            const allTagBtn = document.createElement('button');
-            allTagBtn.className = `sidebar-tag ${state.selectedTag === 'all' ? 'active' : ''}`;
-            allTagBtn.style.cursor = 'pointer';
-            allTagBtn.textContent = 'Todas as Tags';
-            allTagBtn.addEventListener('click', () => {
-                state.selectedTag = 'all';
-                updateFilterUI();
-                applyFilterAndRender();
-            });
-            elements.tagFilterBar.appendChild(allTagBtn);
-
-            PORTFOLIO_DATA.tags.forEach(tag => {
-                const tagBtn = document.createElement('button');
-                tagBtn.className = `sidebar-tag ${state.selectedTag === tag ? 'active' : ''}`;
-                tagBtn.style.cursor = 'pointer';
-                tagBtn.textContent = `#${tag}`;
-
-                tagBtn.addEventListener('click', () => {
-                    state.selectedTag = tag;
-                    state.currentPage = 1;
-                    updateFilterUI();
-                    applyFilterAndRender();
-                });
-
-                elements.tagFilterBar.appendChild(tagBtn);
-            });
-        }
     }
 
     function updateFilterUI() {
@@ -112,105 +78,82 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Filter & Render 2-Column Seamless Grid
+    // Filter & Render Ensaios Grid (Home Cards)
     function applyFilterAndRender() {
-        let items = [...PORTFOLIO_DATA.items];
-
-        if (state.currentCategory !== 'all') {
-            items = items.filter(item => item.categoryId === state.currentCategory);
+        if (state.currentCategory === 'all') {
+            state.filteredEnsaios = [...PORTFOLIO_DATA.ensaios];
+        } else {
+            state.filteredEnsaios = PORTFOLIO_DATA.ensaios.filter(
+                item => item.category === state.currentCategory
+            );
         }
 
-        if (state.selectedTag !== 'all') {
-            items = items.filter(item => item.tags && item.tags.includes(state.selectedTag));
-        }
-
-        state.filteredItems = items;
-        renderGrid(true);
+        renderEnsaiosGrid();
     }
 
-    function renderGrid(reset = false) {
-        if (!elements.portfolioGrid) return;
-        
-        if (reset) {
-            elements.portfolioGrid.innerHTML = '';
-        }
+    function renderEnsaiosGrid() {
+        if (!elements.ensaiosGrid) return;
+        elements.ensaiosGrid.innerHTML = '';
 
-        const startIndex = 0;
-        const endIndex = state.currentPage * state.itemsPerPage;
-        const visibleItems = state.filteredItems.slice(startIndex, endIndex);
-
-        elements.portfolioGrid.innerHTML = '';
-
-        visibleItems.forEach((item, index) => {
-            const gridItem = document.createElement('div');
-            gridItem.className = 'grid-item';
-            gridItem.dataset.id = item.id;
-
-            const sameCategoryPhotos = state.filteredItems.filter(i => i.categoryId === item.categoryId && i.id !== item.id);
-            const altPhotoSrc = sameCategoryPhotos.length > 0 ? sameCategoryPhotos[index % sameCategoryPhotos.length].src : item.src;
-
-            gridItem.innerHTML = `
-                <img src="${item.src}" alt="${item.title}" loading="lazy" class="main-thumb" data-original="${item.src}" data-alt="${altPhotoSrc}" />
-                
-                <div class="item-overlay">
-                    <div class="item-info">
-                        <span class="item-category-tag">${item.categoryName}</span>
-                        <h4 class="item-title-text">${item.title}</h4>
+        state.filteredEnsaios.forEach(ensaio => {
+            const card = document.createElement('div');
+            card.className = 'ensaio-card';
+            card.innerHTML = `
+                <div class="ensaio-cover-wrapper">
+                    <img src="${ensaio.cover}" alt="${ensaio.title}" class="ensaio-cover-img" loading="lazy" />
+                    <div class="ensaio-card-overlay">
+                        <span class="ensaio-cat-badge">${ensaio.categoryName}</span>
+                        <h3 class="ensaio-title">${ensaio.title}</h3>
+                        <div class="ensaio-meta-row">
+                            <span>${ensaio.photoCount} Fotografias</span>
+                            <span class="btn-open-ensaio">Ver Ensaio Completo ↗</span>
+                        </div>
                     </div>
-                </div>
-
-                <div class="mobile-caption">
-                    <h4 class="mobile-caption-title">${item.title}</h4>
-                    <span class="mobile-caption-cat">${item.categoryName}</span>
                 </div>
             `;
 
-            // Hover thumbnail switch animation
-            const imgEl = gridItem.querySelector('.main-thumb');
-            gridItem.addEventListener('mouseenter', () => {
-                const altSrc = imgEl.dataset.alt;
-                if (altSrc && altSrc !== imgEl.src) {
-                    imgEl.style.opacity = '0.7';
-                    setTimeout(() => {
-                        imgEl.src = altSrc;
-                        imgEl.style.opacity = '1';
-                    }, 120);
-                }
-            });
+            card.addEventListener('click', () => openAlbumModal(ensaio));
+            elements.ensaiosGrid.appendChild(card);
+        });
+    }
 
-            gridItem.addEventListener('mouseleave', () => {
-                const origSrc = imgEl.dataset.original;
-                if (origSrc && imgEl.src !== origSrc) {
-                    imgEl.style.opacity = '0.7';
-                    setTimeout(() => {
-                        imgEl.src = origSrc;
-                        imgEl.style.opacity = '1';
-                    }, 120);
-                }
-            });
+    // Open Album Viewer Modal
+    function openAlbumModal(ensaio) {
+        state.currentAlbumPhotos = ensaio.photos;
+        elements.albumModalTitle.textContent = ensaio.title;
+        elements.albumModalCategory.textContent = ensaio.categoryName;
+        
+        elements.albumPhotosGrid.innerHTML = '';
+
+        ensaio.photos.forEach((photo, index) => {
+            const gridItem = document.createElement('div');
+            gridItem.className = 'grid-item';
+            gridItem.innerHTML = `
+                <img src="${photo.src}" alt="${photo.title}" loading="lazy" />
+                <div class="item-overlay">
+                    <div class="item-info">
+                        <span class="item-category-tag">${photo.categoryName}</span>
+                        <h4 class="item-title-text">${photo.title}</h4>
+                    </div>
+                </div>
+            `;
 
             gridItem.addEventListener('click', () => openLightbox(index));
-            elements.portfolioGrid.appendChild(gridItem);
+            elements.albumPhotosGrid.appendChild(gridItem);
         });
 
-        // Load More Visibility
-        if (elements.loadMoreWrap) {
-            if (endIndex < state.filteredItems.length) {
-                elements.loadMoreWrap.style.display = 'flex';
-            } else {
-                elements.loadMoreWrap.style.display = 'none';
-            }
-        }
+        elements.albumModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
     }
 
-    if (elements.loadMoreBtn) {
-        elements.loadMoreBtn.addEventListener('click', () => {
-            state.currentPage++;
-            renderGrid(false);
+    if (elements.closeAlbumModalBtn) {
+        elements.closeAlbumModalBtn.addEventListener('click', () => {
+            elements.albumModal.classList.remove('active');
+            document.body.style.overflow = '';
         });
     }
 
-    // Render Testimonials Section
+    // Render Testimonials
     function renderTestimonials() {
         if (!elements.testimonialsGrid || !PORTFOLIO_DATA.testimonials) return;
         elements.testimonialsGrid.innerHTML = '';
@@ -229,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Enhanced Web & Desktop Lightbox Logic
+    // Enhanced Fullscreen Lightbox Logic
     const lightboxState = {
         isZoomed: false,
         isInfoOpen: true
@@ -242,19 +185,17 @@ document.addEventListener('DOMContentLoaded', () => {
         updateLightboxContent();
         elements.lightbox.classList.add('active');
         elements.lightbox.focus();
-        document.body.style.overflow = 'hidden';
     }
 
     function closeLightbox() {
         elements.lightbox.classList.remove('active');
-        document.body.style.overflow = '';
         if (document.fullscreenElement) {
             document.exitFullscreen().catch(() => {});
         }
     }
 
     function updateLightboxContent() {
-        const item = state.filteredItems[state.lightboxIndex];
+        const item = state.currentAlbumPhotos[state.lightboxIndex];
         if (!item) return;
 
         elements.lightboxImg.src = item.src;
@@ -281,21 +222,21 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        elements.lightboxCounter.textContent = `${state.lightboxIndex + 1} / ${state.filteredItems.length}`;
+        elements.lightboxCounter.textContent = `${state.lightboxIndex + 1} / ${state.currentAlbumPhotos.length}`;
 
         const msg = encodeURIComponent(`Olá João! Tenho interesse no ensaio "${item.title}" (${item.categoryName}).`);
         elements.lightboxShareWa.href = `https://wa.me/${PORTFOLIO_DATA.photographer.whatsapp}?text=${msg}`;
     }
 
     function nextLightbox() {
-        state.lightboxIndex = (state.lightboxIndex + 1) % state.filteredItems.length;
+        state.lightboxIndex = (state.lightboxIndex + 1) % state.currentAlbumPhotos.length;
         lightboxState.isZoomed = false;
         elements.lightboxImg.classList.remove('zoomed');
         updateLightboxContent();
     }
 
     function prevLightbox() {
-        state.lightboxIndex = (state.lightboxIndex - 1 + state.filteredItems.length) % state.filteredItems.length;
+        state.lightboxIndex = (state.lightboxIndex - 1 + state.currentAlbumPhotos.length) % state.currentAlbumPhotos.length;
         lightboxState.isZoomed = false;
         elements.lightboxImg.classList.remove('zoomed');
         updateLightboxContent();
@@ -362,7 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Modal Handlers (Budget & Client Portal)
+    // Modal Handlers
     elements.openModalBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             elements.contactModal.classList.add('active');

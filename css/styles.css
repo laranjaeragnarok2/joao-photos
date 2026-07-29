@@ -1,8 +1,8 @@
 /* ==========================================================================
-   JOÃO FELIPE PHOTOS - EDITORIAL OFF-WHITE & FULLSCREEN HERO
+   JOÃO FELIPE PHOTOS - EDITORIAL OFF-WHITE & ENSAIOS GRID SYSTEM
    ========================================================================== */
 
-/* 1. Design Tokens & Colors */
+/* 1. Design Tokens */
 :root {
     --bg-primary: #f7f7f8;
     --bg-secondary: #ffffff;
@@ -142,7 +142,6 @@ img {
     background: transparent;
     color: var(--text-primary);
     transition: all var(--transition-fast);
-
 }
 
 .btn-contact:hover {
@@ -228,7 +227,6 @@ img {
     line-height: 1.6;
 }
 
-/* Social links in Hero */
 .hero-social-links {
     display: flex;
     align-items: center;
@@ -243,9 +241,6 @@ img {
 .hero-social-link {
     color: rgba(255, 255, 255, 0.8);
     transition: color var(--transition-fast);
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
 }
 
 .hero-social-link:hover {
@@ -310,7 +305,25 @@ img {
     gap: 0.5rem;
 }
 
-/* 5. Editorial Marquee Strip */
+/* 5. About Photographer Section (Positioned BEFORE Gallery!) */
+.about-section {
+    padding: 6rem 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+@media (max-width: 840px) {
+    .about-section {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+}
+
+/* 6. Editorial Marquee Strip */
 .marquee-section {
     border-top: 1px solid var(--border-color);
     border-bottom: 1px solid var(--border-color);
@@ -336,7 +349,7 @@ img {
     100% { transform: translateX(-50%); }
 }
 
-/* 6. Sticky Category Filter Bar */
+/* 7. Category Filter & Ensaios Cards Grid */
 .filter-wrapper {
     position: sticky;
     top: 65px;
@@ -378,111 +391,317 @@ img {
     font-weight: 600;
 }
 
-/* 7. Seamless 2-Column Grid with Dynamic Hover Miniatures */
-.category-section {
-    padding-top: 2rem;
+/* Ensaios Grid (Cards de Ensaios) */
+.ensaios-section {
+    padding: 4rem 2rem;
+    max-width: var(--max-width);
+    margin: 0 auto;
 }
 
-.seamless-2col-grid {
+.ensaios-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0; /* 0 GAP FLUSH GRID */
-    width: 100%;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 2rem;
 }
 
-@media (max-width: 768px) {
-    .seamless-2col-grid {
+@media (max-width: 540px) {
+    .ensaios-grid {
         grid-template-columns: 1fr;
     }
 }
 
-.grid-item {
+.ensaio-card {
     position: relative;
+    border-radius: 8px;
     overflow: hidden;
-    background: #e0e0e0;
-    aspect-ratio: 3 / 4;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
     cursor: pointer;
+    transition: transform var(--transition-smooth), box-shadow var(--transition-smooth);
 }
 
-.grid-item img {
+.ensaio-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+.ensaio-cover-wrapper {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    background: #e0e0e0;
+}
+
+.ensaio-cover-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Hover overlay on desktop: Text ONLY on hover */
-.item-overlay {
+.ensaio-card:hover .ensaio-cover-img {
+    transform: scale(1.05);
+}
+
+.ensaio-card-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.55);
-    backdrop-filter: blur(4px);
-    opacity: 0; /* Hidden by default on desktop */
-    transition: opacity var(--transition-fast);
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0) 100%);
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding: 2.5rem;
+    padding: 2rem;
     color: #ffffff;
 }
 
-.grid-item:hover .item-overlay {
-    opacity: 1; /* Shows ONLY on hover on desktop */
-}
-
-.item-info {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-}
-
-.item-category-tag {
+.ensaio-cat-badge {
     font-size: 0.75rem;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
     opacity: 0.8;
 }
 
-.item-title-text {
+.ensaio-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin: 0.2rem 0;
+    line-height: 1.25;
+}
+
+.ensaio-meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    opacity: 0.9;
+}
+
+.btn-open-ensaio {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.8rem;
+    border: 1px solid #ffffff;
+    border-radius: 4px;
+}
+
+/* 8. Full-Screen Album / Ensaio Viewer Modal (#albumModal) */
+.album-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 950;
+    background: var(--bg-primary);
+    display: none;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.album-modal.active {
+    display: flex !important;
+}
+
+.album-modal-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--bg-glass);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border-color);
+    padding: 1.2rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.album-modal-title-wrap h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.album-modal-title-wrap span {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* 9. Lightbox Modal & Budget Modals (STRICT DISPLAY NONE WHEN INACTIVE) */
+.lightbox:not(.active),
+.modal:not(.active),
+.album-modal:not(.active) {
+    display: none !important;
+}
+
+.lightbox.active {
+    display: flex !important;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(8, 8, 10, 0.98);
+    backdrop-filter: blur(24px);
+    color: #ffffff;
+}
+
+.modal.active {
+    display: flex !important;
+    position: fixed;
+    inset: 0;
+    z-index: 1001;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(10px);
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+}
+
+.modal-box {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    width: 100%;
+    max-width: 480px;
+    padding: 2.5rem;
+    border-radius: 8px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.modal-title {
     font-size: 1.25rem;
     font-weight: 700;
 }
 
-/* Mobile responsive caption bar */
-.mobile-caption {
-    display: none;
-    padding: 0.75rem 1rem;
-    background: var(--bg-secondary);
-    border-bottom: 1px solid var(--border-color);
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1.2rem;
 }
 
-.mobile-caption-title {
-    font-size: 0.85rem;
+.form-label {
+    font-size: 0.8rem;
     font-weight: 600;
-}
-
-.mobile-caption-cat {
-    font-size: 0.7rem;
-    color: var(--text-muted);
+    letter-spacing: 0.05em;
     text-transform: uppercase;
 }
 
-@media (max-width: 768px) {
-    .item-overlay { display: none; } /* Mobile uses clean caption bar below */
-    .mobile-caption { display: block; }
+.form-input, .form-select, .form-textarea {
+    width: 100%;
+    padding: 0.75rem 0.9rem;
+    border: 1px solid var(--border-color);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 0.9rem;
+    outline: none;
+    border-radius: 4px;
 }
 
-.load-more-wrap {
-    padding: 3rem 0;
+/* Lightbox Sub-Styles */
+.lightbox-toolbar {
+    height: 60px;
+    width: 100%;
+    padding: 0 1.5rem;
     display: flex;
-    justify-content: center;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.4);
 }
 
-/* 8. Lightbox & Modals */
-/* (Enhanced Lightbox styles preserved) */
+.lightbox-stage {
+    flex: 1;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+}
 
-/* 9. Footer */
+.lightbox-img-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    overflow: auto;
+}
+
+.lightbox-img-zoomable {
+    max-width: 100%;
+    max-height: 80vh;
+    object-fit: contain;
+    cursor: zoom-in;
+    transition: transform var(--transition-smooth);
+}
+
+.lightbox-img-zoomable.zoomed {
+    max-width: none;
+    max-height: none;
+    transform: scale(1.8);
+    cursor: zoom-out;
+}
+
+.lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    z-index: 15;
+}
+
+.lightbox-prev { left: 1.5rem; }
+.lightbox-next { right: 1.5rem; }
+
+.lightbox-sidebar {
+    width: 340px;
+    background: rgba(18, 18, 22, 0.95);
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.tb-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.floating-wa {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #25d366;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    z-index: 90;
+}
+
 .footer {
     border-top: 1px solid var(--border-color);
     padding: 3.5rem 2rem;

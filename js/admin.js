@@ -123,6 +123,22 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    const setCoverBtn = document.getElementById('setCoverBtn');
+    if (setCoverBtn) {
+        setCoverBtn.addEventListener('click', () => {
+            const item = localData.items.find(i => i.id === editingPhotoId);
+            if (item) {
+                const ensaio = localData.ensaios.find(e => e.id === item.albumId || e.category === item.categoryId);
+                if (ensaio) {
+                    ensaio.cover = item.src;
+                    alert(`Fotografia #${item.id} definida como Capa do Ensaio "${ensaio.title}"!`);
+                } else {
+                    alert(`Capa do grupo "${item.categoryName}" atualizada!`);
+                }
+            }
+        });
+    }
+
     // 4. Add New Photo Handler
     elements.addPhotoForm.addEventListener('submit', (e) => {
         e.preventDefault();

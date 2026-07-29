@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- SEO Meta Tags -->
-    <title>JOÃO FELIPE — Fotografia de Moda, Editorial & Retratos</title>
-    <meta name="description" content="Portfólio de fotografia de moda, editorial, retratos autorais, gestacionais e projetos publicitários por João Felipe em Rio Verde, Goiás e atendimento nacional.">
+    <title>JOÃO FELIPE — Fotografia de Moda, Editorial & Retratos Autorais</title>
+    <meta name="description" content="Portfólio de fotografia de moda, editorial, retratos autorais, gestacionais e projetos publicitários por João Felipe em Rio Verde, Goiás e atendimento global.">
     
     <!-- Font Inter (Exclusiva) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,9 +26,9 @@
             <nav>
                 <ul class="nav-menu">
                     <li><a href="#hero" class="nav-link">Início</a></li>
-                    <li><a href="#galeria" class="nav-link active">Portfólio</a></li>
-                    <li><a href="#depoimentos" class="nav-link">Depoimentos</a></li>
                     <li><a href="#sobre" class="nav-link">Sobre</a></li>
+                    <li><a href="#ensaios" class="nav-link active">Ensaios</a></li>
+                    <li><a href="#depoimentos" class="nav-link">Depoimentos</a></li>
                     <li><a href="#" class="nav-link open-client-portal-btn">Área do Cliente</a></li>
                 </ul>
             </nav>
@@ -56,7 +56,6 @@
                     Fotografia de Moda, Editorial & Retratos Autorais • Rio Verde, GO & Atendimento Global
                 </p>
 
-                <!-- Social Links in Hero -->
                 <div class="hero-social-links">
                     <a href="https://wa.me/5511999999999?text=Ol%C3%A1%20Jo%C3%A3o%20Felipe!" target="_blank" rel="noopener" class="hero-social-link">
                         <span>WhatsApp</span>
@@ -71,10 +70,9 @@
                     </a>
                 </div>
 
-                <!-- Primary Conversion Actions -->
                 <div class="hero-cta-group">
                     <button class="btn-hero-primary open-modal-btn">Solicitar Orçamento / Agendamento</button>
-                    <a href="#galeria" class="btn-hero-outline">Explorar Ensaios</a>
+                    <a href="#ensaios" class="btn-hero-outline">Explorar Ensaios</a>
                 </div>
             </div>
 
@@ -84,7 +82,30 @@
             </div>
         </section>
 
-        <!-- 3. Editorial Marquee Strip -->
+        <!-- 3. Sobre o Fotógrafo Section (POSITIONED BEFORE GALLERY!) -->
+        <section class="about-section" id="sobre">
+            <div style="border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0,0,0,0.08);">
+                <img src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=800,fit=crop/Yle4978nxZCPJrgX/img-YNqqeVWexnFk3P73.jpg" alt="João Felipe Fotógrafo em Rio Verde" />
+            </div>
+
+            <div>
+                <span style="font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted);">Sobre o Fotógrafo</span>
+                <h2 style="font-size: 2.5rem; font-weight: 800; margin: 0.4rem 0 1.2rem 0;">João Felipe</h2>
+                <p style="font-size: 1.05rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 1.5rem;">
+                    Com sede em Rio Verde, Goiás, e atendimento nacional, atuo na criação de imagens marcantes para marcas de moda, campanhas publicitárias, gestantes e retratos autorais.
+                </p>
+                <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 2rem;">
+                    Cada ensaio une rigor técnico na iluminação, direção precisa e sensibilidade artística para transformar coleções e histórias em acervos memoráveis.
+                </p>
+
+                <div style="display: flex; gap: 1rem;">
+                    <button class="btn-contact open-modal-btn">Agendar Ensaio</button>
+                    <a href="https://www.instagram.com/joaofelipe.photos/" target="_blank" rel="noopener" class="btn-contact" style="border-color: var(--border-color);">Instagram ↗</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Editorial Marquee Strip -->
         <section class="marquee-section">
             <div class="marquee-content">
                 <span>FASHION & EDITORIAL</span> • 
@@ -93,34 +114,25 @@
                 <span>EVENTOS CORPORATIVOS</span> • 
                 <span>RETRATOS AUTORAIS</span> • 
                 <span>RIO VERDE - GO & BRASIL</span> • 
-                <span>FASHION & EDITORIAL</span> • 
-                <span>GESTACIONAIS DE ALTO PADRÃO</span>
+                <span>FASHION & EDITORIAL</span>
             </div>
         </section>
 
-        <!-- 4. Sticky Filter Bar (Categories & Tags) -->
-        <div class="filter-wrapper">
+        <!-- 5. Sticky Category Filter Bar -->
+        <div class="filter-wrapper" id="ensaios">
             <div class="filter-bar" id="filterBar">
-                <!-- Rendered dynamically by app.js -->
-            </div>
-            
-            <div class="tag-filter-bar" id="tagFilterBar" style="display: flex; gap: 0.4rem; justify-content: center; margin-top: 0.6rem; flex-wrap: wrap;">
-                <!-- Tag pills rendered dynamically -->
+                <!-- Category Filter Pills rendered dynamically -->
             </div>
         </div>
 
-        <!-- 5. Category-Based 2-Column Seamless Grid -->
-        <section class="category-section" id="galeria">
-            <div class="seamless-2col-grid" id="portfolioGrid">
-                <!-- Rendered dynamically by app.js -->
-            </div>
-
-            <div class="load-more-wrap" id="loadMoreWrap">
-                <button class="btn-contact" id="loadMoreBtn">Carregar Mais Fotografias</button>
+        <!-- 6. Galeria de Ensaios (Grid com Capa de Cada Ensaio) -->
+        <section class="ensaios-section">
+            <div class="ensaios-grid" id="ensaiosGrid">
+                <!-- Ensaios Cards rendered dynamically by app.js -->
             </div>
         </section>
 
-        <!-- 6. Client Testimonials Section (Depoimentos) -->
+        <!-- 7. Depoimentos de Clientes -->
         <section id="depoimentos" style="padding: 5rem 2rem; max-width: 1200px; margin: 0 auto; border-top: 1px solid var(--border-color);">
             <div style="text-align: center; margin-bottom: 3rem;">
                 <span style="font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted);">Depoimentos</span>
@@ -131,32 +143,26 @@
                 <!-- Rendered dynamically by app.js -->
             </div>
         </section>
-
-        <!-- 7. Sobre o Fotógrafo Section -->
-        <section id="sobre" style="padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; border-top: 1px solid var(--border-color); display: grid; grid-template-columns: 1fr 1.2fr; gap: 4rem; align-items: center;">
-            <div style="border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color);">
-                <img src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=800,fit=crop/Yle4978nxZCPJrgX/img-YNqqeVWexnFk3P73.jpg" alt="João Felipe Fotógrafo em Rio Verde" />
-            </div>
-
-            <div>
-                <span style="font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted);">Sobre o Fotógrafo</span>
-                <h2 style="font-size: 2.5rem; font-weight: 800; margin: 0.4rem 0 1rem 0;">João Felipe</h2>
-                <p style="font-size: 1rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 1.5rem;">
-                    Com sede em Rio Verde, Goiás, e disponibilidade para produções em todo o Brasil, atuo na criação de imagens marcantes para marcas de moda, campanhas publicitárias, gestantes e retratos autorais.
-                </p>
-                <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 2rem;">
-                    Cada projeto une rigor técnico na iluminação, sensibilidade artística e direção refinada para entregar fotografias atemporais.
-                </p>
-
-                <div style="display: flex; gap: 1rem;">
-                    <button class="btn-contact open-modal-btn">Agendar Ensaio</button>
-                    <a href="https://www.instagram.com/joaofelipe.photos/" target="_blank" rel="noopener" class="btn-contact" style="border-color: var(--border-color);">Instagram ↗</a>
-                </div>
-            </div>
-        </section>
     </main>
 
-    <!-- 8. Enhanced Web & Desktop Fullscreen Lightbox -->
+    <!-- 8. Full-Screen Ensaio Viewer Modal (#albumModal) -->
+    <div class="album-modal" id="albumModal" role="dialog">
+        <div class="album-modal-header">
+            <div class="album-modal-title-wrap">
+                <span id="albumModalCategory">CATEGORIA</span>
+                <h3 id="albumModalTitle">Título do Ensaio</h3>
+            </div>
+            <button id="closeAlbumModalBtn" style="font-size: 1.8rem; color: var(--text-primary); cursor: pointer;">&times;</button>
+        </div>
+
+        <div style="padding: 2rem; max-width: var(--max-width); margin: 0 auto; width: 100%;">
+            <div class="seamless-2col-grid" id="albumPhotosGrid">
+                <!-- Photos of this specific Ensaio rendered dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 9. Enhanced Fullscreen Lightbox Modal -->
     <div class="lightbox" id="lightboxModal" role="dialog" tabindex="-1">
         <div class="lightbox-toolbar">
             <div class="lightbox-brand">
@@ -200,7 +206,7 @@
                     </div>
 
                     <div class="sidebar-meta-row">
-                        <span class="sidebar-counter" id="lightboxCounter">1 / 448</span>
+                        <span class="sidebar-counter" id="lightboxCounter">1 / 467</span>
                     </div>
 
                     <div class="sidebar-cta-box">
@@ -213,7 +219,7 @@
         </div>
     </div>
 
-    <!-- 9. Client Portal Modal (Área do Cliente com Senha) -->
+    <!-- 10. Client Portal Modal -->
     <div class="modal" id="clientPortalModal">
         <div class="modal-box">
             <div class="modal-header">
@@ -234,7 +240,7 @@
         </div>
     </div>
 
-    <!-- 10. Budget / Booking Request Modal -->
+    <!-- 11. Budget / Booking Request Modal -->
     <div class="modal" id="contactModal">
         <div class="modal-box">
             <div class="modal-header">
@@ -271,14 +277,14 @@
         </div>
     </div>
 
-    <!-- 11. Floating WhatsApp -->
+    <!-- 12. Floating WhatsApp -->
     <a href="https://wa.me/5511999999999?text=Ol%C3%A1%20Jo%C3%A3o%20Felipe,%20gostaria%20de%20solicitar%20um%20or%C3%A7amento." target="_blank" rel="noopener" class="floating-wa" aria-label="WhatsApp">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
             <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
         </svg>
     </a>
 
-    <!-- 12. Footer -->
+    <!-- 13. Footer -->
     <footer class="footer">
         <p>&copy; 2026 João Felipe Photos. Todos os direitos reservados. • Rio Verde, GO — Brasil</p>
     </footer>
