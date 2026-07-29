@@ -5,6 +5,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const state = {
         currentCategory: 'all',
+        selectedTag: 'all',
         itemsPerPage: 20,
         currentPage: 1,
         filteredItems: [],
@@ -14,7 +15,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const elements = {
         filterBar: document.getElementById('filterBar'),
+        tagFilterBar: document.getElementById('tagFilterBar'),
         portfolioGrid: document.getElementById('portfolioGrid'),
+        testimonialsGrid: document.getElementById('testimonialsGrid'),
         loadMoreBtn: document.getElementById('loadMoreBtn'),
         loadMoreWrap: document.getElementById('loadMoreWrap'),
         themeToggleBtn: document.getElementById('themeToggleBtn'),
@@ -30,14 +33,18 @@ document.addEventListener('DOMContentLoaded', () => {
         contactModal: document.getElementById('contactModal'),
         openModalBtns: document.querySelectorAll('.open-modal-btn'),
         closeModalBtn: document.getElementById('closeModalBtn'),
-        budgetForm: document.getElementById('budgetForm')
+        budgetForm: document.getElementById('budgetForm'),
+        clientPortalModal: document.getElementById('clientPortalModal'),
+        openClientPortalBtns: document.querySelectorAll('.open-client-portal-btn'),
+        closeClientModalBtn: document.getElementById('closeClientModalBtn'),
+        clientPortalForm: document.getElementById('clientPortalForm')
     };
 
     // Initialize Theme
     document.documentElement.setAttribute('data-theme', state.theme);
     updateThemeIcon();
 
-    // Render Filter Pills
+    // Render Filter Pills (Categories & Tags)
     function renderFilters() {
         if (!elements.filterBar) return;
         elements.filterBar.innerHTML = '';
@@ -57,6 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             btn.addEventListener('click', () => {
                 state.currentCategory = cat.id;
+                state.selectedTag = 'all';
                 state.currentPage = 1;
                 updateFilterUI();
                 applyFilterAndRender();
@@ -64,6 +72,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
             elements.filterBar.appendChild(btn);
         });
+
+        // Render Tag Filters
+        if (elements.tagFilterBar && PORTFOLIO_DATA.tags) {
+            elements.tagFilterBar.innerHTML = '';
+            
+            const allTagBtn = document.createElement('button');
+            allTagBtn.className = `sidebar-tag ${state.selectedTag === 'all' ? 'active' : ''}`;
+            allTagBtn.style.cursor = 'pointer';
+            allTagBtn.textContent = 'Todas as Tags';
+            allTagBtn.addEventListener('click', () => {
+                state.selectedTag = 'all';
+                updateFilterUI();
+                applyFilterAndRender();
+            });
+            elements.tagFilterBar.appendChild(allTagBtn);
+
+            PORTFOLIO_DATA.tags.forEach(tag => {
+                const tagBtn = document.createElement('button');
+                tagBtn.className = `sidebar-tag ${state.selectedTag === tag ? 'active' : ''}`;
+                tagBtn.style.cursor = 'pointer';
+                tagBtn.textContent = `#${tag}`;
+
+                tagBtn.addEventListener('click', () => {
+                    state.selectedTag = tag;
+                    state.currentPage = 1;
+                    updateFilterUI();
+                    applyFilterAndRender();
+                });
+
+                elements.tagFilterBar.appendChild(tagBtn);
+            });
+        }
     }
 
     function updateFilterUI() {
@@ -74,14 +114,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Filter & Render 2-Column Seamless Grid
     function applyFilterAndRender() {
-        if (state.currentCategory === 'all') {
-            state.filteredItems = [...PORTFOLIO_DATA.items];
-        } else {
-            state.filteredItems = PORTFOLIO_DATA.items.filter(
-                item => item.categoryId === state.currentCategory
-            );
+        let items = [...PORTFOLIO_DATA.items];
+
+        if (state.currentCategory !== 'all') {
+            items = items.filter(item => item.categoryId === state.currentCategory);
         }
 
+        if (state.selectedTag !== 'all') {
+            items = items.filter(item => item.tags && item.tags.includes(state.selectedTag));
+        }
+
+        state.filteredItems = items;
         renderGrid(true);
     }
 
@@ -103,14 +146,12 @@ document.addEventListener('DOMContentLoaded', () => {
             gridItem.className = 'grid-item';
             gridItem.dataset.id = item.id;
 
-            // Find alternative photo in same category for hover dynamic thumbnail
             const sameCategoryPhotos = state.filteredItems.filter(i => i.categoryId === item.categoryId && i.id !== item.id);
             const altPhotoSrc = sameCategoryPhotos.length > 0 ? sameCategoryPhotos[index % sameCategoryPhotos.length].src : item.src;
 
             gridItem.innerHTML = `
                 <img src="${item.src}" alt="${item.title}" loading="lazy" class="main-thumb" data-original="${item.src}" data-alt="${altPhotoSrc}" />
                 
-                <!-- Desktop Overlay (Appears ONLY on hover) -->
                 <div class="item-overlay">
                     <div class="item-info">
                         <span class="item-category-tag">${item.categoryName}</span>
@@ -118,14 +159,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>
 
-                <!-- Mobile Responsive Caption Bar -->
                 <div class="mobile-caption">
                     <h4 class="mobile-caption-title">${item.title}</h4>
                     <span class="mobile-caption-cat">${item.categoryName}</span>
                 </div>
             `;
 
-            // Hover dynamic thumbnail animation
+            // Hover thumbnail switch animation
             const imgEl = gridItem.querySelector('.main-thumb');
             gridItem.addEventListener('mouseenter', () => {
                 const altSrc = imgEl.dataset.alt;
@@ -134,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     setTimeout(() => {
                         imgEl.src = altSrc;
                         imgEl.style.opacity = '1';
-                    }, 150);
+                    }, 120);
                 }
             });
 
@@ -145,7 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     setTimeout(() => {
                         imgEl.src = origSrc;
                         imgEl.style.opacity = '1';
-                    }, 150);
+                    }, 120);
                 }
             });
 
@@ -167,6 +207,25 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.loadMoreBtn.addEventListener('click', () => {
             state.currentPage++;
             renderGrid(false);
+        });
+    }
+
+    // Render Testimonials Section
+    function renderTestimonials() {
+        if (!elements.testimonialsGrid || !PORTFOLIO_DATA.testimonials) return;
+        elements.testimonialsGrid.innerHTML = '';
+
+        PORTFOLIO_DATA.testimonials.forEach(t => {
+            const card = document.createElement('div');
+            card.style.cssText = 'background: var(--bg-secondary); border: 1px solid var(--border-color); padding: 2rem; border-radius: 6px;';
+            card.innerHTML = `
+                <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 1.5rem; font-style: italic;">"${t.text}"</p>
+                <div>
+                    <h4 style="font-size: 1rem; font-weight: 700;">${t.name}</h4>
+                    <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em;">${t.role}</span>
+                </div>
+            `;
+            elements.testimonialsGrid.appendChild(card);
         });
     }
 
@@ -303,7 +362,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Modal Handlers
+    // Modal Handlers (Budget & Client Portal)
     elements.openModalBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             elements.contactModal.classList.add('active');
@@ -334,7 +393,34 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Client Portal Handlers
+    elements.openClientPortalBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            elements.clientPortalModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+    });
+
+    if (elements.closeClientModalBtn) {
+        elements.closeClientModalBtn.addEventListener('click', () => {
+            elements.clientPortalModal.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    }
+
+    if (elements.clientPortalForm) {
+        elements.clientPortalForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const code = document.getElementById('clientCode').value;
+            alert(`Acessando a galeria privada com o código ${code}... Por favor, consulte o fotógrafo para o link direto de download das suas imagens.`);
+            elements.clientPortalModal.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    }
+
     // Initial Exec
     renderFilters();
+    renderTestimonials();
     applyFilterAndRender();
 });
