@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR" data-theme="light" translate="no" class="notranslate">
+<html lang="pt-BR" data-theme="dark" translate="no" class="notranslate">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -63,9 +63,14 @@
             </nav>
 
             <div class="nav-actions">
-                <button class="theme-btn" id="themeToggleBtn" aria-label="Alternar Tema">
-                    🌙
-                </button>
+                <div class="theme-btn-wrapper">
+                    <button class="theme-btn" id="themeToggleBtn" aria-label="Alternar para Modo Dia">
+                        ☀️
+                    </button>
+                    <div class="theme-tooltip-bubble" id="themeTooltipBubble">
+                        <span>Prefere modo dia? ☀️</span>
+                    </div>
+                </div>
                 <button class="btn-contact open-modal-btn">Agendamento</button>
                 <button class="mobile-menu-toggle" id="mobileMenuToggleBtn" aria-label="Abrir Menu">
                     <span class="bar"></span>
@@ -86,10 +91,23 @@
             <div class="hero-overlay"></div>
 
             <div class="hero-content">
-                <h1 class="hero-main-title">João Felipe</h1>
-                <p class="hero-tagline">
-                    Fotografia de Moda, Editorial & Retratos Autorais • Rio Verde, GO & Atendimento Global
-                </p>
+                <div class="hero-brand-header">
+                    <img src="assets/logo.svg" alt="João Felipe Photos — Fotografia de Moda, Editorial & Retratos Autorais" class="hero-logo-img" />
+                    <h1 class="visually-hidden">JOÃO FELIPE PHOTOS — Fotografia de Moda, Editorial & Retratos Autorais</h1>
+                </div>
+
+                <div class="hero-subtitle-container">
+                    <div class="hero-specialties-row">
+                        <span>FASHION & EDITORIAL</span>
+                        <span class="dot">•</span>
+                        <span>RETRATOS AUTORAIS</span>
+                        <span class="dot">•</span>
+                        <span>GESTACIONAIS DE ALTO PADRÃO</span>
+                    </div>
+                    <p class="hero-location-text">
+                        Estúdio & Produções Externas em Rio Verde, GO — Atendimento Global
+                    </p>
+                </div>
 
                 <div class="hero-social-links">
                     <a href="https://wa.me/5511999999999?text=Ol%C3%A1%20Jo%C3%A3o%20Felipe!" target="_blank" rel="noopener" class="hero-social-link">
@@ -244,19 +262,39 @@
     <!-- 9. Full-Screen Ensaio Viewer Modal (#albumModal) -->
     <div class="album-modal" id="albumModal" role="dialog">
         <div class="album-modal-header">
+            <button id="closeAlbumModalBackBtn" class="album-header-back-btn">
+                ← Voltar
+            </button>
             <div class="album-modal-title-wrap">
-                <span id="albumModalCategory">CATEGORIA</span>
-                <h3 id="albumModalTitle">Título do Ensaio</h3>
+                <span id="albumModalHeaderCategory">CATEGORIA</span>
+                <span class="header-divider">•</span>
+                <span id="albumModalHeaderTitle" class="header-title-text">Título do Ensaio</span>
             </div>
-            <button id="closeAlbumModalBtn" style="font-size: 1.8rem; color: var(--text-primary); cursor: pointer;" aria-label="Fechar">&times;</button>
+            <button id="closeAlbumModalBtn" class="album-header-close-btn" aria-label="Fechar">&times;</button>
         </div>
 
-        <div style="padding: 1.5rem 0 4rem 0; width: 100%; margin: 0;">
-            <!-- Ficha Técnica Editorial Renderizada Dinamicamente (Com margem própria) -->
-            <div class="editorial-credits-box" id="albumModalCredits" style="margin: 0 1.5rem 2rem 1.5rem;"></div>
+        <div class="album-modal-content">
+            <!-- 1. Hero Title Banner (Título Primeiro) -->
+            <div class="album-hero-header">
+                <span class="album-hero-category" id="albumModalCategory">CATEGORIA</span>
+                <h1 class="album-hero-title" id="albumModalTitle">Título do Ensaio</h1>
+                <p class="album-hero-subtitle" id="albumModalSubtitle">Fotografia Editorial & Moda por João Felipe</p>
+                
+                <div class="album-hero-meta-row">
+                    <span class="album-meta-badge" id="albumPhotoCountTag">✦ 0 Fotografias</span>
+                    <span class="album-meta-badge" id="albumYearTag">Ano 2026</span>
+                    <a href="#albumModalCredits" class="btn-scroll-credits">📋 Ver Ficha Técnica ↓</a>
+                </div>
+            </div>
 
+            <!-- 2. Galeria de Fotos em Alta Resolução (Fotos Imediatas) -->
             <div class="seamless-2col-grid" id="albumPhotosGrid">
                 <!-- Photos of this specific Ensaio rendered dynamically -->
+            </div>
+
+            <!-- 3. Ficha Técnica Editorial (Ficha Técnica Depois) -->
+            <div class="editorial-credits-wrapper">
+                <div class="editorial-credits-box" id="albumModalCredits"></div>
             </div>
         </div>
     </div>
@@ -272,8 +310,6 @@
             <div class="lightbox-shortcuts-hint">
                 <span><kbd>←</kbd> <kbd>→</kbd> Navegar</span>
                 <span><kbd>Z</kbd> Zoom</span>
-                <span><kbd>I</kbd> Info</span>
-                <span><kbd>F</kbd> Tela Cheia</span>
                 <span><kbd>ESC</kbd> Fechar</span>
             </div>
 
@@ -305,12 +341,12 @@
                     </div>
 
                     <div class="sidebar-meta-row">
-                        <span class="sidebar-counter" id="lightboxCounter">1 / 467</span>
+                        <span class="sidebar-counter" id="lightboxCounter">01 / 06</span>
                     </div>
 
                     <div class="sidebar-cta-box">
-                        <a href="#" target="_blank" rel="noopener" id="lightboxShareWa" class="btn-contact" style="width: 100%; text-align: center; display: block; background: #25d366; color: #fff; border: none;">
-                            Consultar este Ensaio no WhatsApp
+                        <a href="#" target="_blank" rel="noopener" id="lightboxShareWa" class="btn-lightbox-wa">
+                            <span>💬 Consultar este Ensaio no WhatsApp</span>
                         </a>
                     </div>
                 </div>

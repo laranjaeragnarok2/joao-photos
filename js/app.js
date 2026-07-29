@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
         filteredEnsaios: [],
         currentAlbumPhotos: [],
         lightboxIndex: 0,
-        theme: localStorage.getItem('theme') || 'light'
+        theme: localStorage.getItem('theme') || 'dark'
     };
 
     const elements = {
@@ -190,26 +190,38 @@ document.addEventListener('DOMContentLoaded', () => {
     // Open Album Viewer Modal & Render Editorial Credits
     function openAlbumModal(ensaio) {
         state.currentAlbumPhotos = ensaio.photos;
-        elements.albumModalTitle.textContent = ensaio.title;
-        elements.albumModalCategory.textContent = ensaio.categoryName;
+        
+        if (elements.albumModalTitle) elements.albumModalTitle.textContent = ensaio.title;
+        if (elements.albumModalCategory) elements.albumModalCategory.textContent = ensaio.categoryName;
+
+        const headerCat = document.getElementById('albumModalHeaderCategory');
+        const headerTitle = document.getElementById('albumModalHeaderTitle');
+        if (headerCat) headerCat.textContent = ensaio.categoryName;
+        if (headerTitle) headerTitle.textContent = ensaio.title;
+
+        const photoCountTag = document.getElementById('albumPhotoCountTag');
+        if (photoCountTag) photoCountTag.textContent = `✦ ${ensaio.photos.length} Fotografias`;
+
+        const credits = ensaio.credits || {
+            year: "2026",
+            client: "Coleção Editorial / Autoral",
+            location: "Estúdio & Externa • Rio Verde, GO",
+            styling: "Mariana Souza / Direção de Arte",
+            beauty: "Beleza Editorial Concept",
+            concept: `Ensaio ${ensaio.categoryName} focado em alta resolução, iluminação técnica rigorosa e estética contemporânea.`
+        };
+
+        const yearTag = document.getElementById('albumYearTag');
+        if (yearTag) yearTag.textContent = `Ano ${credits.year || "2026"}`;
 
         // Render Editorial Credits Box
         if (elements.albumModalCredits) {
-            const credits = ensaio.credits || {
-                year: "2026",
-                client: "Coleção Editorial / Autoral",
-                location: "Estúdio & Externa • Rio Verde, GO",
-                styling: "Mariana Souza / Direção de Arte",
-                beauty: "Beleza Editorial Concept",
-                concept: `Ensaio ${ensaio.categoryName} focado em alta resolução, iluminação técnica rigorosa e estética contemporânea.`
-            };
-
             const waMsg = encodeURIComponent(`Olá João Felipe! Estava navegando no seu site e gostaria de solicitar um orçamento referente ao ensaio "${ensaio.title}" (${ensaio.categoryName}).`);
             const waUrl = `https://wa.me/5511999999999?text=${waMsg}`;
 
             elements.albumModalCredits.innerHTML = `
                 <div class="credits-header">
-                    <span class="credits-title-badge">Ficha Técnica Editorial</span>
+                    <span class="credits-title-badge">Ficha Técnica & Créditos da Produção</span>
                     <span class="credits-year-tag">Ano: ${credits.year}</span>
                 </div>
                 <div class="credits-grid">
@@ -264,7 +276,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         elements.albumModal.classList.add('active');
+        elements.albumModal.scrollTop = 0;
         document.body.style.overflow = 'hidden';
+    }
+
+    const closeAlbumModalBackBtn = document.getElementById('closeAlbumModalBackBtn');
+    if (closeAlbumModalBackBtn) {
+        closeAlbumModalBackBtn.addEventListener('click', () => {
+            elements.albumModal.classList.remove('active');
+            document.body.style.overflow = '';
+        });
     }
 
     if (elements.closeAlbumModalBtn) {
@@ -334,19 +355,31 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (sidebarTags) {
             sidebarTags.innerHTML = '';
-            const tags = item.tags || [item.categoryName, "Editorial", "João Felipe"];
-            tags.forEach(tag => {
+            let tagList = [];
+            if (Array.isArray(item.tags)) {
+                tagList = item.tags;
+            } else if (typeof item.tags === 'string') {
+                tagList = item.tags.split('#').map(t => t.trim()).filter(Boolean);
+            } else {
+                tagList = [item.categoryName, "Editorial", "João Felipe"];
+            }
+
+            tagList.forEach(tag => {
+                const cleanTag = tag.replace(/^#/, '');
+                if (!cleanTag) return;
                 const span = document.createElement('span');
                 span.className = 'sidebar-tag';
-                span.textContent = `#${tag}`;
+                span.textContent = `#${cleanTag}`;
                 sidebarTags.appendChild(span);
             });
         }
 
-        elements.lightboxCounter.textContent = `${state.lightboxIndex + 1} / ${state.currentAlbumPhotos.length}`;
+        const currentIdxStr = String(state.lightboxIndex + 1).padStart(2, '0');
+        const totalIdxStr = String(state.currentAlbumPhotos.length).padStart(2, '0');
+        elements.lightboxCounter.textContent = `${currentIdxStr} / ${totalIdxStr}`;
 
-        const msg = encodeURIComponent(`Olá João! Tenho interesse no ensaio "${item.title}" (${item.categoryName}).`);
-        elements.lightboxShareWa.href = `https://wa.me/${PORTFOLIO_DATA.photographer.whatsapp}?text=${msg}`;
+        const msg = encodeURIComponent(`Olá João! Gostaria de consultar informações sobre a fotografia "${item.title}" (${item.categoryName}).`);
+        elements.lightboxShareWa.href = `https://wa.me/${PORTFOLIO_DATA.photographer.whatsapp || '5511999999999'}?text=${msg}`;
     }
 
     function nextLightbox() {
@@ -530,14 +563,30 @@ document.addEventListener('DOMContentLoaded', () => {
         if (key === 'f') toggleFullscreen();
     });
 
-    // Theme Switcher Logic
+    // Theme Switcher & Tooltip Bubble ("Prefere modo dia?")
+    const themeTooltipBubble = document.getElementById('themeTooltipBubble');
+
     function updateThemeIcon() {
         if (!elements.themeToggleBtn) return;
         elements.themeToggleBtn.textContent = state.theme === 'dark' ? '☀️' : '🌙';
+        elements.themeToggleBtn.setAttribute('aria-label', state.theme === 'dark' ? 'Alternar para Modo Dia' : 'Alternar para Modo Noite');
+    }
+
+    // Exibir balãozinho temporário se o tema atual for o escuro padrão
+    if (themeTooltipBubble && state.theme === 'dark') {
+        setTimeout(() => {
+            themeTooltipBubble.classList.add('visible');
+            setTimeout(() => {
+                themeTooltipBubble.classList.remove('visible');
+            }, 4500);
+        }, 1500);
     }
 
     if (elements.themeToggleBtn) {
         elements.themeToggleBtn.addEventListener('click', () => {
+            if (themeTooltipBubble) {
+                themeTooltipBubble.classList.remove('visible');
+            }
             state.theme = state.theme === 'dark' ? 'light' : 'dark';
             document.documentElement.setAttribute('data-theme', state.theme);
             localStorage.setItem('theme', state.theme);
