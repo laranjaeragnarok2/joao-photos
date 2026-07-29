@@ -1,0 +1,226 @@
+/* ==========================================================================
+   ADMIN MANAGEMENT DASHBOARD STYLES
+   ========================================================================== */
+
+.admin-header {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.admin-header-container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin-brand {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.admin-badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.25rem 0.6rem;
+    background: var(--text-primary);
+    color: var(--bg-primary);
+    border-radius: 4px;
+}
+
+.admin-container {
+    max-width: var(--max-width);
+    margin: 2rem auto;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 2rem;
+}
+
+@media (max-width: 840px) {
+    .admin-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+.admin-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.admin-tab {
+    padding: 0.8rem 1.2rem;
+    text-align: left;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    color: var(--text-secondary);
+    transition: all var(--transition-fast);
+}
+
+.admin-tab:hover {
+    color: var(--text-primary);
+    background: var(--bg-secondary);
+}
+
+.admin-tab.active {
+    color: var(--text-primary);
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+}
+
+.tab-panel {
+    display: none;
+}
+
+.tab-panel.active {
+    display: block;
+}
+
+.panel-header {
+    margin-bottom: 2rem;
+}
+
+.panel-header h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.search-filter-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.admin-input, .admin-select, .admin-textarea {
+    padding: 0.65rem 0.9rem;
+    border: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    outline: none;
+}
+
+.admin-input:focus, .admin-select:focus, .admin-textarea:focus {
+    border-color: var(--text-primary);
+}
+
+.admin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.25rem;
+}
+
+.admin-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.admin-card-img {
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    background: #e0e0e0;
+}
+
+.admin-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.admin-card-body {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    flex: 1;
+}
+
+.admin-card-cat {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+}
+
+.admin-card-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.admin-card-btn {
+    margin-top: auto;
+    padding: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: 1px solid var(--border-color);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    transition: all var(--transition-fast);
+}
+
+.admin-card-btn:hover {
+    background: var(--text-primary);
+    color: var(--bg-primary);
+}
+
+.admin-form {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    padding: 2rem;
+    border-radius: 8px;
+    max-width: 600px;
+}
+
+.btn-primary {
+    padding: 0.65rem 1.4rem;
+    background: var(--text-primary);
+    color: var(--bg-primary);
+    font-weight: 600;
+    font-size: 0.85rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-secondary {
+    padding: 0.65rem 1.4rem;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 0.85rem;
+    border-radius: 4px;
+}
+
+.btn-danger {
+    padding: 0.65rem 1.4rem;
+    background: #e53e3e;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.85rem;
+    border-radius: 4px;
+}

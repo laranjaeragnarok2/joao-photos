@@ -78,27 +78,64 @@
         </section>
     </main>
 
-    <!-- 6. Fullscreen Lightbox -->
-    <div class="lightbox" id="lightboxModal" role="dialog">
-        <div class="lightbox-header">
-            <div>
-                <span id="lightboxCategory" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.7;"></span>
-                <h3 id="lightboxTitle" style="font-size: 1rem; font-weight: 600;"></h3>
+    <!-- 6. Enhanced Web & Desktop Fullscreen Lightbox -->
+    <div class="lightbox" id="lightboxModal" role="dialog" tabindex="-1">
+        <!-- Top Toolbar -->
+        <div class="lightbox-toolbar">
+            <div class="lightbox-brand">
+                <span class="lightbox-category" id="lightboxCategory">FASHION & EDITORIAL</span>
+                <span class="lightbox-title-short" id="lightboxTitle">Título da Fotografia</span>
             </div>
-            <button id="lightboxClose" style="color: #fff; font-size: 2rem; line-height: 1;">&times;</button>
+
+            <!-- Keyboard Controls Hint for Web Desktop -->
+            <div class="lightbox-shortcuts-hint">
+                <span><kbd>←</kbd> <kbd>→</kbd> Navegar</span>
+                <span><kbd>Z</kbd> Zoom</span>
+                <span><kbd>I</kbd> Info</span>
+                <span><kbd>F</kbd> Tela Cheia</span>
+                <span><kbd>ESC</kbd> Fechar</span>
+            </div>
+
+            <div class="lightbox-toolbar-actions">
+                <button class="tb-btn" id="lightboxZoomBtn" title="Alternar Zoom (Z)">🔍 Zoom</button>
+                <button class="tb-btn" id="lightboxInfoBtn" title="Alternar Informações (I)">ℹ️ Detalhes</button>
+                <button class="tb-btn" id="lightboxFullscreenBtn" title="Tela Cheia (F)">⛶ Fullscreen</button>
+                <button class="tb-btn tb-close" id="lightboxClose" title="Fechar (ESC)">&times;</button>
+            </div>
         </div>
 
-        <div class="lightbox-img-container">
-            <button class="lightbox-nav lightbox-prev" id="lightboxPrev">&lsaquo;</button>
-            <img src="" alt="" id="lightboxImg" />
-            <button class="lightbox-nav lightbox-next" id="lightboxNext">&rsaquo;</button>
-        </div>
+        <!-- Main Lightbox Stage (Image + Side Panel) -->
+        <div class="lightbox-stage">
+            <button class="lightbox-nav lightbox-prev" id="lightboxPrev" title="Anterior (Seta Esquerda)">&lsaquo;</button>
+            
+            <div class="lightbox-img-wrapper" id="lightboxImgWrapper">
+                <img src="" alt="" id="lightboxImg" class="lightbox-img-zoomable" />
+            </div>
 
-        <div class="lightbox-footer">
-            <span id="lightboxCounter" style="font-size: 0.85rem; opacity: 0.7;"></span>
-            <a href="#" target="_blank" rel="noopener" id="lightboxShareWa" class="btn-contact" style="color: #fff; border-color: #fff; font-size: 0.75rem;">
-                Interesse neste ensaio (WhatsApp)
-            </a>
+            <button class="lightbox-nav lightbox-next" id="lightboxNext" title="Próxima (Seta Direita)">&rsaquo;</button>
+
+            <!-- Collapsible Photo Details Panel (Web Sidebar) -->
+            <aside class="lightbox-sidebar active" id="lightboxSidebar">
+                <div class="sidebar-content">
+                    <span class="sidebar-cat-badge" id="sidebarCategory">Fashion</span>
+                    <h3 class="sidebar-photo-title" id="sidebarTitle">Título da Fotografia</h3>
+                    <p class="sidebar-description" id="sidebarDescription">Ensaio fotográfico autoral com direção de iluminação de alto contraste.</p>
+                    
+                    <div class="sidebar-tags-container" id="sidebarTags">
+                        <!-- Tags rendered dynamically -->
+                    </div>
+
+                    <div class="sidebar-meta-row">
+                        <span class="sidebar-counter" id="lightboxCounter">1 / 460</span>
+                    </div>
+
+                    <div class="sidebar-cta-box">
+                        <a href="#" target="_blank" rel="noopener" id="lightboxShareWa" class="btn-contact" style="width: 100%; text-align: center; display: block; background: #25d366; color: #fff; border: none;">
+                            Consultar este Ensaio no WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </aside>
         </div>
     </div>
 

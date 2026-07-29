@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Gestão — João Felipe Photos</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+    <header class="admin-header">
+        <div class="admin-header-container">
+            <div class="admin-brand">
+                <span class="brand-name">João Felipe</span>
+                <span class="admin-badge">Painel de Gestão</span>
+            </div>
+            
+            <div class="admin-actions">
+                <a href="index.html" target="_blank" class="btn-secondary">Ver Site Principal ↗</a>
+                <button class="btn-primary" id="exportBtn">Exportar portfolio_data.js</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="admin-container">
+        <!-- Sidebar Navigation -->
+        <aside class="admin-sidebar">
+            <button class="admin-tab active" data-tab="tabPhotos">
+                📸 Fotos & Ensaios (<span id="totalPhotosCount">0</span>)
+            </button>
+            <button class="admin-tab" data-tab="tabAdd">
+                ➕ Adicionar Nova Foto
+            </button>
+            <button class="admin-tab" data-tab="tabCopy">
+                ✍️ Textos & Informações
+            </button>
+        </aside>
+
+        <!-- Main Content Area -->
+        <section class="admin-content">
+
+            <!-- Tab 1: Photos & Ensaios Manager -->
+            <div class="tab-panel active" id="tabPhotos">
+                <div class="panel-header">
+                    <h2>Gerenciar Fotografias</h2>
+                    
+                    <div class="search-filter-row">
+                        <input type="text" id="adminSearchInput" class="admin-input" placeholder="Buscar por título, tag ou ID..." />
+                        <select id="adminCatFilter" class="admin-select">
+                            <option value="all">Todas as Categorias</option>
+                            <option value="fashion">Fashion & Editorial</option>
+                            <option value="gestacionais">Gestacionais</option>
+                            <option value="publicitarios">Publicitários</option>
+                            <option value="eventos-corporativos">Eventos</option>
+                            <option value="autorais">Autorais & Fine Art</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="admin-grid" id="adminPhotoGrid">
+                    <!-- Rendered dynamically by js/admin.js -->
+                </div>
+            </div>
+
+            <!-- Tab 2: Add New Photo -->
+            <div class="tab-panel" id="tabAdd">
+                <div class="panel-header">
+                    <h2>Adicionar Nova Fotografia</h2>
+                </div>
+
+                <form id="addPhotoForm" class="admin-form">
+                    <div class="form-group">
+                        <label class="form-label">URL da Fotografia (CDN / Link Direct)</label>
+                        <input type="url" id="newPhotoUrl" class="admin-input" placeholder="https://..." required />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Título da Foto / Ensaio</label>
+                        <input type="text" id="newPhotoTitle" class="admin-input" placeholder="Ex: Editorial Inverno 2026" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Categoria / Grupo</label>
+                        <select id="newPhotoCat" class="admin-select" required>
+                            <option value="fashion">Fashion & Editorial</option>
+                            <option value="gestacionais">Gestacionais</option>
+                            <option value="publicitarios">Publicitários</option>
+                            <option value="eventos-corporativos">Eventos</option>
+                            <option value="autorais">Autorais & Fine Art</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Descrição Breve</label>
+                        <textarea id="newPhotoDesc" class="admin-textarea" rows="3" placeholder="Detalhes do ensaio..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Tags (separadas por vírgula)</label>
+                        <input type="text" id="newPhotoTags" class="admin-input" placeholder="Moda, Editorial, Luz Natural" />
+                    </div>
+
+                    <button type="submit" class="btn-primary" style="margin-top: 1rem;">Salvar Fotografia</button>
+                </form>
+            </div>
+
+            <!-- Tab 3: Copy & Info -->
+            <div class="tab-panel" id="tabCopy">
+                <div class="panel-header">
+                    <h2>Editar Informações & Textos do Site</h2>
+                </div>
+
+                <form id="copyForm" class="admin-form">
+                    <div class="form-group">
+                        <label class="form-label">Nome do Fotógrafo</label>
+                        <input type="text" id="infoName" class="admin-input" />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Subtítulo / Especialidades</label>
+                        <input type="text" id="infoRole" class="admin-input" />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Número do WhatsApp (apenas números com DDD)</label>
+                        <input type="text" id="infoWhatsapp" class="admin-input" placeholder="5511999999999" />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">E-mail Comercial</label>
+                        <input type="email" id="infoEmail" class="admin-input" />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Biografia / Texto Sobre Mim</label>
+                        <textarea id="infoBio" class="admin-textarea" rows="5"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-primary" style="margin-top: 1rem;">Atualizar Informações</button>
+                </form>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- Edit Photo Modal -->
+    <div class="modal" id="editModal">
+        <div class="modal-box" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3>Editar Fotografia #<span id="editPhotoId"></span></h3>
+                <button id="closeEditModal" style="font-size: 1.5rem;">&times;</button>
+            </div>
+
+            <form id="editPhotoForm" class="admin-form">
+                <div style="margin-bottom: 1rem; text-align: center;">
+                    <img src="" id="editPhotoPreview" style="max-height: 200px; margin: 0 auto; border-radius: 4px;" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Título</label>
+                    <input type="text" id="editPhotoTitle" class="admin-input" required />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Grupo / Categoria</label>
+                    <select id="editPhotoCat" class="admin-select" required>
+                        <option value="fashion">Fashion & Editorial</option>
+                        <option value="gestacionais">Gestacionais</option>
+                        <option value="publicitarios">Publicitários</option>
+                        <option value="eventos-corporativos">Eventos</option>
+                        <option value="autorais">Autorais & Fine Art</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Descrição</label>
+                    <textarea id="editPhotoDesc" class="admin-textarea" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Tags (vírgula)</label>
+                    <input type="text" id="editPhotoTags" class="admin-input" />
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                    <button type="submit" class="btn-primary" style="flex: 1;">Salvar Alterações</button>
+                    <button type="button" class="btn-danger" id="deletePhotoBtn">Excluir Foto</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/portfolio_data.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>

@@ -134,17 +134,28 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 6. Lightbox Modal Logic
+    // 6. Enhanced Web & Desktop Lightbox Modal Logic
+    const lightboxState = {
+        isZoomed: false,
+        isInfoOpen: true
+    };
+
     function openLightbox(index) {
         state.lightboxIndex = index;
+        lightboxState.isZoomed = false;
+        elements.lightboxImg.classList.remove('zoomed');
         updateLightboxContent();
         elements.lightbox.classList.add('active');
+        elements.lightbox.focus();
         document.body.style.overflow = 'hidden';
     }
 
     function closeLightbox() {
         elements.lightbox.classList.remove('active');
         document.body.style.overflow = '';
+        if (document.fullscreenElement) {
+            document.exitFullscreen().catch(() => {});
+        }
     }
 
     function updateLightboxContent() {
@@ -154,31 +165,96 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.lightboxImg.src = item.src;
         elements.lightboxTitle.textContent = item.title;
         elements.lightboxCategory.textContent = item.categoryName;
+        
+        // Sidebar elements
+        const sidebarTitle = document.getElementById('sidebarTitle');
+        const sidebarCategory = document.getElementById('sidebarCategory');
+        const sidebarDesc = document.getElementById('sidebarDescription');
+        const sidebarTags = document.getElementById('sidebarTags');
+
+        if (sidebarTitle) sidebarTitle.textContent = item.title;
+        if (sidebarCategory) sidebarCategory.textContent = item.categoryName;
+        if (sidebarDesc) sidebarDesc.textContent = item.description || "Produção fotográfica autoral por João Felipe.";
+        
+        if (sidebarTags) {
+            sidebarTags.innerHTML = '';
+            const tags = item.tags || [item.categoryName, "Editorial", "João Felipe"];
+            tags.forEach(tag => {
+                const span = document.createElement('span');
+                span.className = 'sidebar-tag';
+                span.textContent = `#${tag}`;
+                sidebarTags.appendChild(span);
+            });
+        }
+
         elements.lightboxCounter.textContent = `${state.lightboxIndex + 1} / ${state.filteredItems.length}`;
 
-        const msg = encodeURIComponent(`Olá João! Tenho interesse no trabalho "${item.title}" (${item.categoryName}).`);
+        const msg = encodeURIComponent(`Olá João! Tenho interesse no ensaio "${item.title}" (${item.categoryName}).`);
         elements.lightboxShareWa.href = `https://wa.me/${PORTFOLIO_DATA.photographer.whatsapp}?text=${msg}`;
     }
 
     function nextLightbox() {
         state.lightboxIndex = (state.lightboxIndex + 1) % state.filteredItems.length;
+        lightboxState.isZoomed = false;
+        elements.lightboxImg.classList.remove('zoomed');
         updateLightboxContent();
     }
 
     function prevLightbox() {
         state.lightboxIndex = (state.lightboxIndex - 1 + state.filteredItems.length) % state.filteredItems.length;
+        lightboxState.isZoomed = false;
+        elements.lightboxImg.classList.remove('zoomed');
         updateLightboxContent();
+    }
+
+    // Toggle Zoom
+    function toggleZoom() {
+        lightboxState.isZoomed = !lightboxState.isZoomed;
+        elements.lightboxImg.classList.toggle('zoomed', lightboxState.isZoomed);
+    }
+
+    // Toggle Info Sidebar
+    function toggleInfoSidebar() {
+        const sidebar = document.getElementById('lightboxSidebar');
+        if (sidebar) {
+            lightboxState.isInfoOpen = !lightboxState.isInfoOpen;
+            sidebar.classList.toggle('active', lightboxState.isInfoOpen);
+        }
+    }
+
+    // Toggle Fullscreen
+    function toggleFullscreen() {
+        if (!document.fullscreenElement) {
+            elements.lightbox.requestFullscreen().catch(() => {});
+        } else {
+            document.exitFullscreen().catch(() => {});
+        }
     }
 
     if (elements.lightboxClose) elements.lightboxClose.addEventListener('click', closeLightbox);
     if (elements.lightboxNext) elements.lightboxNext.addEventListener('click', nextLightbox);
     if (elements.lightboxPrev) elements.lightboxPrev.addEventListener('click', prevLightbox);
+    if (elements.lightboxImg) elements.lightboxImg.addEventListener('click', toggleZoom);
 
+    const zoomBtn = document.getElementById('lightboxZoomBtn');
+    const infoBtn = document.getElementById('lightboxInfoBtn');
+    const fsBtn = document.getElementById('lightboxFullscreenBtn');
+
+    if (zoomBtn) zoomBtn.addEventListener('click', toggleZoom);
+    if (infoBtn) infoBtn.addEventListener('click', toggleInfoSidebar);
+    if (fsBtn) fsBtn.addEventListener('click', toggleFullscreen);
+
+    // Enhanced Keyboard listener (Z, I, F, ESC, Arrows)
     window.addEventListener('keydown', (e) => {
         if (!elements.lightbox.classList.contains('active')) return;
-        if (e.key === 'Escape') closeLightbox();
-        if (e.key === 'ArrowRight') nextLightbox();
-        if (e.key === 'ArrowLeft') prevLightbox();
+        
+        const key = e.key.toLowerCase();
+        if (key === 'escape') closeLightbox();
+        if (key === 'arrowright') nextLightbox();
+        if (key === 'arrowleft') prevLightbox();
+        if (key === 'z') toggleZoom();
+        if (key === 'i') toggleInfoSidebar();
+        if (key === 'f') toggleFullscreen();
     });
 
     // 7. Theme Switcher Logic
