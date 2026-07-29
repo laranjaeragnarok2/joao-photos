@@ -31,11 +31,11 @@
     <main class="admin-container">
         <!-- Sidebar Navigation -->
         <aside class="admin-sidebar">
-            <button class="admin-tab active" data-tab="tabPhotos">
-                📸 Fotos & Ensaios (<span id="totalPhotosCount">0</span>)
+            <button class="admin-tab active" data-tab="tabEnsaios">
+                📁 Ensaios & Grupos (<span id="totalEnsaiosCount">0</span>)
             </button>
             <button class="admin-tab" data-tab="tabAdd">
-                ➕ Adicionar Nova Foto
+                ➕ Criar Novo Ensaio
             </button>
             <button class="admin-tab" data-tab="tabCopy">
                 ✍️ Textos & Informações
@@ -45,15 +45,16 @@
         <!-- Main Content Area -->
         <section class="admin-content">
 
-            <!-- Tab 1: Photos & Ensaios Manager -->
-            <div class="tab-panel active" id="tabPhotos">
+            <!-- Tab 1: Ensaios & Groups Manager -->
+            <div class="tab-panel active" id="tabEnsaios">
                 <div class="panel-header">
-                    <h2>Gerenciar Fotografias</h2>
+                    <h2>Gerenciador de Ensaios & Álbuns</h2>
                     
                     <div class="search-filter-row">
-                        <input type="text" id="adminSearchInput" class="admin-input" placeholder="Buscar por título, tag ou ID..." />
+                        <input type="text" id="adminSearchInput" class="admin-input" placeholder="Buscar ensaio por título, cliente ou ID..." />
                         <select id="adminCatFilter" class="admin-select">
                             <option value="all">Todas as Categorias</option>
+                            <option value="in-and-out">In and Out (Retratos)</option>
                             <option value="fashion">Fashion & Editorial</option>
                             <option value="gestacionais">Gestacionais</option>
                             <option value="publicitarios">Publicitários</option>
@@ -63,31 +64,27 @@
                     </div>
                 </div>
 
-                <div class="admin-grid" id="adminPhotoGrid">
+                <div class="admin-grid" id="adminEnsaiosGrid">
                     <!-- Rendered dynamically by js/admin.js -->
                 </div>
             </div>
 
-            <!-- Tab 2: Add New Photo -->
+            <!-- Tab 2: Add New Ensaio -->
             <div class="tab-panel" id="tabAdd">
                 <div class="panel-header">
-                    <h2>Adicionar Nova Fotografia</h2>
+                    <h2>Criar Novo Ensaio / Grupo</h2>
                 </div>
 
-                <form id="addPhotoForm" class="admin-form">
+                <form id="addEnsaioForm" class="admin-form">
                     <div class="form-group">
-                        <label class="form-label">URL da Fotografia (CDN / Link Direct)</label>
-                        <input type="url" id="newPhotoUrl" class="admin-input" placeholder="https://..." required />
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Título da Foto / Ensaio</label>
-                        <input type="text" id="newPhotoTitle" class="admin-input" placeholder="Ex: Editorial Inverno 2026" required />
+                        <label class="form-label">Título do Ensaio</label>
+                        <input type="text" id="newEnsaioTitle" class="admin-input" placeholder="Ex: Editorial Moda Inverno 2026" required />
                     </div>
 
                     <div class="form-group">
                         <label class="form-label">Categoria / Grupo</label>
-                        <select id="newPhotoCat" class="admin-select" required>
+                        <select id="newEnsaioCat" class="admin-select" required>
+                            <option value="in-and-out">In and Out (Retratos)</option>
                             <option value="fashion">Fashion & Editorial</option>
                             <option value="gestacionais">Gestacionais</option>
                             <option value="publicitarios">Publicitários</option>
@@ -97,16 +94,38 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Descrição Breve</label>
-                        <textarea id="newPhotoDesc" class="admin-textarea" rows="3" placeholder="Detalhes do ensaio..."></textarea>
+                        <label class="form-label">URL da Imagem de Capa</label>
+                        <input type="url" id="newEnsaioCover" class="admin-input" placeholder="https://..." required />
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label class="form-label">Ano</label>
+                            <input type="text" id="newEnsaioYear" class="admin-input" value="2026" required />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Cliente / Marca</label>
+                            <input type="text" id="newEnsaioClient" class="admin-input" placeholder="Ex: Vogue Brasil" />
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label class="form-label">Styling & Figurino</label>
+                            <input type="text" id="newEnsaioStyling" class="admin-input" placeholder="Ex: Camila Siqueira" />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Beleza & Cabelo</label>
+                            <input type="text" id="newEnsaioBeauty" class="admin-input" placeholder="Ex: Rodrigo Mendes" />
+                        </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Tags (separadas por vírgula)</label>
-                        <input type="text" id="newPhotoTags" class="admin-input" placeholder="Moda, Editorial, Luz Natural" />
+                        <label class="form-label">Conceito & Descrição Editorial</label>
+                        <textarea id="newEnsaioConcept" class="admin-textarea" rows="3" placeholder="Descrição do conceito e iluminação do ensaio..."></textarea>
                     </div>
 
-                    <button type="submit" class="btn-primary" style="margin-top: 1rem;">Salvar Fotografia</button>
+                    <button type="submit" class="btn-primary" style="margin-top: 1rem;">Criar Ensaio</button>
                 </form>
             </div>
 
@@ -128,7 +147,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Número do WhatsApp (apenas números com DDD)</label>
+                        <label class="form-label">Número do WhatsApp (DDD + Número)</label>
                         <input type="text" id="infoWhatsapp" class="admin-input" placeholder="5511999999999" />
                     </div>
 
@@ -149,51 +168,97 @@
         </section>
     </main>
 
-    <!-- Edit Photo Modal -->
-    <div class="modal" id="editModal">
-        <div class="modal-box" style="max-width: 600px;">
+    <!-- Modal de Gestão Completa de Ensaio (#manageEnsaioModal) -->
+    <div class="modal" id="manageEnsaioModal">
+        <div class="modal-box" style="max-width: 900px; max-height: 90vh; overflow-y: auto;">
             <div class="modal-header">
-                <h3>Editar Fotografia #<span id="editPhotoId"></span></h3>
-                <button id="closeEditModal" style="font-size: 1.5rem;">&times;</button>
+                <h3>Gerenciar Ensaio: <span id="modalEnsaioTitleHeader"></span></h3>
+                <button id="closeManageEnsaioModal" style="font-size: 1.5rem;">&times;</button>
             </div>
 
-            <form id="editPhotoForm" class="admin-form">
-                <div style="margin-bottom: 1rem; text-align: center;">
-                    <img src="" id="editPhotoPreview" style="max-height: 200px; margin: 0 auto; border-radius: 4px;" />
+            <form id="ensaioMetaForm" class="admin-form" style="margin-bottom: 2rem;">
+                <h4 style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 1rem;">Ficha Técnica & Configurações do Grupo</h4>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Título do Ensaio</label>
+                        <input type="text" id="editEnsaioTitle" class="admin-input" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Categoria</label>
+                        <select id="editEnsaioCat" class="admin-select" required>
+                            <option value="in-and-out">In and Out (Retratos)</option>
+                            <option value="fashion">Fashion & Editorial</option>
+                            <option value="gestacionais">Gestacionais</option>
+                            <option value="publicitarios">Publicitários</option>
+                            <option value="eventos-corporativos">Eventos</option>
+                            <option value="autorais">Autorais & Fine Art</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Título</label>
-                    <input type="text" id="editPhotoTitle" class="admin-input" required />
+                    <label class="form-label">URL da Imagem de Capa</label>
+                    <input type="url" id="editEnsaioCover" class="admin-input" required />
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Ano</label>
+                        <input type="text" id="editEnsaioYear" class="admin-input" />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Cliente / Marca</label>
+                        <input type="text" id="editEnsaioClient" class="admin-input" />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Localização</label>
+                        <input type="text" id="editEnsaioLocation" class="admin-input" />
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Styling</label>
+                        <input type="text" id="editEnsaioStyling" class="admin-input" />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Beleza</label>
+                        <input type="text" id="editEnsaioBeauty" class="admin-input" />
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Grupo / Categoria</label>
-                    <select id="editPhotoCat" class="admin-select" required>
-                        <option value="fashion">Fashion & Editorial</option>
-                        <option value="gestacionais">Gestacionais</option>
-                        <option value="publicitarios">Publicitários</option>
-                        <option value="eventos-corporativos">Eventos</option>
-                        <option value="autorais">Autorais & Fine Art</option>
-                    </select>
+                    <label class="form-label">Conceito Editorial</label>
+                    <textarea id="editEnsaioConcept" class="admin-textarea" rows="2"></textarea>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label">Descrição</label>
-                    <textarea id="editPhotoDesc" class="admin-textarea" rows="3"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Tags (vírgula)</label>
-                    <input type="text" id="editPhotoTags" class="admin-input" />
-                </div>
-
-                <div style="display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap;">
-                    <button type="submit" class="btn-primary" style="flex: 1;">Salvar Alterações</button>
-                    <button type="button" class="btn-secondary" id="setCoverBtn" style="flex: 1; border-color: var(--text-primary);">Definir como Capa do Ensaio</button>
-                    <button type="button" class="btn-danger" id="deletePhotoBtn">Excluir Foto</button>
+                <div style="display: flex; gap: 1rem;">
+                    <button type="submit" class="btn-primary">Salvar Ficha Técnica</button>
+                    <button type="button" class="btn-danger" id="deleteEnsaioBtn">Excluir Ensaio Inteiro</button>
                 </div>
             </form>
+
+            <hr style="border: none; border-top: 1px dashed var(--border-color); margin: 2rem 0;" />
+
+            <!-- Subseção de Adicionar Foto ao Ensaio -->
+            <div style="margin-bottom: 2rem;">
+                <h4 style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 1rem;">Adicionar Foto a este Ensaio</h4>
+                <form id="addPhotoToEnsaioForm" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <input type="url" id="newPhotoInEnsaioUrl" class="admin-input" placeholder="URL da Foto (https://...)" style="flex: 2; min-width: 240px;" required />
+                    <input type="text" id="newPhotoInEnsaioTitle" class="admin-input" placeholder="Título da Foto" style="flex: 1; min-width: 160px;" />
+                    <button type="submit" class="btn-secondary" style="background: var(--text-primary); color: var(--bg-primary);">+ Adicionar Foto</button>
+                </form>
+            </div>
+
+            <!-- Grid de Fotos do Ensaio -->
+            <div>
+                <h4 style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 1rem;">Fotografias do Acervo (<span id="modalEnsaioPhotoCount">0</span>)</h4>
+                <div class="admin-grid" id="modalEnsaioPhotosGrid" style="grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1.25rem;">
+                    <!-- Rendered dynamically -->
+                </div>
+            </div>
         </div>
     </div>
 

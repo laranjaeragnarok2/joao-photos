@@ -1,25 +1,29 @@
 /* ==========================================================================
-   ADMIN DASHBOARD LOGIC
+   ADMIN DASHBOARD LOGIC — ENSAIOS & GROUP-CENTRIC MANAGEMENT
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
     let localData = JSON.parse(JSON.stringify(PORTFOLIO_DATA));
-    let editingPhotoId = null;
+    let activeEnsaioId = null;
 
     const elements = {
         tabs: document.querySelectorAll('.admin-tab'),
         tabPanels: document.querySelectorAll('.tab-panel'),
-        adminPhotoGrid: document.getElementById('adminPhotoGrid'),
-        totalPhotosCount: document.getElementById('totalPhotosCount'),
+        adminEnsaiosGrid: document.getElementById('adminEnsaiosGrid'),
+        totalEnsaiosCount: document.getElementById('totalEnsaiosCount'),
         adminSearchInput: document.getElementById('adminSearchInput'),
         adminCatFilter: document.getElementById('adminCatFilter'),
-        addPhotoForm: document.getElementById('addPhotoForm'),
+        addEnsaioForm: document.getElementById('addEnsaioForm'),
         copyForm: document.getElementById('copyForm'),
         exportBtn: document.getElementById('exportBtn'),
-        editModal: document.getElementById('editModal'),
-        closeEditModal: document.getElementById('closeEditModal'),
-        editPhotoForm: document.getElementById('editPhotoForm'),
-        deletePhotoBtn: document.getElementById('deletePhotoBtn')
+        manageEnsaioModal: document.getElementById('manageEnsaioModal'),
+        closeManageEnsaioModal: document.getElementById('closeManageEnsaioModal'),
+        ensaioMetaForm: document.getElementById('ensaioMetaForm'),
+        deleteEnsaioBtn: document.getElementById('deleteEnsaioBtn'),
+        addPhotoToEnsaioForm: document.getElementById('addPhotoToEnsaioForm'),
+        modalEnsaioPhotosGrid: document.getElementById('modalEnsaioPhotosGrid'),
+        modalEnsaioTitleHeader: document.getElementById('modalEnsaioTitleHeader'),
+        modalEnsaioPhotoCount: document.getElementById('modalEnsaioPhotoCount')
     };
 
     // 1. Tab Switcher
@@ -30,171 +34,294 @@ document.addEventListener('DOMContentLoaded', () => {
 
             tab.classList.add('active');
             const target = tab.dataset.tab;
-            document.getElementById(target).classList.add('active');
+            const panel = document.getElementById(target);
+            if (panel) panel.classList.add('active');
         });
     });
 
-    // 2. Render Photos Grid
-    function renderAdminGrid() {
-        if (!elements.adminPhotoGrid) return;
-        elements.adminPhotoGrid.innerHTML = '';
+    // 2. Render Ensaios Grid (Groups View)
+    function renderAdminEnsaiosGrid() {
+        if (!elements.adminEnsaiosGrid) return;
+        elements.adminEnsaiosGrid.innerHTML = '';
 
-        const searchTerm = elements.adminSearchInput.value.toLowerCase().trim();
-        const selectedCat = elements.adminCatFilter.value;
+        const searchTerm = elements.adminSearchInput ? elements.adminSearchInput.value.toLowerCase().trim() : '';
+        const selectedCat = elements.adminCatFilter ? elements.adminCatFilter.value : 'all';
 
-        const filtered = localData.items.filter(item => {
-            const matchesCat = selectedCat === 'all' || item.categoryId === selectedCat;
-            const matchesSearch = !searchTerm || 
-                item.title.toLowerCase().includes(searchTerm) || 
-                item.id.toString() === searchTerm ||
-                (item.tags && item.tags.some(t => t.toLowerCase().includes(searchTerm)));
+        const filtered = localData.ensaios.filter(ensaio => {
+            const matchesCat = selectedCat === 'all' || ensaio.category === selectedCat;
+            const matchesSearch = !searchTerm ||
+                ensaio.title.toLowerCase().includes(searchTerm) ||
+                ensaio.id.toLowerCase().includes(searchTerm) ||
+                (ensaio.credits && ensaio.credits.client && ensaio.credits.client.toLowerCase().includes(searchTerm));
             return matchesCat && matchesSearch;
         });
 
-        elements.totalPhotosCount.textContent = localData.items.length;
+        if (elements.totalEnsaiosCount) {
+            elements.totalEnsaiosCount.textContent = localData.ensaios.length;
+        }
 
-        filtered.slice(0, 100).forEach(item => {
+        filtered.forEach(ensaio => {
+            const count = ensaio.photos ? ensaio.photos.length : (ensaio.photoCount || 0);
             const card = document.createElement('div');
             card.className = 'admin-card';
             card.innerHTML = `
+                <span class="admin-card-count">${count} Fotos</span>
                 <div class="admin-card-img">
-                    <img src="${item.src}" alt="${item.title}" loading="lazy" />
+                    <img src="${ensaio.cover}" alt="${ensaio.title}" loading="lazy" />
                 </div>
                 <div class="admin-card-body">
-                    <span class="admin-card-cat">${item.categoryName}</span>
-                    <h4 class="admin-card-title">${item.title}</h4>
-                    <button class="admin-card-btn" onclick="openEditModal(${item.id})">Editar Foto</button>
+                    <span class="admin-card-cat">${ensaio.categoryName || ensaio.category}</span>
+                    <h4 class="admin-card-title">${ensaio.title}</h4>
+                    <button class="admin-card-btn" onclick="openManageEnsaioModal('${ensaio.id}')">⚡ Gerenciar Grupo</button>
                 </div>
             `;
-            elements.adminPhotoGrid.appendChild(card);
+            elements.adminEnsaiosGrid.appendChild(card);
         });
     }
 
-    elements.adminSearchInput.addEventListener('input', renderAdminGrid);
-    elements.adminCatFilter.addEventListener('change', renderAdminGrid);
+    if (elements.adminSearchInput) elements.adminSearchInput.addEventListener('input', renderAdminEnsaiosGrid);
+    if (elements.adminCatFilter) elements.adminCatFilter.addEventListener('change', renderAdminEnsaiosGrid);
 
-    // 3. Edit Photo Modal Handler
-    window.openEditModal = function(id) {
-        const item = localData.items.find(i => i.id === id);
-        if (!item) return;
+    // 3. Manage Ensaio Modal Handler
+    window.openManageEnsaioModal = function(ensaioId) {
+        const ensaio = localData.ensaios.find(e => e.id === ensaioId);
+        if (!ensaio) return;
 
-        editingPhotoId = id;
-        document.getElementById('editPhotoId').textContent = item.id;
-        document.getElementById('editPhotoPreview').src = item.src;
-        document.getElementById('editPhotoTitle').value = item.title;
-        document.getElementById('editPhotoCat').value = item.categoryId;
-        document.getElementById('editPhotoDesc').value = item.description || '';
-        document.getElementById('editPhotoTags').value = (item.tags || []).join(', ');
+        activeEnsaioId = ensaioId;
+        elements.modalEnsaioTitleHeader.textContent = ensaio.title;
 
-        elements.editModal.classList.add('active');
+        // Fill Form Metadata
+        document.getElementById('editEnsaioTitle').value = ensaio.title || '';
+        document.getElementById('editEnsaioCat').value = ensaio.category || 'fashion';
+        document.getElementById('editEnsaioCover').value = ensaio.cover || '';
+
+        const credits = ensaio.credits || {};
+        document.getElementById('editEnsaioYear').value = credits.year || '2026';
+        document.getElementById('editEnsaioClient').value = credits.client || '';
+        document.getElementById('editEnsaioLocation').value = credits.location || 'Rio Verde, GO';
+        document.getElementById('editEnsaioStyling').value = credits.styling || '';
+        document.getElementById('editEnsaioBeauty').value = credits.beauty || '';
+        document.getElementById('editEnsaioConcept').value = credits.concept || '';
+
+        renderEnsaioPhotosInsideModal(ensaio);
+        elements.manageEnsaioModal.classList.add('active');
     };
 
-    if (elements.closeEditModal) {
-        elements.closeEditModal.addEventListener('click', () => {
-            elements.editModal.classList.remove('active');
-        });
-    }
+    function renderEnsaioPhotosInsideModal(ensaio) {
+        if (!elements.modalEnsaioPhotosGrid) return;
+        elements.modalEnsaioPhotosGrid.innerHTML = '';
 
-    elements.editPhotoForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const item = localData.items.find(i => i.id === editingPhotoId);
-        if (item) {
-            item.title = document.getElementById('editPhotoTitle').value;
-            const newCatId = document.getElementById('editPhotoCat').value;
-            const catObj = localData.categories.find(c => c.id === newCatId);
-            item.categoryId = newCatId;
-            item.categoryName = catObj ? catObj.name : newCatId;
-            item.description = document.getElementById('editPhotoDesc').value;
-            item.tags = document.getElementById('editPhotoTags').value.split(',').map(t => t.strip ? t.strip() : t.trim()).filter(Boolean);
-
-            renderAdminGrid();
-            elements.editModal.classList.remove('active');
-            alert('Fotografia atualizada!');
+        const photos = ensaio.photos || [];
+        if (elements.modalEnsaioPhotoCount) {
+            elements.modalEnsaioPhotoCount.textContent = photos.length;
         }
-    });
 
-    if (elements.deletePhotoBtn) {
-        elements.deletePhotoBtn.addEventListener('click', () => {
-            if (confirm('Tem certeza que deseja excluir esta foto?')) {
-                localData.items = localData.items.filter(i => i.id !== editingPhotoId);
-                renderAdminGrid();
-                elements.editModal.classList.remove('active');
+        photos.forEach((photo, idx) => {
+            const isCover = photo.src === ensaio.cover;
+            const itemCard = document.createElement('div');
+            itemCard.className = `photo-card-item ${isCover ? 'is-cover' : ''}`;
+            itemCard.innerHTML = `
+                ${isCover ? '<span class="cover-badge-tag">⭐️ Capa Atual</span>' : ''}
+                <div style="aspect-ratio: 4/3; overflow: hidden; background: #222;">
+                    <img src="${photo.src}" alt="${photo.title}" style="width:100%; height:100%; object-fit:cover;" />
+                </div>
+                <div style="padding: 0.6rem; display:flex; flex-direction:column; gap:0.4rem;">
+                    <span style="font-size:0.75rem; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${photo.title || 'Foto #' + (idx+1)}</span>
+                    <div style="display:flex; gap:0.3rem; margin-top:0.2rem;">
+                        ${!isCover ? `<button type="button" class="admin-card-btn" style="font-size:0.65rem; padding:0.25rem;" onclick="setAsCover('${photo.src}')">Tornar Capa</button>` : ''}
+                        <button type="button" class="btn-danger" style="font-size:0.65rem; padding:0.25rem;" onclick="removePhotoFromEnsaio(${idx})">Excluir</button>
+                    </div>
+                </div>
+            `;
+            elements.modalEnsaioPhotosGrid.appendChild(itemCard);
+        });
+    }
+
+    window.setAsCover = function(srcUrl) {
+        const ensaio = localData.ensaios.find(e => e.id === activeEnsaioId);
+        if (ensaio) {
+            ensaio.cover = srcUrl;
+            document.getElementById('editEnsaioCover').value = srcUrl;
+            renderEnsaioPhotosInsideModal(ensaio);
+            renderAdminEnsaiosGrid();
+        }
+    };
+
+    window.removePhotoFromEnsaio = function(photoIndex) {
+        const ensaio = localData.ensaios.find(e => e.id === activeEnsaioId);
+        if (ensaio && ensaio.photos) {
+            if (confirm('Tem certeza que deseja remover esta foto do ensaio?')) {
+                ensaio.photos.splice(photoIndex, 1);
+                ensaio.photoCount = ensaio.photos.length;
+                renderEnsaioPhotosInsideModal(ensaio);
+                renderAdminEnsaiosGrid();
+            }
+        }
+    };
+
+    if (elements.closeManageEnsaioModal) {
+        elements.closeManageEnsaioModal.addEventListener('click', () => {
+            elements.manageEnsaioModal.classList.remove('active');
+        });
+    }
+
+    // Submit Ficha Técnica
+    if (elements.ensaioMetaForm) {
+        elements.ensaioMetaForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const ensaio = localData.ensaios.find(e => e.id === activeEnsaioId);
+            if (ensaio) {
+                ensaio.title = document.getElementById('editEnsaioTitle').value;
+                ensaio.category = document.getElementById('editEnsaioCat').value;
+                const catObj = localData.categories.find(c => c.id === ensaio.category);
+                ensaio.categoryName = catObj ? catObj.name : ensaio.category;
+                ensaio.cover = document.getElementById('editEnsaioCover').value;
+
+                ensaio.credits = {
+                    year: document.getElementById('editEnsaioYear').value,
+                    client: document.getElementById('editEnsaioClient').value,
+                    location: document.getElementById('editEnsaioLocation').value,
+                    styling: document.getElementById('editEnsaioStyling').value,
+                    beauty: document.getElementById('editEnsaioBeauty').value,
+                    concept: document.getElementById('editEnsaioConcept').value
+                };
+
+                renderAdminEnsaiosGrid();
+                alert('Ficha Técnica e configurações do ensaio salvas com sucesso!');
             }
         });
     }
 
-    const setCoverBtn = document.getElementById('setCoverBtn');
-    if (setCoverBtn) {
-        setCoverBtn.addEventListener('click', () => {
-            const item = localData.items.find(i => i.id === editingPhotoId);
-            if (item) {
-                const ensaio = localData.ensaios.find(e => e.id === item.albumId || e.category === item.categoryId);
-                if (ensaio) {
-                    ensaio.cover = item.src;
-                    alert(`Fotografia #${item.id} definida como Capa do Ensaio "${ensaio.title}"!`);
-                } else {
-                    alert(`Capa do grupo "${item.categoryName}" atualizada!`);
-                }
+    // Add Photo inline to active Ensaio
+    if (elements.addPhotoToEnsaioForm) {
+        elements.addPhotoToEnsaioForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const ensaio = localData.ensaios.find(e => e.id === activeEnsaioId);
+            if (ensaio) {
+                const src = document.getElementById('newPhotoInEnsaioUrl').value;
+                const title = document.getElementById('newPhotoInEnsaioTitle').value || `${ensaio.title} — Nova Foto`;
+
+                if (!ensaio.photos) ensaio.photos = [];
+
+                ensaio.photos.unshift({
+                    id: Date.now(),
+                    src: src,
+                    title: title,
+                    categoryId: ensaio.category,
+                    categoryName: ensaio.categoryName,
+                    albumId: ensaio.id,
+                    albumTitle: ensaio.title
+                });
+                ensaio.photoCount = ensaio.photos.length;
+
+                elements.addPhotoToEnsaioForm.reset();
+                renderEnsaioPhotosInsideModal(ensaio);
+                renderAdminEnsaiosGrid();
             }
         });
     }
 
-    // 4. Add New Photo Handler
-    elements.addPhotoForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const src = document.getElementById('newPhotoUrl').value;
-        const title = document.getElementById('newPhotoTitle').value;
-        const categoryId = document.getElementById('newPhotoCat').value;
-        const catObj = localData.categories.find(c => c.id === categoryId);
-        const description = document.getElementById('newPhotoDesc').value;
-        const tags = document.getElementById('newPhotoTags').value.split(',').map(t => t.trim()).filter(Boolean);
-
-        const newId = Math.max(...localData.items.map(i => i.id), 0) + 1;
-
-        localData.items.unshift({
-            id: newId,
-            src: src,
-            categoryId: categoryId,
-            categoryName: catObj ? catObj.name : categoryId,
-            title: title,
-            description: description,
-            tags: tags
+    // Delete Ensaio Entirely
+    if (elements.deleteEnsaioBtn) {
+        elements.deleteEnsaioBtn.addEventListener('click', () => {
+            if (confirm(`Tem certeza que deseja excluir o ensaio "${activeEnsaioId}" e todo o seu acervo?`)) {
+                localData.ensaios = localData.ensaios.filter(e => e.id !== activeEnsaioId);
+                elements.manageEnsaioModal.classList.remove('active');
+                renderAdminEnsaiosGrid();
+            }
         });
+    }
 
-        alert('Nova fotografia adicionada!');
-        elements.addPhotoForm.reset();
-        renderAdminGrid();
-    });
+    // 4. Create New Ensaio Handler (Tab 2)
+    if (elements.addEnsaioForm) {
+        elements.addEnsaioForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const title = document.getElementById('newEnsaioTitle').value;
+            const category = document.getElementById('newEnsaioCat').value;
+            const catObj = localData.categories.find(c => c.id === category);
+            const cover = document.getElementById('newEnsaioCover').value;
 
-    // 5. Copy & Info Form Handler
+            const year = document.getElementById('newEnsaioYear').value || '2026';
+            const client = document.getElementById('newEnsaioClient').value || '';
+            const styling = document.getElementById('newEnsaioStyling').value || '';
+            const beauty = document.getElementById('newEnsaioBeauty').value || '';
+            const concept = document.getElementById('newEnsaioConcept').value || '';
+
+            const newId = `${category}_${Date.now()}`;
+
+            const newEnsaio = {
+                id: newId,
+                title: title,
+                category: category,
+                categoryName: catObj ? catObj.name : category,
+                cover: cover,
+                photoCount: 1,
+                credits: {
+                    year: year,
+                    client: client,
+                    location: "Rio Verde, GO • Atendimento Brasil",
+                    styling: styling,
+                    beauty: beauty,
+                    concept: concept
+                },
+                photos: [
+                    {
+                        id: Date.now(),
+                        src: cover,
+                        title: `${title} — Foto de Capa`,
+                        categoryId: category,
+                        categoryName: catObj ? catObj.name : category,
+                        albumId: newId,
+                        albumTitle: title
+                    }
+                ]
+            };
+
+            localData.ensaios.unshift(newEnsaio);
+            alert(`Novo Ensaio "${title}" criado com sucesso!`);
+            elements.addEnsaioForm.reset();
+
+            // Switch to Tab 1
+            elements.tabs[0].click();
+            renderAdminEnsaiosGrid();
+        });
+    }
+
+    // 5. Copy & Info Form Handler (Tab 3)
     if (elements.copyForm) {
-        document.getElementById('infoName').value = localData.photographer.name;
-        document.getElementById('infoRole').value = localData.photographer.role;
-        document.getElementById('infoWhatsapp').value = localData.photographer.whatsapp;
-        document.getElementById('infoEmail').value = localData.photographer.email;
-        document.getElementById('infoBio').value = localData.photographer.bio;
+        if (localData.photographer) {
+            document.getElementById('infoName').value = localData.photographer.name || '';
+            document.getElementById('infoRole').value = localData.photographer.role || '';
+            document.getElementById('infoWhatsapp').value = localData.photographer.whatsapp || '';
+            document.getElementById('infoEmail').value = localData.photographer.email || '';
+            document.getElementById('infoBio').value = localData.photographer.bio || '';
+        }
 
         elements.copyForm.addEventListener('submit', (e) => {
             e.preventDefault();
+            if (!localData.photographer) localData.photographer = {};
+
             localData.photographer.name = document.getElementById('infoName').value;
             localData.photographer.role = document.getElementById('infoRole').value;
             localData.photographer.whatsapp = document.getElementById('infoWhatsapp').value;
             localData.photographer.email = document.getElementById('infoEmail').value;
             localData.photographer.bio = document.getElementById('infoBio').value;
 
-            alert('Informações atualizadas com sucesso!');
+            alert('Informações do fotógrafo atualizadas com sucesso!');
         });
     }
 
     // 6. Export portfolio_data.js
-    elements.exportBtn.addEventListener('click', () => {
-        const fileContent = `const PORTFOLIO_DATA = ${JSON.stringify(localData, null, 4)};\n`;
-        const blob = new Blob([fileContent], { type: 'text/javascript' });
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = 'portfolio_data.js';
-        a.click();
-    });
+    if (elements.exportBtn) {
+        elements.exportBtn.addEventListener('click', () => {
+            const fileContent = `const PORTFOLIO_DATA = ${JSON.stringify(localData, null, 4)};\n`;
+            const blob = new Blob([fileContent], { type: 'text/javascript' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'portfolio_data.js';
+            a.click();
+        });
+    }
 
-    renderAdminGrid();
+    renderAdminEnsaiosGrid();
 });
