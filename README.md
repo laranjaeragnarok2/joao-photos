@@ -1,58 +1,78 @@
-# João Felipe Photos — Portfólio Fotográfico Responsivo
+# João Felipe Photos — Portfólio Fotográfico Editorial & Off-White Gallery
 
-Este repositório contém a reformulação completa do portfólio oficial do fotógrafo **João Felipe**, com acervo fotográfico de moda, editorial, retratos autorais, campanhas publicitárias e eventos corporativos.
+![Vercel Status](https://img.shields.io/badge/Deploy-Vercel-black?style=for-the-badge&logo=vercel)
+![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+
+Portfólio web de alta performance e estática ultra-limpa para o fotógrafo **João Felipe**, especializado em fotografia de moda, editorial, retratos autorais, gestacionais, campanhas publicitárias e eventos corporativos em São Paulo.
 
 ---
 
-## 📁 Estrutura de Pastas e Arquivos
+## ✨ Características do Projeto
+
+- 🎨 **Design Concept**: *Editorial Off-White Gallery* ultralimpo com opção de alternância para *Dark Obsidian*.
+- 🖼️ **Grid Seamless de 2 Colunas**: Exibição de fotografias sem espaçamento entre bordas (`gap: 0`), priorizando 100% o impacto das imagens.
+- ⚡ **Performance Otimizada**: Carregamento paginado (*Lazy Loading*) para suportar mais de 460 fotos sem travar dispositivos móveis.
+- 📱 **Foco em Conversão (Leads)**: Integrado com botão flutuante e modal de orçamento com direcionamento automático para o WhatsApp.
+- 🔍 **SEO & Metadata**: Estruturado semanticamente em HTML5 com tags Open Graph e Google Font `Inter` exclusiva.
+
+---
+
+## 📁 Estrutura do Repositório
 
 ```
-Joao/
-├── index.html                 # Página principal (HTML5 semântico com SEO)
+joao-photos/
+├── index.html                 # Layout principal (HTML5 semântico com SEO)
 ├── css/
-│   └── styles.css             # Estilos em Vanilla CSS (Dark/Light Mode & Layout)
+│   └── styles.css             # Estilos em Vanilla CSS (Off-White & Dark Mode)
 ├── js/
-│   ├── app.js                 # Lógica da galeria, filtros, lightbox e formulário
-│   └── portfolio_data.js      # Catálogo com 460 fotografias extraídas
-├── data/
-│   ├── design_tokens.json     # Tokens de design extraídos (Cores, Fontes)
-│   ├── site_structure.json    # Dados brutos raspados do site original
-│   └── detailed_report.json   # Mapeamento detalhado por rota
-├── tools/                     # Scripts Python de raspagem e utilitários
-│   ├── scrape_joao.py
-│   ├── analyze.py
-│   ├── detailed_extract.py
-│   ├── build_data.py
-│   └── create_design_tokens.py
-├── UX_REFERENCE_GUIDE.md      # Guia de UX e Checklist para Referências
-├── .gitignore                 # Arquivo de ignorados do Git & Vercel
+│   ├── app.js                 # Lógica do filtro de categorias, lightbox e formulário
+│   └── portfolio_data.js      # Catálogo com 460 fotografias originais
+├── content/
+│   ├── ensaios/               # 460 fotografias organizadas por ensaio
+│   │   ├── fashion/
+│   │   ├── gestacionais/
+│   │   ├── publicitarios/
+│   │   ├── eventos-corporativos/
+│   │   ├── autorais/
+│   │   └── in-and-out/
+│   └── copy/                  # Hub de posicionamento de marca e textos
+├── data/                      # Tokens de design e dados brutos raspados
+├── tools/                     # Scripts de automação e organização em Python
+├── UX_REFERENCE_GUIDE.md      # Guia de UX e envio de referências
+├── .gitignore                 # Arquivo de ignorados Git/Vercel
 └── README.md                  # Este arquivo
 ```
 
 ---
 
-## 🚀 Como Rodar o Projeto Localmente
+## 🚀 Como Rodar Localmente
 
-1. Clone o repositório ou navegue até a pasta do projeto:
-   ```bash
-   cd Joao
-   ```
+```bash
+# 1. Clonar o repositório
+git clone https://github.com/laranjaeragnarok2/joao-photos.git
 
-2. Inicie um servidor HTTP simples (ex: Python):
-   ```bash
-   python3 -m http.server 8080
-   ```
+# 2. Entrar na pasta do projeto
+cd joao-photos
 
-3. Abra o navegador em `http://localhost:8080`.
+# 3. Iniciar um servidor HTTP local
+python3 -m http.server 8080
+```
+Acesse `http://localhost:8080` no navegador.
 
 ---
 
-## 🌐 Deploy na Vercel via GitHub
+## 🌐 Deploy na Vercel
 
-1. Adicione o seu repositório remoto no GitHub:
-   ```bash
-   git remote add origin https://github.com/SEU-USUARIO/joao-felipe-photos.git
-   git push -u origin main
-   ```
+Este repositório foi construído para integração contínua com a **Vercel**:
 
-2. Na **Vercel** ([vercel.com](https://vercel.com)), importe o repositório `joao-felipe-photos` e clique em **Deploy**.
+1. Conecte sua conta da Vercel ao GitHub.
+2. Importe o repositório `laranjaeragnarok2/joao-photos`.
+3. Mantenha as configurações padrão (*Static Site*) e clique em **Deploy**.
+
+---
+
+## 📄 Licença e Direitos
+© 2026 **João Felipe Photos**. Todos os direitos autorais sobre as fotografias pertencem ao artista.
