@@ -24,7 +24,7 @@
             <a href="#" class="brand-name">João Felipe</a>
 
             <nav>
-                <ul class="nav-menu">
+                <ul class="nav-menu" id="navMenu">
                     <li><a href="#hero" class="nav-link">Início</a></li>
                     <li><a href="#sobre" class="nav-link">Sobre</a></li>
                     <li><a href="#ensaios" class="nav-link active">Ensaios</a></li>
@@ -38,6 +38,10 @@
                     🌙
                 </button>
                 <button class="btn-contact open-modal-btn">Agendamento</button>
+                <button class="mobile-menu-toggle" id="mobileMenuToggleBtn" aria-label="Abrir Menu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
             </div>
         </div>
     </header>
@@ -143,19 +147,37 @@
                 <!-- Rendered dynamically by app.js -->
             </div>
         </section>
+
+        <!-- 8. Marcas & Publicações Parceiras -->
+        <section class="brands-section">
+            <div class="brands-container">
+                <span class="brands-subtitle">Publicações, Marcas & Clientes</span>
+                <div class="brands-grid">
+                    <span class="brand-item">VOGUE</span>
+                    <span class="brand-item">L'OFFICIEL</span>
+                    <span class="brand-item">ELLE</span>
+                    <span class="brand-item">GLAMOUR</span>
+                    <span class="brand-item">HARPER'S BAZAAR</span>
+                    <span class="brand-item">GQ BRASIL</span>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <!-- 8. Full-Screen Ensaio Viewer Modal (#albumModal) -->
+    <!-- 9. Full-Screen Ensaio Viewer Modal (#albumModal) -->
     <div class="album-modal" id="albumModal" role="dialog">
         <div class="album-modal-header">
             <div class="album-modal-title-wrap">
                 <span id="albumModalCategory">CATEGORIA</span>
                 <h3 id="albumModalTitle">Título do Ensaio</h3>
             </div>
-            <button id="closeAlbumModalBtn" style="font-size: 1.8rem; color: var(--text-primary); cursor: pointer;">&times;</button>
+            <button id="closeAlbumModalBtn" style="font-size: 1.8rem; color: var(--text-primary); cursor: pointer;" aria-label="Fechar">&times;</button>
         </div>
 
         <div style="padding: 2rem; max-width: var(--max-width); margin: 0 auto; width: 100%;">
+            <!-- Ficha Técnica Editorial Renderizada Dinamicamente -->
+            <div class="editorial-credits-box" id="albumModalCredits"></div>
+
             <div class="seamless-2col-grid" id="albumPhotosGrid">
                 <!-- Photos of this specific Ensaio rendered dynamically -->
             </div>

@@ -709,3 +709,213 @@ img {
     font-size: 0.85rem;
     color: var(--text-muted);
 }
+
+/* ==========================================================================
+   MOBILE MENU DRAWER & INTERACTIVE NAVIGATION
+   ========================================================================== */
+.mobile-menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 28px;
+    height: 18px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 102;
+}
+
+.mobile-menu-toggle .bar {
+    width: 100%;
+    height: 2px;
+    background-color: var(--text-primary);
+    transition: transform var(--transition-fast), opacity var(--transition-fast);
+}
+
+.mobile-menu-toggle.active .bar:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+.mobile-menu-toggle.active .bar:nth-child(2) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
+@media (max-width: 768px) {
+    .mobile-menu-toggle {
+        display: flex;
+    }
+
+    .nav-menu {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 80%;
+        max-width: 320px;
+        height: 100vh;
+        background: var(--bg-secondary);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15);
+        flex-direction: column;
+        justify-content: center;
+        gap: 2.5rem;
+        padding: 3rem 2rem;
+        transition: right var(--transition-smooth);
+        z-index: 101;
+    }
+
+    .nav-menu.active {
+        right: 0;
+    }
+
+    .nav-link {
+        font-size: 1.1rem;
+        letter-spacing: 0.15em;
+    }
+}
+
+/* ==========================================================================
+   MARCAS & PUBLICAÇÕES PARCEIRAS (SOCIAL PROOF)
+   ========================================================================== */
+.brands-section {
+    padding: 4rem 2rem;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    border-top: 1px solid var(--border-color);
+}
+
+.brands-container {
+    text-align: center;
+}
+
+.brands-subtitle {
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 2rem;
+}
+
+.brands-grid {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem 4rem;
+}
+
+.brand-item {
+    font-size: 1.25rem;
+    font-weight: 800;
+    letter-spacing: 0.25em;
+    color: var(--text-muted);
+    opacity: 0.6;
+    transition: all var(--transition-fast);
+    cursor: default;
+}
+
+.brand-item:hover {
+    color: var(--text-primary);
+    opacity: 1;
+    transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   FICHA TÉCNICA EDITORIAL (#albumModalCredits)
+   ========================================================================== */
+.editorial-credits-box {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.75rem 2rem;
+    margin-bottom: 2.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+}
+
+.credits-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-hairline);
+}
+
+.credits-title-badge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.credits-year-tag {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.credits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.25rem 2rem;
+}
+
+.credit-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.credit-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.credit-value {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.credits-actions {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--border-hairline);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.credits-description {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    max-width: 800px;
+}
+
+.btn-credits-wa {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.6rem 1.2rem;
+    background: var(--text-primary);
+    color: var(--bg-primary);
+    border-radius: 4px;
+    transition: opacity var(--transition-fast);
+}
+
+.btn-credits-wa:hover {
+    opacity: 0.88;
+}
+

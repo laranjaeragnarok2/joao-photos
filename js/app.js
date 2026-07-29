@@ -37,8 +37,27 @@ document.addEventListener('DOMContentLoaded', () => {
         clientPortalModal: document.getElementById('clientPortalModal'),
         openClientPortalBtns: document.querySelectorAll('.open-client-portal-btn'),
         closeClientModalBtn: document.getElementById('closeClientModalBtn'),
-        clientPortalForm: document.getElementById('clientPortalForm')
+        clientPortalForm: document.getElementById('clientPortalForm'),
+        mobileMenuToggleBtn: document.getElementById('mobileMenuToggleBtn'),
+        navMenu: document.getElementById('navMenu'),
+        albumModalCredits: document.getElementById('albumModalCredits')
     };
+
+    // Mobile Menu Toggle Event
+    if (elements.mobileMenuToggleBtn && elements.navMenu) {
+        elements.mobileMenuToggleBtn.addEventListener('click', () => {
+            elements.mobileMenuToggleBtn.classList.toggle('active');
+            elements.navMenu.classList.toggle('active');
+        });
+
+        // Fechar ao clicar nos links do menu
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                elements.mobileMenuToggleBtn.classList.remove('active');
+                elements.navMenu.classList.remove('active');
+            });
+        });
+    }
 
     // Initialize Theme
     document.documentElement.setAttribute('data-theme', state.theme);
@@ -117,12 +136,58 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Open Album Viewer Modal
+    // Open Album Viewer Modal & Render Editorial Credits
     function openAlbumModal(ensaio) {
         state.currentAlbumPhotos = ensaio.photos;
         elements.albumModalTitle.textContent = ensaio.title;
         elements.albumModalCategory.textContent = ensaio.categoryName;
-        
+
+        // Render Editorial Credits Box
+        if (elements.albumModalCredits) {
+            const credits = ensaio.credits || {
+                year: "2026",
+                client: "Coleção Editorial / Autoral",
+                location: "Estúdio & Externa • Rio Verde, GO",
+                styling: "Mariana Souza / Direção de Arte",
+                beauty: "Beleza Editorial Concept",
+                concept: `Ensaio ${ensaio.categoryName} focado em alta resolução, iluminação técnica rigorosa e estética contemporânea.`
+            };
+
+            const waMsg = encodeURIComponent(`Olá João Felipe! Estava navegando no seu site e gostaria de solicitar um orçamento referente ao ensaio "${ensaio.title}" (${ensaio.categoryName}).`);
+            const waUrl = `https://wa.me/5511999999999?text=${waMsg}`;
+
+            elements.albumModalCredits.innerHTML = `
+                <div class="credits-header">
+                    <span class="credits-title-badge">Ficha Técnica Editorial</span>
+                    <span class="credits-year-tag">Ano: ${credits.year}</span>
+                </div>
+                <div class="credits-grid">
+                    <div class="credit-item">
+                        <span class="credit-label">Projeto / Cliente</span>
+                        <span class="credit-value">${credits.client}</span>
+                    </div>
+                    <div class="credit-item">
+                        <span class="credit-label">Localização</span>
+                        <span class="credit-value">${credits.location}</span>
+                    </div>
+                    <div class="credit-item">
+                        <span class="credit-label">Styling & Figurino</span>
+                        <span class="credit-value">${credits.styling}</span>
+                    </div>
+                    <div class="credit-item">
+                        <span class="credit-label">Beleza & Cabelo</span>
+                        <span class="credit-value">${credits.beauty}</span>
+                    </div>
+                </div>
+                <div class="credits-actions">
+                    <p class="credits-description">${credits.concept}</p>
+                    <a href="${waUrl}" target="_blank" rel="noopener" class="btn-credits-wa">
+                        <span>💬 Agendar Ensaio Similar</span>
+                    </a>
+                </div>
+            `;
+        }
+
         elements.albumPhotosGrid.innerHTML = '';
 
         ensaio.photos.forEach((photo, index) => {

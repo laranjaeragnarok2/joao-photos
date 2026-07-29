@@ -40,6 +40,14 @@ const PORTFOLIO_DATA = {
             "title": "Editorial Moda Urbana",
             "category": "fashion",
             "categoryName": "Fashion & Editorial",
+            "credits": {
+                "year": "2026",
+                "client": "Vogue Brasil / Coleção Urbana",
+                "location": "São Paulo & Estúdio — Rio Verde, GO",
+                "styling": "Camila Siqueira",
+                "beauty": "Rodrigo Mendes",
+                "concept": "Direção criativa com estética minimalista e exploração de luz natural dura com sombras geométricas."
+            },
             "photos": [
                 {
                     "id": 1,
