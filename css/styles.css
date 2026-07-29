@@ -104,6 +104,19 @@ img {
     font-weight: 800;
     letter-spacing: 0.2em;
     text-transform: uppercase;
+    display: flex;
+    align-items: center;
+}
+
+.brand-logo-img {
+    height: 40px;
+    width: auto;
+    display: block;
+    transition: filter var(--transition-fast);
+}
+
+[data-theme="dark"] .brand-logo-img {
+    filter: invert(1);
 }
 
 .nav-menu {
