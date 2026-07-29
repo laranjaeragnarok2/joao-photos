@@ -53,20 +53,28 @@
     font-display: swap;
 }
 
-/* 1. Design Tokens */
+/* 1. Design Tokens — NOVA IDENTIDADE VISUAL */
 :root {
-    --bg-primary: #f7f7f8;
-    --bg-secondary: #ffffff;
-    --bg-card: #ffffff;
-    --bg-glass: rgba(247, 247, 248, 0.92);
-    --border-color: rgba(0, 0, 0, 0.08);
-    --border-hairline: #e5e5e7;
+    /* Paleta da Marca — extraída dos logos e grafismos */
+    --brand-cafe: #5C5145;
+    --brand-cafe-light: #7A6E5F;
+    --brand-sand: #B5A48B;
+    --brand-sand-light: #C7B9A5;
+    --brand-champagne: #D9CCBB;
+    --brand-cream: #E8DFD3;
     
-    --text-primary: #111111;
-    --text-secondary: #444444;
-    --text-muted: #888888;
+    --bg-primary: #FDFBF8;
+    --bg-secondary: #F5F0EB;
+    --bg-card: #FFFFFF;
+    --bg-glass: rgba(253, 251, 248, 0.92);
+    --border-color: rgba(92, 81, 69, 0.1);
+    --border-hairline: #E8DFD3;
     
-    --accent: #111111;
+    --text-primary: #2C2520;
+    --text-secondary: #5C5145;
+    --text-muted: #8C8278;
+    
+    --accent: #5C5145;
     --font-primary: 'Aileron', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     
     --max-width: 1600px;
@@ -75,18 +83,22 @@
 }
 
 [data-theme="dark"] {
-    --bg-primary: #0a0a0c;
-    --bg-secondary: #121214;
-    --bg-card: #121214;
-    --bg-glass: rgba(10, 10, 12, 0.92);
-    --border-color: rgba(255, 255, 255, 0.1);
-    --border-hairline: #222226;
+    --brand-cafe: #B5A48B;
+    --brand-sand: #8C8278;
+    --brand-champagne: #5C5145;
     
-    --text-primary: #f5f5f7;
-    --text-secondary: #a1a1aa;
-    --text-muted: #666666;
+    --bg-primary: #0D0B09;
+    --bg-secondary: #161310;
+    --bg-card: #161310;
+    --bg-glass: rgba(13, 11, 9, 0.92);
+    --border-color: rgba(181, 164, 139, 0.12);
+    --border-hairline: #2A2520;
     
-    --accent: #ffffff;
+    --text-primary: #F5F0EB;
+    --text-secondary: #B5A48B;
+    --text-muted: #6B6058;
+    
+    --accent: #D9CCBB;
 }
 
 /* 2. Base Resets */
@@ -378,7 +390,7 @@ img {
 .hero-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.7) 100%);
+    background: linear-gradient(to bottom, rgba(44, 37, 32, 0.35) 0%, rgba(44, 37, 32, 0.7) 100%);
     z-index: 2;
 }
 
@@ -502,15 +514,16 @@ img {
     font-weight: 700;
     letter-spacing: 0.15em;
     text-transform: uppercase;
-    background: #ffffff;
-    color: #000000;
+    background: var(--brand-champagne);
+    color: #2C2520;
     border: none;
     transition: all var(--transition-fast);
 }
 
 .btn-hero-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.25);
+    background: #E8DFD3;
+    box-shadow: 0 10px 25px rgba(217, 204, 187, 0.35);
 }
 
 .btn-hero-outline {
@@ -521,13 +534,14 @@ img {
     text-transform: uppercase;
     background: transparent;
     color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(217, 204, 187, 0.6);
     transition: all var(--transition-fast);
 }
 
 .btn-hero-outline:hover {
-    border-color: #ffffff;
-    background: rgba(255, 255, 255, 0.15);
+    border-color: var(--brand-champagne);
+    background: rgba(217, 204, 187, 0.15);
+    color: var(--brand-champagne);
 }
 
 .scroll-indicator {
@@ -566,10 +580,10 @@ img {
 
 /* 6. Editorial Marquee Strip */
 .marquee-section {
-    border-top: 1px solid var(--border-color);
-    border-bottom: 1px solid var(--border-color);
-    padding: 1rem 0;
-    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-hairline);
+    border-bottom: 1px solid var(--border-hairline);
+    padding: 1.1rem 0;
+    background: var(--brand-cafe);
     overflow: hidden;
     white-space: nowrap;
 }
@@ -582,7 +596,7 @@ img {
     font-weight: 600;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--text-muted);
+    color: var(--brand-champagne);
 }
 
 @keyframes marquee {
@@ -654,9 +668,10 @@ img {
 }
 
 .back-to-top-btn:hover {
-    background: #e5e5e5;
+    background: var(--brand-cafe-light);
+    color: #FDFBF8;
     transform: translateY(-3px);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 12px 30px rgba(92, 81, 69, 0.4);
 }
 
 /* Testimonials Carousel Styling */
@@ -778,7 +793,7 @@ img {
 }
 
 .indicator-dot.active {
-    background: var(--text-primary);
+    background: var(--brand-cafe);
     width: 24px;
     border-radius: 12px;
 }
@@ -814,9 +829,10 @@ img {
 }
 
 .filter-pill.active {
-    color: var(--text-primary);
-    border-color: var(--text-primary);
+    color: var(--brand-cafe);
+    border-color: var(--brand-cafe);
     font-weight: 600;
+    background: rgba(181, 164, 139, 0.1);
 }
 
 /* Ensaios Grid (Cards de Ensaios com preenchimento 100% de linha) */
@@ -1616,5 +1632,276 @@ img {
 .btn-credits-wa:hover {
     opacity: 0.9;
     transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   NOVA IDENTIDADE VISUAL — GRAFISMOS DECORATIVOS EM CSS PURO
+   ========================================================================== */
+
+/* Base para todos os grafismos */
+.brand-grafismo {
+    position: absolute;
+    pointer-events: none;
+    z-index: 0;
+    transition: opacity 0.6s ease;
+}
+
+/* Semicírculo (Grafismo 2) */
+.grafismo-semicircle {
+    border-radius: 50% 50% 0 0;
+    background: var(--brand-sand);
+}
+
+/* Quarto de círculo - Canto superior esquerdo (Grafismo 1) */
+.grafismo-quarter-tl {
+    border-radius: 0 0 100% 0;
+    background: var(--brand-sand);
+}
+
+/* Quarto de círculo - Canto inferior direito (Grafismo 3) */
+.grafismo-quarter-br {
+    border-radius: 100% 0 0 0;
+    background: var(--brand-sand);
+}
+
+/* Arco superior (Grafismo 4) */
+.grafismo-arch {
+    border-radius: 50% 50% 0 0;
+    border: 40px solid var(--brand-sand);
+    border-bottom: none;
+    background: transparent;
+}
+
+/* Anel/Ring (Grafismo 5) */
+.grafismo-ring {
+    border-radius: 50%;
+    border: 40px solid var(--brand-sand);
+    background: transparent;
+}
+
+/* --- Grafismos nas Seções --- */
+
+/* Hero section: quarto de círculo no canto inferior esquerdo */
+.hero-fullscreen {
+    position: relative;
+}
+
+.hero-fullscreen .grafismo-hero-bl {
+    bottom: -60px;
+    left: -60px;
+    width: 260px;
+    height: 260px;
+    border-radius: 0 100% 0 0;
+    background: var(--brand-champagne);
+    opacity: 0.12;
+}
+
+.hero-fullscreen .grafismo-hero-tr {
+    top: -40px;
+    right: -40px;
+    width: 200px;
+    height: 200px;
+    border-radius: 0 0 0 100%;
+    background: var(--brand-sand);
+    opacity: 0.08;
+}
+
+/* About Section: Semicírculo decorativo */
+.about-section {
+    position: relative;
+    overflow: hidden;
+}
+
+.about-section .grafismo-about-right {
+    top: 50%;
+    right: -100px;
+    transform: translateY(-50%);
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    border: 45px solid var(--brand-sand);
+    background: transparent;
+    opacity: 0.08;
+}
+
+.about-section .grafismo-about-left {
+    bottom: -60px;
+    left: -80px;
+    width: 200px;
+    height: 100px;
+    border-radius: 100px 100px 0 0;
+    background: var(--brand-champagne);
+    opacity: 0.06;
+}
+
+/* Testimonials Section: Arco decorativo */
+.testimonials-section {
+    position: relative;
+    overflow: hidden;
+}
+
+.testimonials-section .grafismo-test-left {
+    top: 50%;
+    left: -80px;
+    transform: translateY(-50%);
+    width: 180px;
+    height: 90px;
+    border-radius: 0 90px 90px 0;
+    background: var(--brand-sand);
+    opacity: 0.07;
+}
+
+.testimonials-section .grafismo-test-right {
+    bottom: 20px;
+    right: -50px;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    border: 35px solid var(--brand-champagne);
+    background: transparent;
+    opacity: 0.06;
+}
+
+/* Ensaios Section: Grafismo sutil */
+.ensaios-section {
+    position: relative;
+}
+
+.ensaios-section .grafismo-ensaios-top {
+    top: -30px;
+    right: 5%;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 25px solid var(--brand-sand);
+    background: transparent;
+    opacity: 0.05;
+}
+
+/* Footer: Elemento areia acima */
+.footer {
+    position: relative;
+    overflow: hidden;
+}
+
+.footer .grafismo-footer-center {
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 50px;
+    border-radius: 50px 50px 0 0;
+    background: var(--brand-sand);
+    opacity: 0.15;
+}
+
+/* --- Seção Sobre: Linha divisória areia --- */
+.about-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: var(--brand-sand);
+    border-radius: 2px;
+    opacity: 0.6;
+}
+
+/* --- Testimonials: Linha divisória areia --- */
+.testimonials-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: var(--brand-sand);
+    border-radius: 2px;
+    opacity: 0.6;
+}
+
+/* --- Estilo da marca nos links sociais do hero --- */
+.hero-social-link:hover {
+    color: var(--brand-champagne);
+    transform: translateY(-2px);
+}
+
+/* --- Ensaio Card badge com cor da marca --- */
+.ensaio-cat-badge {
+    background: rgba(181, 164, 139, 0.3);
+    backdrop-filter: blur(8px);
+}
+
+/* --- Modal buttons com estilo da marca --- */
+.btn-scroll-credits:hover {
+    background: var(--brand-cafe);
+    color: var(--brand-cream);
+    border-color: var(--brand-cafe);
+}
+
+/* --- Animação suave de entrada dos grafismos --- */
+@keyframes grafismoFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* --- Footer com símbolo da marca --- */
+.footer-brand-symbol {
+    display: block;
+    margin: 0 auto 1.2rem auto;
+    width: 36px;
+    height: 36px;
+    opacity: 0.4;
+}
+
+[data-theme="dark"] .footer-brand-symbol {
+    filter: invert(1);
+}
+
+/* --- Separador visual com grafismo de marca --- */
+.brand-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.brand-divider::before,
+.brand-divider::after {
+    content: '';
+    height: 1px;
+    flex: 1;
+    background: linear-gradient(to right, transparent, var(--brand-sand), transparent);
+    opacity: 0.4;
+}
+
+.brand-divider-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--brand-sand);
+    opacity: 0.5;
+}
+
+/* Responsive: ocultar grafismos em telas pequenas */
+@media (max-width: 768px) {
+    .brand-grafismo {
+        display: none;
+    }
+    
+    .about-section::before,
+    .testimonials-section::before {
+        width: 40px;
+    }
 }
 
