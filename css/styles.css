@@ -299,12 +299,16 @@ img {
 }
 
 .hero-social-link {
-    color: rgba(255, 255, 255, 0.8);
-    transition: color var(--transition-fast);
+    color: rgba(255, 255, 255, 0.85);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color var(--transition-fast), transform var(--transition-fast);
 }
 
 .hero-social-link:hover {
     color: #ffffff;
+    transform: translateY(-2px);
 }
 
 .hero-cta-group {
