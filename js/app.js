@@ -352,20 +352,29 @@ document.addEventListener('DOMContentLoaded', () => {
     function nextLightbox() {
         state.lightboxIndex = (state.lightboxIndex + 1) % state.currentAlbumPhotos.length;
         lightboxState.isZoomed = false;
-        elements.lightboxImg.classList.remove('zoomed');
+        if (elements.lightboxImg) {
+            elements.lightboxImg.classList.remove('zoomed');
+            elements.lightboxImg.style.transform = '';
+        }
         updateLightboxContent();
     }
 
     function prevLightbox() {
         state.lightboxIndex = (state.lightboxIndex - 1 + state.currentAlbumPhotos.length) % state.currentAlbumPhotos.length;
         lightboxState.isZoomed = false;
-        elements.lightboxImg.classList.remove('zoomed');
+        if (elements.lightboxImg) {
+            elements.lightboxImg.classList.remove('zoomed');
+            elements.lightboxImg.style.transform = '';
+        }
         updateLightboxContent();
     }
 
     function toggleZoom() {
         lightboxState.isZoomed = !lightboxState.isZoomed;
-        elements.lightboxImg.classList.toggle('zoomed', lightboxState.isZoomed);
+        if (elements.lightboxImg) {
+            elements.lightboxImg.classList.toggle('zoomed', lightboxState.isZoomed);
+            elements.lightboxImg.style.transform = '';
+        }
     }
 
     function toggleInfoSidebar() {
@@ -387,7 +396,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (elements.lightboxClose) elements.lightboxClose.addEventListener('click', closeLightbox);
     if (elements.lightboxNext) elements.lightboxNext.addEventListener('click', nextLightbox);
     if (elements.lightboxPrev) elements.lightboxPrev.addEventListener('click', prevLightbox);
-    if (elements.lightboxImg) elements.lightboxImg.addEventListener('click', toggleZoom);
 
     const zoomBtn = document.getElementById('lightboxZoomBtn');
     const infoBtn = document.getElementById('lightboxInfoBtn');
@@ -396,6 +404,119 @@ document.addEventListener('DOMContentLoaded', () => {
     if (zoomBtn) zoomBtn.addEventListener('click', toggleZoom);
     if (infoBtn) infoBtn.addEventListener('click', toggleInfoSidebar);
     if (fsBtn) fsBtn.addEventListener('click', toggleFullscreen);
+
+    // StfalconImageViewer Signature Behaviors (Swipe-to-Dismiss, Double-Tap Zoom & Pinch-to-Zoom Physics)
+    const stfalconState = {
+        isDragging: false,
+        startX: 0,
+        startY: 0,
+        currentX: 0,
+        currentY: 0,
+        deltaX: 0,
+        deltaY: 0,
+        lastTap: 0,
+        zoomScale: 1
+    };
+
+    const targetImg = elements.lightboxImg;
+
+    if (targetImg) {
+        // Pointer down (Touch & Mouse Drag)
+        targetImg.addEventListener('pointerdown', (e) => {
+            if (lightboxState.isZoomed) return;
+            stfalconState.isDragging = true;
+            stfalconState.startX = e.clientX;
+            stfalconState.startY = e.clientY;
+            targetImg.setPointerCapture(e.pointerId);
+            targetImg.style.transition = 'none';
+        });
+
+        // Pointer move (Real-time Stfalcon Drag & Backdrop Fade Physics)
+        targetImg.addEventListener('pointermove', (e) => {
+            if (!stfalconState.isDragging || lightboxState.isZoomed) return;
+
+            stfalconState.currentX = e.clientX;
+            stfalconState.currentY = e.clientY;
+            stfalconState.deltaX = stfalconState.currentX - stfalconState.startX;
+            stfalconState.deltaY = stfalconState.currentY - stfalconState.startY;
+
+            // Stfalcon Drag-to-Dismiss (Arrastar para Baixo para Fechar)
+            if (stfalconState.deltaY > 0) {
+                const backdropAlpha = Math.max(0.1, 0.98 * (1 - stfalconState.deltaY / 450));
+                elements.lightbox.style.background = `rgba(8, 8, 10, ${backdropAlpha})`;
+                targetImg.style.transform = `translate(${stfalconState.deltaX * 0.3}px, ${stfalconState.deltaY}px) scale(${Math.max(0.75, 1 - stfalconState.deltaY / 900)})`;
+            } else {
+                // Horizontal Swipe Preview
+                targetImg.style.transform = `translate(${stfalconState.deltaX}px, ${stfalconState.deltaY * 0.3}px)`;
+            }
+        });
+
+        // Pointer up / release (Snap-back or Dismiss)
+        const handlePointerRelease = () => {
+            if (!stfalconState.isDragging) return;
+            stfalconState.isDragging = false;
+            targetImg.style.transition = 'transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease';
+
+            // Stfalcon Dismiss Threshold (Mais de 110px arrastado para baixo)
+            if (stfalconState.deltaY > 110) {
+                targetImg.style.transform = `translateY(100vh) scale(0.6)`;
+                elements.lightbox.style.background = 'rgba(8, 8, 10, 0)';
+                setTimeout(() => {
+                    closeLightbox();
+                    elements.lightbox.style.background = '';
+                    targetImg.style.transform = '';
+                }, 260);
+            } 
+            // Horizontal swipe next/prev (Mais de 80px para as laterais)
+            else if (Math.abs(stfalconState.deltaX) > 80 && Math.abs(stfalconState.deltaY) < 60) {
+                if (stfalconState.deltaX < 0) nextLightbox();
+                else prevLightbox();
+                elements.lightbox.style.background = '';
+                targetImg.style.transform = '';
+            } 
+            // Return to center with spring physics
+            else {
+                elements.lightbox.style.background = '';
+                targetImg.style.transform = '';
+            }
+
+            stfalconState.deltaX = 0;
+            stfalconState.deltaY = 0;
+        };
+
+        targetImg.addEventListener('pointerup', handlePointerRelease);
+        targetImg.addEventListener('pointercancel', handlePointerRelease);
+
+        // Double-Tap / Double-Click to Zoom (Stfalcon Feature)
+        targetImg.addEventListener('click', (e) => {
+            const currentTime = new Date().getTime();
+            const tapLength = currentTime - stfalconState.lastTap;
+            if (tapLength < 300 && tapLength > 0) {
+                toggleZoom();
+                e.preventDefault();
+            }
+            stfalconState.lastTap = currentTime;
+        });
+
+        // Mouse Wheel Pinch-Zoom
+        targetImg.addEventListener('wheel', (e) => {
+            if (!elements.lightbox.classList.contains('active')) return;
+            e.preventDefault();
+            if (e.deltaY < 0) {
+                stfalconState.zoomScale = Math.min(3, stfalconState.zoomScale + 0.25);
+            } else {
+                stfalconState.zoomScale = Math.max(1, stfalconState.zoomScale - 0.25);
+            }
+
+            if (stfalconState.zoomScale > 1) {
+                targetImg.style.transform = `scale(${stfalconState.zoomScale})`;
+                lightboxState.isZoomed = true;
+            } else {
+                targetImg.style.transform = 'scale(1)';
+                lightboxState.isZoomed = false;
+            }
+        }, { passive: false });
+    }
 
     window.addEventListener('keydown', (e) => {
         if (!elements.lightbox.classList.contains('active')) return;

@@ -972,10 +972,18 @@ img {
 
 .lightbox-img-zoomable {
     max-width: 100%;
-    max-height: 80vh;
+    max-height: 82vh;
     object-fit: contain;
-    cursor: zoom-in;
-    transition: transform var(--transition-smooth);
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-drag: none;
+    will-change: transform;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lightbox-img-zoomable:active {
+    cursor: grabbing;
 }
 
 .lightbox-img-zoomable.zoomed {
