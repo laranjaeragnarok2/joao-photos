@@ -50,11 +50,20 @@ document.addEventListener('DOMContentLoaded', () => {
             elements.navMenu.classList.toggle('active');
         });
 
-        // Fechar ao clicar nos links do menu
+        // Fechar ao clicar nos links do menu e ativar categoria se houver data-category
         document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', () => {
-                elements.mobileMenuToggleBtn.classList.remove('active');
-                elements.navMenu.classList.remove('active');
+            link.addEventListener('click', (e) => {
+                if (elements.mobileMenuToggleBtn && elements.navMenu) {
+                    elements.mobileMenuToggleBtn.classList.remove('active');
+                    elements.navMenu.classList.remove('active');
+                }
+
+                const targetCat = link.getAttribute('data-category');
+                if (targetCat) {
+                    state.currentCategory = targetCat;
+                    updateFilterUI();
+                    applyFilterAndRender();
+                }
             });
         });
     }
