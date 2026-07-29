@@ -683,6 +683,7 @@ img {
 
 .lightbox.active {
     display: flex !important;
+    flex-direction: column;
     position: fixed;
     inset: 0;
     z-index: 1000;
@@ -929,15 +930,15 @@ img {
 }
 
 /* ==========================================================================
-   FICHA TÉCNICA EDITORIAL (#albumModalCredits)
+   FICHA TÉCNICA EDITORIAL (#albumModalCredits) — DESIGN HIGH-FASHION
    ========================================================================== */
 .editorial-credits-box {
-    background: var(--bg-secondary);
+    background: var(--bg-card);
     border: 1px solid var(--border-color);
-    border-radius: 8px;
+    border-radius: 6px;
     padding: 1.75rem 2rem;
-    margin-bottom: 2.5rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 }
 
 .credits-header {
@@ -945,39 +946,51 @@ img {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1.25rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 1px solid var(--border-hairline);
+    padding-bottom: 0.85rem;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .credits-title-badge {
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.2em;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--text-muted);
+    color: var(--text-primary);
 }
 
 .credits-year-tag {
     font-size: 0.8rem;
     font-weight: 600;
-    color: var(--text-secondary);
+    color: var(--text-muted);
 }
 
 .credits-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 1.25rem 2rem;
+}
+
+@media (max-width: 900px) {
+    .credits-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 500px) {
+    .credits-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 .credit-item {
     display: flex;
     flex-direction: column;
-    gap: 0.2rem;
+    gap: 0.3rem;
 }
 
 .credit-label {
-    font-size: 0.7rem;
-    font-weight: 600;
+    font-size: 0.65rem;
+    font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--text-muted);
@@ -985,44 +998,47 @@ img {
 
 .credit-value {
     font-size: 0.9rem;
-    font-weight: 500;
+    font-weight: 600;
     color: var(--text-primary);
 }
 
 .credits-actions {
     margin-top: 1.5rem;
-    padding-top: 1rem;
-    border-top: 1px dashed var(--border-hairline);
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border-color);
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: 1.25rem;
 }
 
 .credits-description {
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     color: var(--text-secondary);
     line-height: 1.6;
-    max-width: 800px;
+    max-width: 750px;
+    margin: 0;
 }
 
 .btn-credits-wa {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     font-weight: 700;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    padding: 0.6rem 1.2rem;
+    padding: 0.7rem 1.4rem;
     background: var(--text-primary);
     color: var(--bg-primary);
     border-radius: 4px;
-    transition: opacity var(--transition-fast);
+    border: none;
+    transition: opacity var(--transition-fast), transform var(--transition-fast);
 }
 
 .btn-credits-wa:hover {
-    opacity: 0.88;
+    opacity: 0.9;
+    transform: translateY(-2px);
 }
 
