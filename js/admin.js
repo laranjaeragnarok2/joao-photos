@@ -3,6 +3,33 @@
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
+    // 0. Camada de Segurança — Validação de PIN/Senha do Painel
+    const ADMIN_PIN = "2026";
+    let isAuthenticated = sessionStorage.getItem('admin_authenticated') === 'true';
+
+    if (!isAuthenticated) {
+        const userPin = prompt('🔒 Acesso Restrito — Digite o PIN de Segurança para acessar o Painel de Gestão:');
+        if (userPin === ADMIN_PIN) {
+            sessionStorage.setItem('admin_authenticated', 'true');
+            isAuthenticated = true;
+        } else {
+            alert('❌ PIN Incorreto. Acesso Negado.');
+            window.location.href = 'index.html';
+            return;
+        }
+    }
+
+    // Helper de Sanitização XSS
+    function escapeHTML(str) {
+        if (typeof str !== 'string') return str;
+        return str
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
     let localData = JSON.parse(JSON.stringify(PORTFOLIO_DATA));
     let activeEnsaioId = null;
 

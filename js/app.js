@@ -891,16 +891,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Helper de Sanitização XSS
+    function escapeHTML(str) {
+        if (typeof str !== 'string') return str;
+        return str
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
     if (sendTestimonialForm) {
         sendTestimonialForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const newTestimonial = {
                 id: 'test-' + Date.now(),
-                name: document.getElementById('testName').value,
-                ensaio: document.getElementById('testEnsaio').value,
+                name: escapeHTML(document.getElementById('testName').value),
+                ensaio: escapeHTML(document.getElementById('testEnsaio').value),
                 rating: parseInt(document.getElementById('testRating').value) || 5,
-                photo: document.getElementById('testPhoto').value || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80',
-                comment: document.getElementById('testComment').value,
+                photo: escapeHTML(document.getElementById('testPhoto').value) || 'assets/brand/avatar1.png',
+                comment: escapeHTML(document.getElementById('testComment').value),
                 status: 'pending',
                 date: new Date().toISOString().split('T')[0]
             };
@@ -915,6 +926,33 @@ document.addEventListener('DOMContentLoaded', () => {
             sendTestimonialModal.classList.remove('active');
             document.body.style.overflow = '';
         });
+    }
+
+    // Suporte a Gestos Touch (Swipe) no Carrossel de Depoimentos para Mobile
+    const carouselElem = document.getElementById('testimonialsCarousel');
+    if (carouselElem) {
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        carouselElem.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        carouselElem.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            const diff = touchEndX - touchStartX;
+            if (Math.abs(diff) > 45) {
+                if (diff < 0) {
+                    // Swipe para esquerda -> próximo
+                    const nextBtn = document.getElementById('testimonialNextBtn');
+                    if (nextBtn) nextBtn.click();
+                } else {
+                    // Swipe para direita -> anterior
+                    const prevBtn = document.getElementById('testimonialPrevBtn');
+                    if (prevBtn) prevBtn.click();
+                }
+            }
+        }, { passive: true });
     }
 
     // Initial Exec
