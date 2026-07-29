@@ -1,19 +1,17 @@
 /* ==========================================================================
-   JOÃO FELIPE PHOTOS - EDITORIAL OFF-WHITE APPLICATION LOGIC
+   JOÃO FELIPE PHOTOS - APPLICATION LOGIC
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Application State
     const state = {
         currentCategory: 'all',
         itemsPerPage: 20,
         currentPage: 1,
         filteredItems: [],
         lightboxIndex: 0,
-        theme: localStorage.getItem('theme') || 'light' // Default to light
+        theme: localStorage.getItem('theme') || 'light'
     };
 
-    // 2. DOM Elements
     const elements = {
         filterBar: document.getElementById('filterBar'),
         portfolioGrid: document.getElementById('portfolioGrid'),
@@ -35,11 +33,11 @@ document.addEventListener('DOMContentLoaded', () => {
         budgetForm: document.getElementById('budgetForm')
     };
 
-    // 3. Initialize Theme
+    // Initialize Theme
     document.documentElement.setAttribute('data-theme', state.theme);
     updateThemeIcon();
 
-    // 4. Render Filter Pills
+    // Render Filter Pills
     function renderFilters() {
         if (!elements.filterBar) return;
         elements.filterBar.innerHTML = '';
@@ -74,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 5. Filter & Render 2-Column Grid Items
+    // Filter & Render 2-Column Seamless Grid
     function applyFilterAndRender() {
         if (state.currentCategory === 'all') {
             state.filteredItems = [...PORTFOLIO_DATA.items];
@@ -103,21 +101,59 @@ document.addEventListener('DOMContentLoaded', () => {
         visibleItems.forEach((item, index) => {
             const gridItem = document.createElement('div');
             gridItem.className = 'grid-item';
+            gridItem.dataset.id = item.id;
+
+            // Find alternative photo in same category for hover dynamic thumbnail
+            const sameCategoryPhotos = state.filteredItems.filter(i => i.categoryId === item.categoryId && i.id !== item.id);
+            const altPhotoSrc = sameCategoryPhotos.length > 0 ? sameCategoryPhotos[index % sameCategoryPhotos.length].src : item.src;
+
             gridItem.innerHTML = `
-                <img src="${item.src}" alt="${item.title}" loading="lazy" />
+                <img src="${item.src}" alt="${item.title}" loading="lazy" class="main-thumb" data-original="${item.src}" data-alt="${altPhotoSrc}" />
+                
+                <!-- Desktop Overlay (Appears ONLY on hover) -->
                 <div class="item-overlay">
                     <div class="item-info">
                         <span class="item-category-tag">${item.categoryName}</span>
                         <h4 class="item-title-text">${item.title}</h4>
                     </div>
                 </div>
+
+                <!-- Mobile Responsive Caption Bar -->
+                <div class="mobile-caption">
+                    <h4 class="mobile-caption-title">${item.title}</h4>
+                    <span class="mobile-caption-cat">${item.categoryName}</span>
+                </div>
             `;
+
+            // Hover dynamic thumbnail animation
+            const imgEl = gridItem.querySelector('.main-thumb');
+            gridItem.addEventListener('mouseenter', () => {
+                const altSrc = imgEl.dataset.alt;
+                if (altSrc && altSrc !== imgEl.src) {
+                    imgEl.style.opacity = '0.7';
+                    setTimeout(() => {
+                        imgEl.src = altSrc;
+                        imgEl.style.opacity = '1';
+                    }, 150);
+                }
+            });
+
+            gridItem.addEventListener('mouseleave', () => {
+                const origSrc = imgEl.dataset.original;
+                if (origSrc && imgEl.src !== origSrc) {
+                    imgEl.style.opacity = '0.7';
+                    setTimeout(() => {
+                        imgEl.src = origSrc;
+                        imgEl.style.opacity = '1';
+                    }, 150);
+                }
+            });
 
             gridItem.addEventListener('click', () => openLightbox(index));
             elements.portfolioGrid.appendChild(gridItem);
         });
 
-        // Load More Button Visibility
+        // Load More Visibility
         if (elements.loadMoreWrap) {
             if (endIndex < state.filteredItems.length) {
                 elements.loadMoreWrap.style.display = 'flex';
@@ -134,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 6. Enhanced Web & Desktop Lightbox Modal Logic
+    // Enhanced Web & Desktop Lightbox Logic
     const lightboxState = {
         isZoomed: false,
         isInfoOpen: true
@@ -166,7 +202,6 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.lightboxTitle.textContent = item.title;
         elements.lightboxCategory.textContent = item.categoryName;
         
-        // Sidebar elements
         const sidebarTitle = document.getElementById('sidebarTitle');
         const sidebarCategory = document.getElementById('sidebarCategory');
         const sidebarDesc = document.getElementById('sidebarDescription');
@@ -207,13 +242,11 @@ document.addEventListener('DOMContentLoaded', () => {
         updateLightboxContent();
     }
 
-    // Toggle Zoom
     function toggleZoom() {
         lightboxState.isZoomed = !lightboxState.isZoomed;
         elements.lightboxImg.classList.toggle('zoomed', lightboxState.isZoomed);
     }
 
-    // Toggle Info Sidebar
     function toggleInfoSidebar() {
         const sidebar = document.getElementById('lightboxSidebar');
         if (sidebar) {
@@ -222,7 +255,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Toggle Fullscreen
     function toggleFullscreen() {
         if (!document.fullscreenElement) {
             elements.lightbox.requestFullscreen().catch(() => {});
@@ -244,7 +276,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (infoBtn) infoBtn.addEventListener('click', toggleInfoSidebar);
     if (fsBtn) fsBtn.addEventListener('click', toggleFullscreen);
 
-    // Enhanced Keyboard listener (Z, I, F, ESC, Arrows)
     window.addEventListener('keydown', (e) => {
         if (!elements.lightbox.classList.contains('active')) return;
         
@@ -257,7 +288,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (key === 'f') toggleFullscreen();
     });
 
-    // 7. Theme Switcher Logic
+    // Theme Switcher Logic
     function updateThemeIcon() {
         if (!elements.themeToggleBtn) return;
         elements.themeToggleBtn.textContent = state.theme === 'dark' ? '☀️' : '🌙';
@@ -272,7 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 8. Contact Modal Logic
+    // Modal Handlers
     elements.openModalBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             elements.contactModal.classList.add('active');
@@ -303,7 +334,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Initial Execution
+    // Initial Exec
     renderFilters();
     applyFilterAndRender();
 });
