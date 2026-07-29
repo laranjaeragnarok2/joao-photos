@@ -918,6 +918,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Initial Exec
+    const aboutPhotoElem = document.getElementById('aboutPhoto');
+    if (aboutPhotoElem && PORTFOLIO_DATA.photographer && PORTFOLIO_DATA.photographer.portrait) {
+        aboutPhotoElem.src = PORTFOLIO_DATA.photographer.portrait;
+    }
+
     renderFilters();
     renderTestimonials();
     applyFilterAndRender();
