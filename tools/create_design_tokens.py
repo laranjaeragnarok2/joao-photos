@@ -1,0 +1,39 @@
+import json
+
+tokens = {
+    "name": "João Felipe Photos Design System",
+    "colors": {
+        "background": {
+            "light": "#FFFFFF",
+            "dark": "#0A0A0A"
+        },
+        "text": {
+            "primary": "#1D1E20",
+            "secondary": "#727586",
+            "contrast": "#FFFFFF"
+        },
+        "border": "#DADCE0",
+        "accent": "#000000"
+    },
+    "typography": {
+        "fontFamily": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        "headings": {
+            "h1": {"fontSize": "2.5rem", "fontWeight": "700", "letterSpacing": "-0.02em"},
+            "h2": {"fontSize": "1.8rem", "fontWeight": "600", "letterSpacing": "-0.01em"},
+            "h3": {"fontSize": "1.25rem", "fontWeight": "500", "letterSpacing": "0em"}
+        },
+        "body": {"fontSize": "1rem", "lineHeight": "1.6"}
+    },
+    "brand": {
+        "name": "João Felipe Photos",
+        "social": {
+            "instagram": "https://www.instagram.com/joaofelipe.photos/",
+            "behance": "https://www.behance.net/joaofelipephotos"
+        }
+    }
+}
+
+with open("data/design_tokens.json", "w", encoding="utf-8") as f:
+    json.dump(tokens, f, indent=2, ensure_ascii=False)
+
+print("design_tokens.json generated!")
