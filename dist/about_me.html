@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sobre Mim — JOÃO FELIPE PHOTOS</title>
+  <meta name="description" content="Fotógrafo especialista em Moda, Editorial, Retratos Autorais e Gestacionais em Rio Verde, Goiás e atendimento global." />
+  
+  <link rel="icon" type="image/svg+xml" href="../assets/logo.svg" />
+  <link rel="stylesheet" href="../css/output.css" />
+  <link rel="stylesheet" href="../css/styles.css" />
+  
+  <!-- Alpine.js -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Signika:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-black text-white px-5 md:px-20 transition duration-500 min-h-screen flex flex-col justify-between">
+  <!-- Navbar -->
+  <header class="flex w-full overflow-hidden pt-8 pb-4">
+    <nav id="nav" x-data="{ open: false }" role="navigation" class="w-full">
+      <div class="container mx-auto flex flex-wrap items-center justify-between">
+        <a href="../index.html" class="flex items-center gap-3">
+          <img src="../assets/logo.svg" alt="João Felipe Photos" class="h-10 w-auto text-white" />
+        </a>
+        
+        <div class="md:hidden flex items-center">
+          <button onclick="menuToggle()" @click="open = !open" class="text-white w-6 h-6 relative focus:outline-none">
+            <span class="sr-only">Menu</span>
+            <div class="block w-6 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+              <span class="block absolute h-0.5 w-6 bg-current transform transition duration-500 ease-in-out" :class="{'rotate-45': open,' -translate-y-1.5': !open }"></span>
+              <span class="block absolute h-0.5 w-6 bg-current transform transition duration-500 ease-in-out" :class="{'opacity-0': open }"></span>
+              <span class="block absolute h-0.5 w-6 bg-current transform transition duration-500 ease-in-out" :class="{'-rotate-45': open, ' translate-y-1.5': !open}"></span>
+            </div>
+          </button>
+        </div>
+
+        <div id="menu" class="w-full h-0 transition-all ease-out duration-500 md:h-auto md:w-auto md:flex md:items-center">
+          <ul id="ulMenu" class="flex flex-col md:flex-row md:space-x-8 mt-5 md:mt-0 font-signika text-xl tracking-wider">
+            <li class="group transition duration-300 py-2 md:py-0">
+              <a href="../index.html" class="hover:text-neutral-300">PORTFÓLIO</a>
+            </li>
+            <li class="group transition duration-300 py-2 md:py-0">
+              <a href="about_me.html" class="text-white font-bold border-b-2 border-white pb-1">SOBRE MIM</a>
+            </li>
+            <li class="group transition duration-300 py-2 md:py-0">
+              <a href="contact.html" class="hover:text-neutral-300">CONTATO</a>
+            </li>
+            <li class="group transition duration-300 py-2 md:py-0">
+              <a href="../admin.html" class="hover:text-neutral-300 text-sm opacity-80">PAINEL ADMIN ↗</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Content -->
+  <main class="container mx-auto my-12">
+    <h1 class="text-4xl md:text-5xl font-bold font-signika mb-12 tracking-wide border-b border-neutral-800 pb-4">SOBRE MIM</h1>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+      <!-- Portrait Card Frame -->
+      <div class="flex justify-center">
+        <div class="bg-neutral-900 p-6 pb-24 shadow-2xl border border-neutral-800 transform -rotate-3 hover:rotate-0 transition duration-500 max-w-md w-full relative">
+          <img src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=800,fit=crop/Yle4978nxZCPJrgX/img-YNqqeVWexnFk3P73.jpg" alt="João Felipe Fotógrafo" class="w-full aspect-square object-cover shadow-inner" />
+          <div class="absolute bottom-6 left-0 right-0 text-center">
+            <p class="text-neutral-300 text-2xl font-semibold tracking-widest uppercase">João Felipe</p>
+            <p class="text-neutral-500 text-xs tracking-wider uppercase mt-1">Fotógrafo Editorial & Autoral</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Narrative -->
+      <div class="space-y-6 text-neutral-300 leading-relaxed text-lg">
+        <h2 class="text-3xl font-bold text-white font-signika">Olá, sou o João Felipe 👋</h2>
+        
+        <p>
+          Com base em <strong>Rio Verde, Goiás</strong>, e atendimento nacional e global, dedico minha trajetória a criar fotografias de impacto que unem <strong>estética editorial de alta moda</strong>, rigor na direção de luz e sensibilidade artística.
+        </p>
+
+        <p>
+          Sou criador do projeto autoral <strong>In and Out — Reposicionamentos com Autenticidade</strong>, uma experiência fotográfica concebida para quem deseja registrar momentos marcantes, reafirmar sua identidade ou reposicionar sua imagem pessoal e profissional através de retratos expressivos.
+        </p>
+
+        <p>
+          Cada ensaio — seja de Moda, Editorial, Gestacional ou Publicitário — nasce da escuta atenta, direção precisa de cena e busca contínua por composições atemporais que valorizem quem passa pela minha lente.
+        </p>
+
+        <div class="pt-6 flex flex-wrap gap-4">
+          <a href="contact.html" class="px-8 py-3 bg-white text-black font-bold uppercase text-sm tracking-wider hover:bg-neutral-200 transition">Solicitar Orçamento</a>
+          <a href="https://wa.me/5511999999999?text=Ol%C3%A1%20Jo%C3%A3o%20Felipe!" target="_blank" rel="noopener" class="px-8 py-3 border border-neutral-700 text-white font-bold uppercase text-sm tracking-wider hover:border-white transition">WhatsApp ↗</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-neutral-900 py-8 text-center text-neutral-500 text-sm">
+    <p>© 2026 João Felipe Photos • Rio Verde, GO • Atendimento Brasil & Global</p>
+  </footer>
+
+  <script src="../js/menu.js"></script>
+</body>
+</html>

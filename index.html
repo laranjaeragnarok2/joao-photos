@@ -1,366 +1,277 @@
 <!DOCTYPE html>
-<html lang="pt-BR" data-theme="light">
+<html lang="pt-BR" class="scroll-smooth">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- SEO Meta Tags -->
-    <title>JOÃO FELIPE — Fotografia de Moda, Editorial & Retratos Autorais</title>
-    <meta name="description" content="Portfólio de fotografia de moda, editorial, retratos autorais, gestacionais e projetos publicitários por João Felipe em Rio Verde, Goiás e atendimento global.">
-    
-    <!-- Font Inter (Exclusiva) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- JSON-LD SEO Structured Data -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Photographer",
-      "name": "João Felipe Photos",
-      "url": "https://joaofelipephotos.com/",
-      "image": "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=800,fit=crop/Yle4978nxZCPJrgX/img-YNqqeVWexnFk3P73.jpg",
-      "description": "Fotografia de Moda, Editorial, Retratos Autorais, Gestacionais e Projetos Publicitários por João Felipe.",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Rio Verde",
-        "addressRegion": "GO",
-        "addressCountry": "BR"
-      },
-      "sameAs": [
-        "https://www.instagram.com/joaofelipe.photos/",
-        "https://www.behance.net/joaofelipephotos"
-      ]
-    }
-    </script>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JOÃO FELIPE — Fotografia de Moda, Editorial & Retratos Autorais</title>
+  <meta name="description" content="Portfólio de fotografia de moda, editorial, retratos autorais e gestacionais por João Felipe em Rio Verde, Goiás e atendimento global." />
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
+  <link rel="stylesheet" href="css/output.css" />
+  <link rel="stylesheet" href="css/styles.css" />
+  
+  <!-- Alpine.js -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Signika:wght@400;700&display=swap" rel="stylesheet">
+  
+  <!-- Fancybox 5 (Galeria Zoom Imersiva) -->
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Custom Stylesheet -->
-    <link rel="stylesheet" href="css/styles.css">
+  <!-- JSON-LD SEO Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Photographer",
+    "name": "João Felipe Photos",
+    "url": "https://joaofelipephotos.com/",
+    "image": "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=800,fit=crop/Yle4978nxZCPJrgX/img-YNqqeVWexnFk3P73.jpg",
+    "description": "Fotografia de Moda, Editorial, Retratos Autorais, Gestacionais e Projetos Publicitários por João Felipe.",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Rio Verde",
+      "addressRegion": "GO",
+      "addressCountry": "BR"
+    },
+    "sameAs": [
+      "https://www.instagram.com/joaofelipe.photos/",
+      "https://www.behance.net/joaofelipephotos"
+    ]
+  }
+  </script>
 </head>
-<body>
 
-    <!-- Custom Editorial Floating Cursor -->
-    <div class="custom-cursor" id="customCursor">
-        <span class="cursor-label" id="cursorLabel"></span>
+<body class="bg-black text-white px-4 md:px-16 transition duration-500 opacity-0 animate-fade-in min-h-screen flex flex-col justify-between">
+
+  <!-- Custom Floating Cursor -->
+  <div class="custom-cursor" id="customCursor">
+    <span class="cursor-label" id="cursorLabel"></span>
+  </div>
+
+  <!-- Header / Navbar -->
+  <header class="flex w-full overflow-hidden pt-8 pb-4 border-b border-neutral-900">
+    <nav id="nav" x-data="{ open: false }" role="navigation" class="w-full">
+      <div class="container mx-auto flex flex-wrap items-center justify-between">
+        <a href="index.html" class="flex items-center gap-3">
+          <img src="assets/logo.svg" alt="João Felipe Photos" class="h-10 w-auto text-white" />
+        </a>
+        
+        <div class="md:hidden flex items-center">
+          <button onclick="menuToggle()" @click="open = !open" class="text-white w-6 h-6 relative focus:outline-none">
+            <span class="sr-only">Menu</span>
+            <div class="block w-6 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+              <span class="block absolute h-0.5 w-6 bg-current transform transition duration-500 ease-in-out" :class="{'rotate-45': open,' -translate-y-1.5': !open }"></span>
+              <span class="block absolute h-0.5 w-6 bg-current transform transition duration-500 ease-in-out" :class="{'opacity-0': open }"></span>
+              <span class="block absolute h-0.5 w-6 bg-current transform transition duration-500 ease-in-out" :class="{'-rotate-45': open, ' translate-y-1.5': !open}"></span>
+            </div>
+          </button>
+        </div>
+
+        <div id="menu" class="w-full h-0 transition-all ease-out duration-500 md:h-auto md:w-auto md:flex md:items-center">
+          <ul id="ulMenu" class="flex flex-col md:flex-row md:space-x-8 mt-5 md:mt-0 font-signika text-xl tracking-wider">
+            <li class="group transition duration-300 py-2 md:py-0">
+              <a href="index.html" class="text-white font-bold border-b-2 border-white pb-1">PORTFÓLIO</a>
+            </li>
+            <li class="group transition duration-300 py-2 md:py-0">
+              <a href="dist/about_me.html" class="hover:text-neutral-300">SOBRE MIM</a>
+            </li>
+            <li class="group transition duration-300 py-2 md:py-0">
+              <a href="dist/contact.html" class="hover:text-neutral-300">CONTATO</a>
+            </li>
+            <li class="group transition duration-300 py-2 md:py-0">
+              <a href="#" class="hover:text-neutral-300 open-client-portal-btn">ÁREA DO CLIENTE</a>
+            </li>
+            <li class="group transition duration-300 py-2 md:py-0">
+              <a href="admin.html" class="hover:text-neutral-300 text-sm opacity-80">PAINEL ADMIN ↗</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero & Category Bar -->
+  <main class="container mx-auto my-8">
+    <div class="flex flex-col md:flex-row md:items-end justify-between pt-6 pb-8 border-b border-neutral-900 gap-6">
+      <div>
+        <h1 class="text-4xl md:text-6xl font-bold font-signika tracking-wide">PORTFÓLIO EDITORIAL</h1>
+        <p class="text-neutral-400 mt-2 text-base md:text-lg">Fotografia de Moda, Retratos Autorais & Reposicionamento de Imagem em Rio Verde, GO</p>
+      </div>
+
+      <!-- Category Filter Pills -->
+      <div class="flex flex-wrap gap-2" id="categoryFilterBar">
+        <!-- Rendered dynamically -->
+      </div>
     </div>
 
-    <!-- 1. Navbar -->
-    <header class="navbar">
-        <div class="nav-container">
-            <a href="#" class="brand-name" aria-label="João Felipe Photos Home">
-                <img src="assets/logo.svg" alt="João Felipe Photos" class="brand-logo-img" />
-            </a>
+    <!-- Asymmetric Editorial Mosaic Gallery -->
+    <section class="mt-8">
+      <div class="flex flex-wrap w-full -m-1" id="mosaicGalleryContainer">
+        <!-- Dynamic Photo Tiles Rendered via JS -->
+      </div>
+    </section>
+  </main>
 
-            <nav>
-                <ul class="nav-menu" id="navMenu">
-                    <li><a href="#hero" class="nav-link">Início</a></li>
-                    <li><a href="#ensaios" class="nav-link nav-filter-trigger" data-category="in-and-out">In and Out</a></li>
-                    <li><a href="#ensaios" class="nav-link active">Ensaios</a></li>
-                    <li><a href="#sobre" class="nav-link">Sobre</a></li>
-                    <li><a href="#depoimentos" class="nav-link">Depoimentos</a></li>
-                    <li><a href="#" class="nav-link open-client-portal-btn">Área do Cliente</a></li>
-                </ul>
-            </nav>
+  <!-- Client Portal Password Modal -->
+  <div class="modal" id="clientPortalModal">
+    <div class="modal-box bg-neutral-900 border border-neutral-800 p-8 rounded-lg">
+      <div class="modal-header flex justify-between items-center mb-6">
+        <h3 class="modal-title text-xl font-bold font-signika text-white">Área do Cliente — Acesso Privado</h3>
+        <button id="closeClientModalBtn" class="text-2xl text-neutral-400 hover:text-white">&times;</button>
+      </div>
 
-            <div class="nav-actions">
-                <button class="theme-btn" id="themeToggleBtn" aria-label="Alternar Tema">
-                    🌙
-                </button>
-                <button class="btn-contact open-modal-btn">Agendamento</button>
-                <button class="mobile-menu-toggle" id="mobileMenuToggleBtn" aria-label="Abrir Menu">
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <main>
-        <!-- 2. Fullscreen 100vh Hero Section -->
-        <section class="hero-fullscreen" id="hero">
-            <div class="hero-bg-wrapper" id="heroBgWrapper">
-                <img src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1600,fit=crop,q=95/Yle4978nxZCPJrgX/img_3553-Yan0v2KMoxflbgwg.jpg" alt="João Felipe Editorial Photography" class="hero-bg-img active" />
-                <img src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1600,fit=crop/Yle4978nxZCPJrgX/previa-2-YNqMlDMePBHBOnw2.jpg" alt="Projeto In and Out Retratos" class="hero-bg-img" />
-                <img src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1600,fit=crop/Yle4978nxZCPJrgX/j-m-1lt-fh3pbfe-unsplash-AE07NxR342tPo6a1.jpg" alt="Fashion Editorial Photography" class="hero-bg-img" />
-            </div>
-            <div class="hero-overlay"></div>
-
-            <div class="hero-content">
-                <h1 class="hero-main-title">João Felipe</h1>
-                <p class="hero-tagline">
-                    Fotografia de Moda, Editorial & Retratos Autorais • Rio Verde, GO & Atendimento Global
-                </p>
-
-                <div class="hero-social-links">
-                    <a href="https://wa.me/5511999999999?text=Ol%C3%A1%20Jo%C3%A3o%20Felipe!" target="_blank" rel="noopener" class="hero-social-link">
-                        <span>WhatsApp</span>
-                    </a>
-                    <span>•</span>
-                    <a href="https://www.instagram.com/joaofelipe.photos/" target="_blank" rel="noopener" class="hero-social-link">
-                        <span>Instagram</span>
-                    </a>
-                    <span>•</span>
-                    <a href="https://www.behance.net/joaofelipephotos" target="_blank" rel="noopener" class="hero-social-link">
-                        <span>Behance</span>
-                    </a>
-                </div>
-
-                <div class="hero-cta-group">
-                    <button class="btn-hero-primary open-modal-btn">Solicitar Orçamento / Agendamento</button>
-                    <a href="#ensaios" class="btn-hero-outline">Explorar Ensaios</a>
-                </div>
-            </div>
-
-            <div class="scroll-indicator">
-                <span>Explorar</span>
-                <span>↓</span>
-            </div>
-        </section>
-
-        <!-- 4. Editorial Marquee Strip -->
-        <section class="marquee-section">
-            <div class="marquee-content">
-                <span>FASHION & EDITORIAL</span> • 
-                <span>GESTACIONAIS DE ALTO PADRÃO</span> • 
-                <span>CAMPANHAS PUBLICITÁRIAS</span> • 
-                <span>EVENTOS CORPORATIVOS</span> • 
-                <span>RETRATOS AUTORAIS</span> • 
-                <span>RIO VERDE - GO & BRASIL</span> • 
-                <span>FASHION & EDITORIAL</span>
-            </div>
-        </section>
-
-        <!-- 5. Sticky Category Filter Bar -->
-        <div class="filter-wrapper" id="ensaios">
-            <div class="filter-bar" id="filterBar">
-                <!-- Category Filter Pills rendered dynamically -->
-            </div>
+      <form id="clientPortalForm" class="space-y-4">
+        <div class="form-group">
+          <label class="form-label text-xs uppercase tracking-wider text-neutral-400" for="clientCode">Senha do Ensaio</label>
+          <input type="password" id="clientCode" class="form-input bg-black border border-neutral-800 p-3 rounded text-white w-full focus:outline-none focus:border-white" placeholder="Ex: JOAO2026, GESTAO2026" required />
         </div>
 
-        <!-- 6. Galeria de Ensaios (Grid com Capa de Cada Ensaio) -->
-        <section class="ensaios-section">
-            <div class="ensaios-grid" id="ensaiosGrid">
-                <!-- Ensaios Cards rendered dynamically by app.js -->
-            </div>
-        </section>
-
-        <!-- 7. Depoimentos de Clientes -->
-        <section id="depoimentos" style="padding: 5rem 2rem; max-width: 1200px; margin: 0 auto; border-top: 1px solid var(--border-color);">
-            <div style="text-align: center; margin-bottom: 3rem;">
-                <span style="font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted);">Depoimentos</span>
-                <h2 style="font-size: 2rem; font-weight: 700; letter-spacing: -0.01em; margin-top: 0.3rem;">O Que Dizem os Clientes</h2>
-            </div>
-
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;" id="testimonialsGrid">
-                <!-- Rendered dynamically by app.js -->
-            </div>
-        </section>
-
-        <!-- 8. Sobre o Fotógrafo Section (Posicionada antes do rodapé) -->
-        <section class="about-section" id="sobre">
-            <div style="border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0,0,0,0.08);">
-                <img src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=800,fit=crop/Yle4978nxZCPJrgX/img-YNqqeVWexnFk3P73.jpg" alt="João Felipe Fotógrafo em Rio Verde" />
-            </div>
-
-            <div>
-                <span style="font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted);">Sobre o Fotógrafo</span>
-                <h2 style="font-size: 2.5rem; font-weight: 800; margin: 0.4rem 0 1.2rem 0;">João Felipe</h2>
-                <p style="font-size: 1.05rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 1.5rem;">
-                    Com sede em Rio Verde, Goiás, e atendimento nacional e global, atuo na criação de imagens marcantes para marcas de moda, campanhas publicitárias, gestantes e retratos autorais com reposicionamento de imagem.
-                </p>
-                <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 2rem;">
-                    Inspirado pelo projeto autoral <strong>In and Out</strong> — focado em reposicionamentos com autenticidade —, cada ensaio une escuta atenta, direção precisa e rigor técnico na iluminação para transformar histórias em acervos visuais memoráveis.
-                </p>
-
-                <div style="display: flex; gap: 1rem;">
-                    <button class="btn-contact open-modal-btn">Agendar Ensaio</button>
-                    <a href="https://www.instagram.com/joaofelipe.photos/" target="_blank" rel="noopener" class="btn-contact" style="border-color: var(--border-color);">Instagram ↗</a>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- 9. Full-Screen Ensaio Viewer Modal (#albumModal) -->
-    <div class="album-modal" id="albumModal" role="dialog">
-        <div class="album-modal-header">
-            <div class="album-modal-title-wrap">
-                <span id="albumModalCategory">CATEGORIA</span>
-                <h3 id="albumModalTitle">Título do Ensaio</h3>
-            </div>
-            <button id="closeAlbumModalBtn" style="font-size: 1.8rem; color: var(--text-primary); cursor: pointer;" aria-label="Fechar">&times;</button>
-        </div>
-
-        <div style="padding: 1.5rem 0 4rem 0; width: 100%; margin: 0;">
-            <!-- Ficha Técnica Editorial Renderizada Dinamicamente (Com margem própria) -->
-            <div class="editorial-credits-box" id="albumModalCredits" style="margin: 0 1.5rem 2rem 1.5rem;"></div>
-
-            <div class="editorial-mosaic-grid" id="albumPhotosGrid">
-                <!-- Photos of this specific Ensaio rendered dynamically in asymmetric mosaic -->
-            </div>
-        </div>
+        <button type="submit" class="w-full py-3 bg-white text-black font-bold uppercase text-xs tracking-widest hover:bg-neutral-200 transition rounded">
+          Acessar Galeria Privada
+        </button>
+      </form>
     </div>
+  </div>
 
-    <!-- 9. Enhanced Fullscreen Lightbox Modal -->
-    <div class="lightbox" id="lightboxModal" role="dialog" tabindex="-1">
-        <div class="lightbox-toolbar">
-            <div class="lightbox-brand">
-                <span class="lightbox-category" id="lightboxCategory">FASHION & EDITORIAL</span>
-                <span class="lightbox-title-short" id="lightboxTitle">Título da Fotografia</span>
-            </div>
-
-            <div class="lightbox-shortcuts-hint">
-                <span><kbd>←</kbd> <kbd>→</kbd> Navegar</span>
-                <span><kbd>Z</kbd> Zoom</span>
-                <span><kbd>I</kbd> Info</span>
-                <span><kbd>F</kbd> Tela Cheia</span>
-                <span><kbd>ESC</kbd> Fechar</span>
-            </div>
-
-            <div class="lightbox-toolbar-actions">
-                <button class="tb-btn" id="lightboxZoomBtn" title="Zoom (Z)">🔍 Zoom</button>
-                <button class="tb-btn" id="lightboxInfoBtn" title="Detalhes (I)">ℹ️ Detalhes</button>
-                <button class="tb-btn" id="lightboxFullscreenBtn" title="Fullscreen (F)">⛶ Fullscreen</button>
-                <button class="tb-btn tb-close" id="lightboxClose" title="Fechar (ESC)">&times;</button>
-            </div>
-        </div>
-
-        <div class="lightbox-stage">
-            <button class="lightbox-nav lightbox-prev" id="lightboxPrev" title="Anterior">&lsaquo;</button>
-            
-            <div class="lightbox-img-wrapper" id="lightboxImgWrapper">
-                <img src="" alt="" id="lightboxImg" class="lightbox-img-zoomable" />
-            </div>
-
-            <button class="lightbox-nav lightbox-next" id="lightboxNext" title="Próxima">&rsaquo;</button>
-
-            <aside class="lightbox-sidebar active" id="lightboxSidebar">
-                <div class="sidebar-content">
-                    <span class="sidebar-cat-badge" id="sidebarCategory">Fashion</span>
-                    <h3 class="sidebar-photo-title" id="sidebarTitle">Título da Fotografia</h3>
-                    <p class="sidebar-description" id="sidebarDescription">Ensaio fotográfico autoral com direção de iluminação de alto contraste.</p>
-                    
-                    <div class="sidebar-tags-container" id="sidebarTags">
-                        <!-- Tags rendered dynamically -->
-                    </div>
-
-                    <div class="sidebar-meta-row">
-                        <span class="sidebar-counter" id="lightboxCounter">1 / 467</span>
-                    </div>
-
-                    <div class="sidebar-cta-box">
-                        <a href="#" target="_blank" rel="noopener" id="lightboxShareWa" class="btn-contact" style="width: 100%; text-align: center; display: block; background: #25d366; color: #fff; border: none;">
-                            Consultar este Ensaio no WhatsApp
-                        </a>
-                    </div>
-                </div>
-            </aside>
-        </div>
+  <!-- Footer -->
+  <footer class="border-t border-neutral-900 py-10 mt-16 text-center text-neutral-500 text-sm">
+    <div class="container mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+      <p>© 2026 João Felipe Photos • Rio Verde, GO & Atendimento Global</p>
+      <div class="flex gap-6">
+        <a href="https://www.instagram.com/joaofelipe.photos/" target="_blank" class="hover:text-white transition">Instagram</a>
+        <a href="https://www.behance.net/joaofelipephotos" target="_blank" class="hover:text-white transition">Behance</a>
+        <a href="admin.html" class="hover:text-white transition">Painel Administrativo</a>
+      </div>
     </div>
+  </footer>
 
-    <!-- 10. Client Portal Password Entry Modal -->
-    <div class="modal" id="clientPortalModal">
-        <div class="modal-box">
-            <div class="modal-header">
-                <h3 class="modal-title">Área do Cliente — Acesso Privado</h3>
-                <button id="closeClientModalBtn" style="font-size: 1.5rem; color: var(--text-primary);">&times;</button>
-            </div>
+  <!-- Scripts -->
+  <script src="js/portfolio_data.js"></script>
+  <script src="js/menu.js"></script>
+  <script src="js/fade_in.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      let currentCategory = 'all';
 
-            <form id="clientPortalForm">
-                <div class="form-group">
-                    <label class="form-label" for="clientCode">Código / Senha do Ensaio</label>
-                    <input type="password" id="clientCode" class="form-input" placeholder="Digite sua senha (Ex: JOAO2026, GESTAO2026)" required />
+      // Fancybox 5 Initialization
+      Fancybox.bind("[data-fancybox='gallery']", {
+        Toolbar: {
+          display: {
+            left: ["infobar"],
+            middle: [],
+            right: ["slideshow", "fullscreen", "thumbs", "close"],
+          },
+        },
+      });
+
+      // Render Category Filter Bar
+      const filterBar = document.getElementById('categoryFilterBar');
+      if (filterBar && PORTFOLIO_DATA.categories) {
+        filterBar.innerHTML = '';
+        PORTFOLIO_DATA.categories.forEach(cat => {
+          const btn = document.createElement('button');
+          btn.className = `px-4 py-2 text-xs font-bold uppercase tracking-wider rounded border transition ${cat.id === currentCategory ? 'bg-white text-black border-white' : 'border-neutral-800 text-neutral-400 hover:border-neutral-600 hover:text-white'}`;
+          btn.textContent = cat.name;
+          btn.addEventListener('click', () => {
+            currentCategory = cat.id;
+            updateFilterButtons();
+            renderMosaicGallery();
+          });
+          filterBar.appendChild(btn);
+        });
+      }
+
+      function updateFilterButtons() {
+        const btns = filterBar.querySelectorAll('button');
+        btns.forEach((btn, idx) => {
+          const cat = PORTFOLIO_DATA.categories[idx];
+          if (cat) {
+            btn.className = `px-4 py-2 text-xs font-bold uppercase tracking-wider rounded border transition ${cat.id === currentCategory ? 'bg-white text-black border-white' : 'border-neutral-800 text-neutral-400 hover:border-neutral-600 hover:text-white'}`;
+          }
+        });
+      }
+
+      // Render Asymmetric Mosaic Gallery
+      function renderMosaicGallery() {
+        const container = document.getElementById('mosaicGalleryContainer');
+        if (!container) return;
+        container.innerHTML = '';
+
+        // Extract photos based on selected category
+        let allPhotos = [];
+        PORTFOLIO_DATA.ensaios.forEach(ensaio => {
+          if (currentCategory === 'all' || ensaio.category === currentCategory) {
+            if (ensaio.photos) {
+              allPhotos.push(...ensaio.photos);
+            }
+          }
+        });
+
+        // Fallback if no photos
+        if (allPhotos.length === 0) {
+          container.innerHTML = `<div class="p-12 text-center text-neutral-500 w-full">Nenhuma fotografia encontrada nesta categoria.</div>`;
+          return;
+        }
+
+        allPhotos.forEach((photo, idx) => {
+          const isFullWidth = (idx % 7 === 0);
+          const isHalfWidth = (idx % 7 === 1 || idx % 7 === 2);
+          
+          let widthClass = "w-full md:w-1/3";
+          if (isFullWidth) widthClass = "w-full";
+          else if (isHalfWidth) widthClass = "w-full md:w-1/2";
+
+          const tile = document.createElement('div');
+          tile.className = `${widthClass} p-1 opacity-0 animate-fade-in`;
+          tile.innerHTML = `
+            <div class="overflow-hidden h-full w-full bg-neutral-900 group relative">
+              <a href="${photo.src}" data-fancybox="gallery" data-caption="${photo.title} • ${photo.categoryName || 'João Felipe Photos'}">
+                <img alt="${photo.title}" class="block h-full w-full object-cover object-center transform scale-100 group-hover:scale-105 transition duration-700 ease-out min-h-[320px] max-h-[75vh]" src="${photo.src}" loading="lazy" />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex flex-col justify-end p-6">
+                  <span class="text-xs uppercase tracking-widest text-neutral-400 font-semibold">${photo.categoryName || 'Editorial'}</span>
+                  <h3 class="text-lg font-bold text-white">${photo.title}</h3>
                 </div>
-
-                <button type="submit" class="btn-contact" style="width: 100%; margin-top: 1rem; background: var(--text-primary); color: var(--bg-primary);">
-                    Acessar Galeria Privada
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- 10b. Private Client Gallery View Modal (#privateGalleryModal) -->
-    <div class="album-modal" id="privateGalleryModal" role="dialog">
-        <div class="album-modal-header">
-            <div class="album-modal-title-wrap">
-                <span id="privateClientName">CLIENTE</span>
-                <h3 id="privateGalleryTitle">Ensaio Privado</h3>
+              </a>
             </div>
+          `;
+          container.appendChild(tile);
+        });
 
-            <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
-                <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);">
-                    ❤️ Selecionadas: <strong id="selectedPhotoCount" style="color: var(--text-primary);">0</strong>
-                </span>
-                <button id="sendSelectionWaBtn" class="btn-contact" style="background: #25d366; color: #fff; border: none; font-size: 0.75rem;">
-                    💬 Enviar Seleção para WhatsApp
-                </button>
-                <a href="#" target="_blank" rel="noopener" id="privateDownloadBtn" class="btn-contact" style="border-color: var(--border-color); font-size: 0.75rem;">
-                    ⬇ Baixar Alta Resolução
-                </a>
-                <button id="closePrivateGalleryBtn" style="font-size: 1.8rem; color: var(--text-primary); cursor: pointer;" aria-label="Fechar">&times;</button>
-            </div>
-        </div>
+        // Trigger fade in animation
+        if (window.fadeInObserver) {
+          document.querySelectorAll('.animate-fade-in').forEach(el => window.fadeInObserver.observe(el));
+        }
+      }
 
-        <div style="padding: 2rem; max-width: var(--max-width); margin: 0 auto; width: 100%;">
-            <div class="seamless-2col-grid" id="privatePhotosGrid">
-                <!-- Client private photos rendered dynamically -->
-            </div>
-        </div>
-    </div>
+      // Initial Render
+      renderMosaicGallery();
 
-    <!-- 11. Budget / Booking Request Modal -->
-    <div class="modal" id="contactModal">
-        <div class="modal-box">
-            <div class="modal-header">
-                <h3 class="modal-title">Solicitar Orçamento / Agendamento</h3>
-                <button id="closeModalBtn" style="font-size: 1.5rem; color: var(--text-primary);">&times;</button>
-            </div>
+      // Client Portal Modal Handlers
+      const clientBtns = document.querySelectorAll('.open-client-portal-btn');
+      const clientModal = document.getElementById('clientPortalModal');
+      const closeClientBtn = document.getElementById('closeClientModalBtn');
 
-            <form id="budgetForm">
-                <div class="form-group">
-                    <label class="form-label" for="inputName">Nome / Marca</label>
-                    <input type="text" id="inputName" class="form-input" placeholder="Seu nome ou empresa" required />
-                </div>
+      clientBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          if (clientModal) clientModal.classList.add('active');
+        });
+      });
 
-                <div class="form-group">
-                    <label class="form-label" for="selectCategory">Tipo de Ensaio / Produção</label>
-                    <select id="selectCategory" class="form-select" required>
-                        <option value="Fashion & Editorial">Fashion & Editorial</option>
-                        <option value="Gestacionais">Gestacionais</option>
-                        <option value="Publicitários">Publicitários</option>
-                        <option value="Eventos Corporativos">Eventos Corporativos</option>
-                        <option value="Autorais">Autorais & Fine Art</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="inputMessage">Mensagem / Detalhes</label>
-                    <textarea id="inputMessage" class="form-textarea" rows="3" placeholder="Descreva suas ideias ou localização..." required></textarea>
-                </div>
-
-                <button type="submit" class="btn-contact" style="width: 100%; margin-top: 1rem; background: var(--text-primary); color: var(--bg-primary);">
-                    Enviar para WhatsApp
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- 12. Floating WhatsApp -->
-    <a href="https://wa.me/5511999999999?text=Ol%C3%A1%20Jo%C3%A3o%20Felipe,%20gostaria%20de%20solicitar%20um%20or%C3%A7amento." target="_blank" rel="noopener" class="floating-wa" aria-label="WhatsApp">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
-        </svg>
-    </a>
-
-    <!-- 13. Footer -->
-    <footer class="footer">
-        <p>
-            &copy; 2026 João Felipe Photos. Todos os direitos reservados. • Rio Verde, GO — Brasil
-            <span style="margin: 0 0.5rem; opacity: 0.5;">•</span>
-            <a href="admin.html" class="admin-footer-link" style="text-decoration: underline; color: var(--text-muted); font-size: 0.8rem;">Painel Administrativo</a>
-        </p>
-    </footer>
-
-    <!-- Scripts -->
-    <script src="js/portfolio_data.js"></script>
-    <script src="js/app.js"></script>
+      if (closeClientBtn && clientModal) {
+        closeClientBtn.addEventListener('click', () => {
+          clientModal.classList.remove('active');
+        });
+      }
+    });
+  </script>
 </body>
 </html>

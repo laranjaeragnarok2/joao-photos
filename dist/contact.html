@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contato & Agendamentos — JOÃO FELIPE PHOTOS</title>
+  <meta name="description" content="Entre em contato com João Felipe para orçamentos de ensaios de Moda, Editorial, Gestacionais e Retratos em Rio Verde, GO." />
+  
+  <link rel="icon" type="image/svg+xml" href="../assets/logo.svg" />
+  <link rel="stylesheet" href="../css/output.css" />
+  <link rel="stylesheet" href="../css/styles.css" />
+  
+  <!-- Alpine.js -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Signika:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-black text-white px-5 md:px-20 transition duration-500 min-h-screen flex flex-col justify-between">
+  <!-- Navbar -->
+  <header class="flex w-full overflow-hidden pt-8 pb-4">
+    <nav id="nav" x-data="{ open: false }" role="navigation" class="w-full">
+      <div class="container mx-auto flex flex-wrap items-center justify-between">
+        <a href="../index.html" class="flex items-center gap-3">
+          <img src="../assets/logo.svg" alt="João Felipe Photos" class="h-10 w-auto text-white" />
+        </a>
+        
+        <div class="md:hidden flex items-center">
+          <button onclick="menuToggle()" @click="open = !open" class="text-white w-6 h-6 relative focus:outline-none">
+            <span class="sr-only">Menu</span>
+            <div class="block w-6 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+              <span class="block absolute h-0.5 w-6 bg-current transform transition duration-500 ease-in-out" :class="{'rotate-45': open,' -translate-y-1.5': !open }"></span>
+              <span class="block absolute h-0.5 w-6 bg-current transform transition duration-500 ease-in-out" :class="{'opacity-0': open }"></span>
+              <span class="block absolute h-0.5 w-6 bg-current transform transition duration-500 ease-in-out" :class="{'-rotate-45': open, ' translate-y-1.5': !open}"></span>
+            </div>
+          </button>
+        </div>
+
+        <div id="menu" class="w-full h-0 transition-all ease-out duration-500 md:h-auto md:w-auto md:flex md:items-center">
+          <ul id="ulMenu" class="flex flex-col md:flex-row md:space-x-8 mt-5 md:mt-0 font-signika text-xl tracking-wider">
+            <li class="group transition duration-300 py-2 md:py-0">
+              <a href="../index.html" class="hover:text-neutral-300">PORTFÓLIO</a>
+            </li>
+            <li class="group transition duration-300 py-2 md:py-0">
+              <a href="about_me.html" class="hover:text-neutral-300">SOBRE MIM</a>
+            </li>
+            <li class="group transition duration-300 py-2 md:py-0">
+              <a href="contact.html" class="text-white font-bold border-b-2 border-white pb-1">CONTATO</a>
+            </li>
+            <li class="group transition duration-300 py-2 md:py-0">
+              <a href="../admin.html" class="hover:text-neutral-300 text-sm opacity-80">PAINEL ADMIN ↗</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Content -->
+  <main class="container mx-auto my-12">
+    <h1 class="text-4xl md:text-5xl font-bold font-signika mb-12 tracking-wide border-b border-neutral-800 pb-4">CONTATO & ORÇAMENTOS</h1>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
+      <!-- Contact Form -->
+      <section>
+        <p class="text-neutral-400 mb-8 text-lg">
+          Preencha os dados abaixo para solicitar informações sobre ensaios, produções editoriais e disponibilidade de agenda.
+        </p>
+
+        <form class="space-y-6" id="contactPageForm">
+          <div>
+            <label for="contactName" class="block mb-2 text-sm font-semibold uppercase tracking-wider text-neutral-300">Seu Nome / Empresa</label>
+            <input type="text" id="contactName" class="bg-neutral-900 border border-neutral-800 text-white text-sm rounded-md block w-full p-3.5 focus:border-white focus:outline-none" placeholder="Ex: Camila Siqueira / Vogue" required />
+          </div>
+          
+          <div>
+            <label for="contactCategory" class="block mb-2 text-sm font-semibold uppercase tracking-wider text-neutral-300">Tipo de Ensaio / Produção</label>
+            <select id="contactCategory" class="bg-neutral-900 border border-neutral-800 text-white text-sm rounded-md block w-full p-3.5 focus:border-white focus:outline-none" required>
+              <option value="In and Out">In and Out (Retratos & Reposicionamento)</option>
+              <option value="Fashion & Editorial">Fashion & Editorial</option>
+              <option value="Gestacionais">Gestacionais</option>
+              <option value="Publicitários">Publicitários / Marcas</option>
+              <option value="Eventos">Eventos Corporativos</option>
+              <option value="Autorais">Autorais & Fine Art</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="contactMessage" class="block mb-2 text-sm font-semibold uppercase tracking-wider text-neutral-300">Mensagem / Detalhes do Projeto</label>
+            <textarea id="contactMessage" rows="5" class="bg-neutral-900 border border-neutral-800 text-white text-sm rounded-md block w-full p-3.5 focus:border-white focus:outline-none" placeholder="Conte-nos brevemente a sua ideia ou data pretendida..." required></textarea>
+          </div>
+
+          <button type="submit" class="w-full py-4 bg-white text-black font-bold uppercase text-sm tracking-widest hover:bg-neutral-200 transition rounded-md">
+            Enviar Mensagem no WhatsApp
+          </button>
+        </form>
+      </section>
+
+      <!-- Direct Contact Info Card -->
+      <div class="flex flex-col justify-between bg-neutral-900 p-8 rounded-lg border border-neutral-800 space-y-8">
+        <div>
+          <h3 class="text-2xl font-bold font-signika text-white mb-6">Atendimento Direto</h3>
+          
+          <div class="space-y-4 text-neutral-300">
+            <div>
+              <p class="text-xs text-neutral-500 uppercase tracking-widest font-semibold">Localização & Estúdio</p>
+              <p class="text-lg font-semibold text-white">Rio Verde, GO • Atendimento Brasil & Global</p>
+            </div>
+            
+            <div>
+              <p class="text-xs text-neutral-500 uppercase tracking-widest font-semibold">WhatsApp Direto</p>
+              <a href="https://wa.me/5511999999999" target="_blank" class="text-lg font-semibold text-green-400 hover:underline">+55 (11) 99999-9999</a>
+            </div>
+
+            <div>
+              <p class="text-xs text-neutral-500 uppercase tracking-widest font-semibold">E-mail</p>
+              <p class="text-lg font-semibold text-white">contato@joaofelipephotos.com</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-6 border-t border-neutral-800">
+          <p class="text-xs text-neutral-500 uppercase tracking-widest font-semibold mb-3">Redes & Portfólio</p>
+          <div class="flex gap-4 font-semibold text-sm">
+            <a href="https://www.instagram.com/joaofelipe.photos/" target="_blank" rel="noopener" class="hover:text-white text-neutral-400">Instagram ↗</a>
+            <a href="https://www.behance.net/joaofelipephotos" target="_blank" rel="noopener" class="hover:text-white text-neutral-400">Behance ↗</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-neutral-900 py-8 text-center text-neutral-500 text-sm">
+    <p>© 2026 João Felipe Photos • Rio Verde, GO • Atendimento Brasil & Global</p>
+  </footer>
+
+  <script src="../js/menu.js"></script>
+  <script>
+    document.getElementById('contactPageForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('contactName').value;
+      const category = document.getElementById('contactCategory').value;
+      const message = document.getElementById('contactMessage').value;
+      
+      const text = `Olá João Felipe! Meu nome é ${name}. Gostaria de solicitar um orçamento para *${category}*.\n\nMensagem: ${message}`;
+      window.open(`https://wa.me/5511999999999?text=${encodeURIComponent(text)}`, '_blank');
+    });
+  </script>
+</body>
+</html>
