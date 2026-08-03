@@ -62,5 +62,15 @@ Acesse `http://localhost:8080` no navegador.
 
 ---
 
+## 🔮 Futuras Features & Roadmap
+
+- [ ] **📸 Galeria Virtualizada de Alta Resolução**: Implementação de renderização virtualizada (IntersectionObserver) para carregamento instantâneo de ensaios com 1000+ fotos.
+- [ ] **📲 Integração com Instagram Graph API**: Sincronização automática dos últimos posts e reels do feed oficial no portfólio.
+- [ ] **💬 Orçamentos via Webhook WhatsApp**: Envio automatizado de dados do formulário de contato diretamente para o WhatsApp do fotógrafo com mensagem pré-formatada.
+- [ ] **🔒 Portal de Seleção de Clientes Protegido**: Área exclusiva para o cliente final escolher e favoritar as fotos para tratamento final com login individual por contrato.
+- [ ] **🔐 Autenticação OAuth2 / JWT no Painel**: Transição do PIN hash client-side para um microsserviço seguro de login com renovação de token.
+
+---
+
 ## 📄 Licença e Direitos
 © 2026 **João Felipe Photos**. Todos os direitos autorais sobre as fotografias pertencem ao artista.

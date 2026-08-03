@@ -3,21 +3,37 @@
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 0. Camada de Segurança — Validação de PIN/Senha do Painel
-    const ADMIN_PIN = "2026";
-    let isAuthenticated = sessionStorage.getItem('admin_authenticated') === 'true';
-
-    if (!isAuthenticated) {
-        const userPin = prompt('🔒 Acesso Restrito — Digite o PIN de Segurança para acessar o Painel de Gestão:');
-        if (userPin === ADMIN_PIN) {
-            sessionStorage.setItem('admin_authenticated', 'true');
-            isAuthenticated = true;
-        } else {
-            alert('❌ PIN Incorreto. Acesso Negado.');
-            window.location.href = 'index.html';
-            return;
-        }
+    // 0. Camada de Segurança — Validação de PIN via Hash SHA-256 (Senha "2026")
+    const ADMIN_PIN_HASH = "158a323a7ba44870f23d96f1516dd70aa48e9a72db4ebb026b0a89e212a208ab";
+    
+    async function hashPin(pin) {
+        if (!pin) return "";
+        const encoder = new TextEncoder();
+        const data = encoder.encode(pin);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
     }
+
+    async function checkAuth() {
+        let isAuthenticated = sessionStorage.getItem('admin_authenticated') === 'true';
+
+        if (!isAuthenticated) {
+            const userPin = prompt('🔒 Acesso Restrito — Digite o PIN de Segurança para acessar o Painel de Gestão:');
+            const hashedInput = await hashPin(userPin);
+            if (hashedInput === ADMIN_PIN_HASH) {
+                sessionStorage.setItem('admin_authenticated', 'true');
+                isAuthenticated = true;
+            } else {
+                alert('❌ PIN Incorreto. Acesso Negado.');
+                window.location.href = 'index.html';
+                return false;
+            }
+        }
+        return true;
+    }
+
+    checkAuth();
 
     // Helper de Sanitização XSS
     function escapeHTML(str) {
